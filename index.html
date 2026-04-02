@@ -34,6 +34,11 @@
       content="Red de 44 pantallas LED en galerias comerciales de Maracaibo. Tu marca donde todos miran."
     />
     <meta name="twitter:image" content="https://1pixelve.com/logo.webp" />
+    <meta
+      property="article:modified_time"
+      content="2026-04-02T00:00:00-04:00"
+    />
+    <meta name="last-modified" content="2026-04-02" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -357,28 +362,22 @@
       }
 
       .hero-video {
-        display: none;
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
       }
 
-      @media (max-width: 768px) {
-        .hero-video {
-          display: block;
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          overflow: hidden;
-        }
+      .hero-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.4;
+      }
 
-        .hero-video video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0.4;
-        }
-
-        #particles-canvas {
-          display: none;
-        }
+      #particles-canvas {
+        display: none;
       }
 
       .hero-gradient {
@@ -1780,8 +1779,8 @@
     <section class="hero" id="hero">
       <canvas id="particles-canvas"></canvas>
       <div class="hero-video">
-        <video autoplay muted loop playsinline>
-          <source src="hero-mobile.mp4" type="video/mp4" />
+        <video id="hero-vid" autoplay muted loop playsinline>
+          <source src="" type="video/mp4" />
         </video>
       </div>
       <div class="hero-gradient"></div>
@@ -1843,547 +1842,576 @@
       </div>
     </div>
 
-    <!-- QUE ES 1PIXEL -->
-    <section class="que-es" id="que-es">
-      <div class="container">
-        <div class="reveal">
-          <div class="section-label">Sobre nosotros</div>
-          <h2 class="section-title">
-            La red de pantallas LED<br />mas grande de Maracaibo
-          </h2>
-        </div>
-        <div class="que-es-grid">
-          <div class="que-es-text reveal reveal-delay-1">
-            <p>
-              <strong>1PIXEL</strong> es una red de pantallas LED de alta
-              resolucion estrategicamente instaladas en las entradas y zonas de
-              mayor trafico de galerias comerciales en Maracaibo. Ofrecemos a
-              las marcas una forma innovadora de conectar con miles de personas
-              diariamente a traves de contenido digital dinamico y visualmente
-              impactante.
-            </p>
-            <div class="stat-row">
-              <div class="stat-item">
-                <div class="stat-number">
-                  <span class="counter" data-target="3">0</span>
-                </div>
-                <div class="stat-label">Galerias activas</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Transmision continua</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">
-                  <span class="counter" data-target="44">0</span>
-                </div>
-                <div class="stat-label">Pantallas activas</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">HD</div>
-                <div class="stat-label">Alta resolucion</div>
-              </div>
-            </div>
+    <main>
+      <!-- QUE ES 1PIXEL -->
+      <section class="que-es" id="que-es">
+        <div class="container">
+          <div class="reveal">
+            <div class="section-label">Sobre nosotros</div>
+            <h2 class="section-title">
+              Que es 1PIXEL y por que anunciarse<br />en pantallas LED en
+              Maracaibo?
+            </h2>
           </div>
-          <div class="que-es-visual reveal reveal-delay-2">
-            <div class="led-mockup" id="ledMockup">
-              <div class="led-grid" id="ledGrid"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GALERIAS -->
-    <section class="galerias" id="galerias">
-      <div class="container">
-        <div class="reveal" style="text-align: center">
-          <div class="section-label">Ubicaciones</div>
-          <h2 class="section-title">Nuestras Galerias</h2>
-          <div class="section-subtitle" style="margin: 0 auto">
-            Presencia estrategica en las zonas comerciales mas transitadas de
-            Maracaibo.
-          </div>
-        </div>
-        <div class="galerias-grid">
-          <div class="galeria-card reveal reveal-delay-1">
-            <div class="galeria-photo">
-              <img
-                src="galeria-calle77-new.webp"
-                alt="Pantallas LED 1PIXEL en Galeria Calle 77, Bella Vista, Maracaibo"
-                width="1320"
-                height="2868"
-                loading="lazy"
-              />
-            </div>
-            <div class="galeria-card-body">
-              <div class="galeria-badge badge-active">
-                <span class="pulse"></span> ACTIVA
-              </div>
-              <div class="galeria-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <h3>Galeria Calle 77</h3>
+          <div class="que-es-grid">
+            <div class="que-es-text reveal reveal-delay-1">
               <p>
-                Calle 77 con Av. Bella Vista — 24 pantallas LED en zona de alto
-                trafico peatonal y vehicular.
+                <strong>1PIXEL</strong> es la red de pantallas LED publicitarias
+                mas grande de Maracaibo, Venezuela. Con 44 pantallas de alta
+                resolucion distribuidas en 3 galerias comerciales, 1PIXEL ofrece
+                a las marcas visibilidad 24/7 en las zonas de mayor trafico
+                peatonal y vehicular de la ciudad. Las pantallas estan ubicadas
+                estrategicamente en las entradas y areas de mayor circulacion,
+                garantizando que cada anuncio sea visto por miles de personas
+                diariamente. El contenido se transmite en formato digital
+                dinamico — imagenes estaticas y videos cortos en alta resolucion
+                — con actualizacion remota y soporte tecnico continuo.
               </p>
-            </div>
-          </div>
-          <div class="galeria-card reveal reveal-delay-2">
-            <div class="galeria-photo">
-              <img
-                src="galeria-cecilio-pepsi.webp"
-                alt="Pantallas LED 1PIXEL en Galeria Cecilio Acosta, Maracaibo"
-                width="1320"
-                height="2868"
-                loading="lazy"
-              />
-            </div>
-            <div class="galeria-card-body">
-              <div class="galeria-badge badge-active">
-                <span class="pulse"></span> ACTIVA
+              <div class="stat-row">
+                <div class="stat-item">
+                  <div class="stat-number">
+                    <span class="counter" data-target="3">0</span>
+                  </div>
+                  <div class="stat-label">Galerias activas</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">24/7</div>
+                  <div class="stat-label">Transmision continua</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">
+                    <span class="counter" data-target="44">0</span>
+                  </div>
+                  <div class="stat-label">Pantallas activas</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">HD</div>
+                  <div class="stat-label">Alta resolucion</div>
+                </div>
               </div>
-              <div class="galeria-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <h3>Galeria Cecilio Acosta</h3>
-              <p>
-                Calle 67 — Cecilio Acosta — 12 pantallas LED. Vida comercial
-                diurna y zona gastronomica nocturna.
-              </p>
             </div>
-          </div>
-          <div class="galeria-card reveal reveal-delay-3">
-            <div class="galeria-photo">
-              <img
-                src="galeria-corredor.webp"
-                alt="Pantallas LED 1PIXEL en Corredor Gastronomico AV 3H, Maracaibo"
-                width="1126"
-                height="1632"
-                loading="lazy"
-              />
-            </div>
-            <div class="galeria-card-body">
-              <div class="galeria-badge badge-active">
-                <span class="pulse"></span> ACTIVA
+            <div class="que-es-visual reveal reveal-delay-2">
+              <div class="led-mockup" id="ledMockup">
+                <div class="led-grid" id="ledGrid"></div>
               </div>
-              <div class="galeria-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <h3>Corredor Gastronomico</h3>
-              <p>
-                AV 3H — Corredor Gastronomico — 8 pantallas LED en punto de
-                encuentro y entretenimiento.
-              </p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- VENTAJAS -->
-    <section class="ventajas" id="ventajas">
-      <div class="container">
-        <div class="ventajas-header reveal">
-          <div class="section-label">Beneficios</div>
-          <h2 class="section-title">
-            Ventajas de anunciarte<br />con nosotros
-          </h2>
-          <div class="section-subtitle">
-            Maximiza el alcance de tu marca con la tecnologia LED mas avanzada
-            de la region.
-          </div>
-        </div>
-        <div class="ventajas-grid">
-          <div class="ventaja-card reveal reveal-delay-1">
-            <div class="ventaja-icon cyan"><i class="fas fa-walking"></i></div>
-            <h3>Alto trafico peatonal</h3>
-            <p>
-              Ubicaciones estrategicas en las zonas mas transitadas de Maracaibo
-              con miles de personas diarias.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-2">
-            <div class="ventaja-icon magenta"><i class="fas fa-tv"></i></div>
-            <h3>Pantallas LED HD</h3>
-            <p>
-              Tecnologia de alta resolucion que garantiza imagenes nitidas y
-              colores vibrantes.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-3">
-            <div class="ventaja-icon green"><i class="fas fa-film"></i></div>
-            <h3>Contenido dinamico</h3>
-            <p>
-              Publica videos, animaciones y graficos en movimiento que captan la
-              atencion al instante.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-1">
-            <div class="ventaja-icon green">
-              <i class="fas fa-bullseye"></i>
-            </div>
-            <h3>Publico segmentado</h3>
-            <p>
-              Cada galeria tiene un perfil de visitante definido. Llegamos a tu
-              cliente ideal.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-2">
-            <div class="ventaja-icon cyan"><i class="fas fa-clock"></i></div>
-            <h3>Presencia 24/7</h3>
-            <p>
-              Tu marca visible las 24 horas, los 7 dias de la semana sin
-              interrupciones.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-3">
-            <div class="ventaja-icon magenta">
-              <i class="fas fa-sync-alt"></i>
-            </div>
-            <h3>Facil actualizacion</h3>
-            <p>
-              Hasta 2 actualizaciones mensuales sin costo adicional. Sin
-              impresion ni tiempos de espera.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-1">
-            <div class="ventaja-icon cyan"><i class="fas fa-store"></i></div>
-            <h3>15 marcas por galeria</h3>
-            <p>
-              Espacios limitados a 15 marcas por ubicacion, garantizando
-              visibilidad y rotacion optima.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-2">
-            <div class="ventaja-icon green">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3>Exclusividad por subrubro</h3>
-            <p>
-              Si tu marca esta en una galeria, tu competencia directa no puede
-              estar. Protegemos tu inversion.
-            </p>
-          </div>
-          <div class="ventaja-card reveal reveal-delay-3">
-            <div class="ventaja-icon magenta"><i class="fas fa-tools"></i></div>
-            <h3>Soporte y reposicion inmediata</h3>
-            <p>
-              Stock para reposicion inmediata y servicio tecnico local. Tus
-              pantallas siempre operativas.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ROADMAP -->
-    <section class="roadmap" id="roadmap">
-      <div class="container">
-        <div class="roadmap-header reveal">
-          <div class="section-label">Crecimiento</div>
-          <h2 class="section-title">Roadmap de Expansion</h2>
-          <div class="section-subtitle">
-            Nuestra red crece. Conoce las proximas ubicaciones que se sumaran a
-            1PIXEL.
-          </div>
-        </div>
-        <div class="timeline">
-          <div class="timeline-phase reveal">
-            <div class="phase-badge phase-active">
-              <span><i class="fas fa-check-circle"></i> Fase 1 — Activa</span>
-            </div>
-            <div class="phase-items">
-              <div class="phase-item">
-                <div class="check check-done"><i class="fas fa-check"></i></div>
-                <span class="item-text">Calle 77 con Av. Bella Vista</span>
-              </div>
-              <div class="phase-item">
-                <div class="check check-done"><i class="fas fa-check"></i></div>
-                <span class="item-text">Calle 67 — Cecilio Acosta</span>
-              </div>
-              <div class="phase-item">
-                <div class="check check-done"><i class="fas fa-check"></i></div>
-                <span class="item-text">AV 3H — Corredor Gastronomico</span>
-              </div>
+      <!-- GALERIAS -->
+      <section class="galerias" id="galerias">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="section-label">Ubicaciones</div>
+            <h2 class="section-title">
+              Donde estan las pantallas LED de 1PIXEL?
+            </h2>
+            <div class="section-subtitle" style="margin: 0 auto">
+              Presencia estrategica en las zonas comerciales mas transitadas de
+              Maracaibo.
             </div>
           </div>
-          <div class="timeline-phase reveal reveal-delay-2">
-            <div class="phase-badge phase-coming">
-              <span><i class="fas fa-clock"></i> Fase 2 — Proximamente</span>
-            </div>
-            <div class="phase-items">
-              <div class="phase-item">
-                <div class="check check-soon">
-                  <i class="fas fa-hourglass-half"></i>
-                </div>
-                <span class="item-text">Bella Vista con Calle 72</span>
-              </div>
-              <div class="phase-item">
-                <div class="check check-soon">
-                  <i class="fas fa-hourglass-half"></i>
-                </div>
-                <span class="item-text">5 de Julio con Delicias</span>
-              </div>
-              <div class="phase-item locked">
-                <div class="check check-locked">
-                  <i class="fas fa-lock"></i>
-                </div>
-                <span class="item-text">Galeria 6 — Coming Soon</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section class="contacto" id="contacto">
-      <div class="container">
-        <div class="reveal">
-          <div class="section-label">Contacto</div>
-          <h2 class="section-title">Lleva tu marca a<br />las pantallas</h2>
-        </div>
-        <div class="contacto-grid">
-          <div class="contacto-info reveal reveal-delay-1">
-            <h3>Hablemos de tu proxima campana</h3>
-            <p>
-              Cuentanos sobre tu marca y te asesoramos sobre la mejor estrategia
-              para maximizar tu visibilidad en nuestras pantallas LED.
-            </p>
-            <div class="contact-methods">
-              <a
-                href="https://wa.me/584222174935?text=Hola%2C%20quiero%20informacion%20sobre%20publicidad%20en%201PIXEL"
-                class="contact-btn whatsapp"
-                target="_blank"
-                rel="noopener"
-              >
-                <i class="fab fa-whatsapp"></i>
-                <div class="contact-btn-text">
-                  <div class="label">WhatsApp</div>
-                  <div class="value">+58 422-217-4935</div>
-                </div>
-              </a>
-              <a href="mailto:ventas@1pixelve.com" class="contact-btn email">
-                <i class="fas fa-envelope"></i>
-                <div class="contact-btn-text">
-                  <div class="label">Email Ventas</div>
-                  <div class="value">ventas@1pixelve.com</div>
-                </div>
-              </a>
-              <a
-                href="mailto:administracion@1pixelve.com"
-                class="contact-btn email"
-              >
-                <i class="fas fa-envelope"></i>
-                <div class="contact-btn-text">
-                  <div class="label">Email Administracion</div>
-                  <div class="value">administracion@1pixelve.com</div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-2">
-            <div class="contact-form" id="contactForm">
-              <form
-                id="leadForm"
-                action="https://api.web3forms.com/submit"
-                method="POST"
-              >
-                <!-- Web3Forms: reemplaza c30ee30a-5147-455d-9342-bb80886dd7aa con tu key de https://web3forms.com -->
-                <input
-                  type="hidden"
-                  name="access_key"
-                  value="c30ee30a-5147-455d-9342-bb80886dd7aa"
+          <div class="galerias-grid">
+            <div class="galeria-card reveal reveal-delay-1">
+              <div class="galeria-photo">
+                <img
+                  src="galeria-calle77-new.webp"
+                  alt="Pantallas LED 1PIXEL en Galeria Calle 77, Bella Vista, Maracaibo"
+                  width="1320"
+                  height="2868"
+                  loading="lazy"
                 />
-                <input
-                  type="hidden"
-                  name="subject"
-                  value="Nuevo lead desde 1PIXEL.ve"
+              </div>
+              <div class="galeria-card-body">
+                <div class="galeria-badge badge-active">
+                  <span class="pulse"></span> ACTIVA
+                </div>
+                <div class="galeria-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Galeria Calle 77</h3>
+                <p>
+                  Calle 77 con Av. Bella Vista — 24 pantallas LED en zona de
+                  alto trafico peatonal y vehicular.
+                </p>
+              </div>
+            </div>
+            <div class="galeria-card reveal reveal-delay-2">
+              <div class="galeria-photo">
+                <img
+                  src="galeria-cecilio-pepsi.webp"
+                  alt="Pantallas LED 1PIXEL en Galeria Cecilio Acosta, Maracaibo"
+                  width="1320"
+                  height="2868"
+                  loading="lazy"
                 />
-                <input type="hidden" name="from_name" value="1PIXEL Website" />
-                <input type="hidden" name="redirect" value="" />
-                <!-- Honeypot anti-spam (invisible) -->
-                <input
-                  type="text"
-                  name="botcheck"
-                  style="display: none !important"
-                  tabindex="-1"
-                  autocomplete="off"
+              </div>
+              <div class="galeria-card-body">
+                <div class="galeria-badge badge-active">
+                  <span class="pulse"></span> ACTIVA
+                </div>
+                <div class="galeria-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Galeria Cecilio Acosta</h3>
+                <p>
+                  Calle 67 — Cecilio Acosta — 12 pantallas LED. Vida comercial
+                  diurna y zona gastronomica nocturna.
+                </p>
+              </div>
+            </div>
+            <div class="galeria-card reveal reveal-delay-3">
+              <div class="galeria-photo">
+                <img
+                  src="galeria-corredor.webp"
+                  alt="Pantallas LED 1PIXEL en Corredor Gastronomico AV 3H, Maracaibo"
+                  width="1126"
+                  height="1632"
+                  loading="lazy"
                 />
-                <div class="form-row">
-                  <div class="form-group">
-                    <label
-                      >Nombre completo <span class="required">*</span></label
-                    >
-                    <input
-                      type="text"
-                      name="nombre"
-                      placeholder="Tu nombre"
-                      required
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label>Empresa</label>
-                    <input
-                      type="text"
-                      name="empresa"
-                      placeholder="Nombre de tu empresa"
-                    />
-                  </div>
+              </div>
+              <div class="galeria-card-body">
+                <div class="galeria-badge badge-active">
+                  <span class="pulse"></span> ACTIVA
                 </div>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>Telefono <span class="required">*</span></label>
-                    <input
-                      type="tel"
-                      name="telefono"
-                      placeholder="+58 412-000-0000"
-                      required
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label>Email <span class="required">*</span></label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="tu@email.com"
-                      required
-                    />
-                  </div>
+                <div class="galeria-icon">
+                  <i class="fas fa-map-marker-alt"></i>
                 </div>
-                <div class="form-group">
-                  <label>Que quieres promocionar?</label>
-                  <textarea
-                    name="mensaje"
-                    placeholder="Cuentanos sobre tu marca o producto..."
-                  ></textarea>
-                </div>
-                <div class="form-group captcha-group">
-                  <!-- Reemplaza TU_SITE_KEY con tu Site Key de https://www.google.com/recaptcha/admin -->
-                  <div
-                    class="g-recaptcha"
-                    data-sitekey="6LeKVaIsAAAAAMX7r940nTnf08QLuH5ZrDWuSgUW"
-                    data-theme="dark"
-                  ></div>
-                  <div class="captcha-error" id="captchaError">
-                    Debes completar el captcha.
-                  </div>
-                </div>
-                <button type="submit" class="btn-submit">
-                  <i class="fas fa-paper-plane"></i> Quiero mas informacion
-                </button>
-              </form>
-            </div>
-            <div class="form-success" id="formSuccess">
-              <i class="fas fa-check-circle"></i>
-              <h3>Mensaje enviado!</h3>
-              <p>
-                Nos pondremos en contacto contigo pronto. Gracias por tu interes
-                en 1PIXEL.
-              </p>
+                <h3>Corredor Gastronomico</h3>
+                <p>
+                  AV 3H — Corredor Gastronomico — 8 pantallas LED en punto de
+                  encuentro y entretenimiento.
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- FAQ -->
-    <section class="faq" id="faq">
-      <div class="container">
-        <div class="reveal" style="text-align: center">
-          <div class="section-label">Preguntas frecuentes</div>
-          <h2 class="section-title">Todo lo que necesitas saber</h2>
+      <!-- VENTAJAS -->
+      <section class="ventajas" id="ventajas">
+        <div class="container">
+          <div class="ventajas-header reveal">
+            <div class="section-label">Beneficios</div>
+            <h2 class="section-title">
+              Por que anunciarse en pantallas LED<br />con 1PIXEL?
+            </h2>
+            <div class="section-subtitle">
+              Maximiza el alcance de tu marca con la tecnologia LED mas avanzada
+              de la region.
+            </div>
+          </div>
+          <div class="ventajas-grid">
+            <div class="ventaja-card reveal reveal-delay-1">
+              <div class="ventaja-icon cyan">
+                <i class="fas fa-walking"></i>
+              </div>
+              <h3>Alto trafico peatonal</h3>
+              <p>
+                Ubicaciones estrategicas en las zonas mas transitadas de
+                Maracaibo con miles de personas diarias.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-2">
+              <div class="ventaja-icon magenta"><i class="fas fa-tv"></i></div>
+              <h3>Pantallas LED HD</h3>
+              <p>
+                Tecnologia de alta resolucion que garantiza imagenes nitidas y
+                colores vibrantes.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-3">
+              <div class="ventaja-icon green"><i class="fas fa-film"></i></div>
+              <h3>Contenido dinamico</h3>
+              <p>
+                Publica videos, animaciones y graficos en movimiento que captan
+                la atencion al instante.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-1">
+              <div class="ventaja-icon green">
+                <i class="fas fa-bullseye"></i>
+              </div>
+              <h3>Publico segmentado</h3>
+              <p>
+                Cada galeria tiene un perfil de visitante definido. Llegamos a
+                tu cliente ideal.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-2">
+              <div class="ventaja-icon cyan"><i class="fas fa-clock"></i></div>
+              <h3>Presencia 24/7</h3>
+              <p>
+                Tu marca visible las 24 horas, los 7 dias de la semana sin
+                interrupciones.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-3">
+              <div class="ventaja-icon magenta">
+                <i class="fas fa-sync-alt"></i>
+              </div>
+              <h3>Facil actualizacion</h3>
+              <p>
+                Hasta 2 actualizaciones mensuales sin costo adicional. Sin
+                impresion ni tiempos de espera.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-1">
+              <div class="ventaja-icon cyan"><i class="fas fa-store"></i></div>
+              <h3>15 marcas por galeria</h3>
+              <p>
+                Espacios limitados a 15 marcas por ubicacion, garantizando
+                visibilidad y rotacion optima.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-2">
+              <div class="ventaja-icon green">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h3>Exclusividad por subrubro</h3>
+              <p>
+                Si tu marca esta en una galeria, tu competencia directa no puede
+                estar. Protegemos tu inversion.
+              </p>
+            </div>
+            <div class="ventaja-card reveal reveal-delay-3">
+              <div class="ventaja-icon magenta">
+                <i class="fas fa-tools"></i>
+              </div>
+              <h3>Soporte y reposicion inmediata</h3>
+              <p>
+                Stock para reposicion inmediata y servicio tecnico local. Tus
+                pantallas siempre operativas.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="faq-grid">
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              Cuanto cuesta anunciarse en 1PIXEL?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                El costo depende de la galeria, la cantidad de pantallas y la
-                duracion del contrato. Ofrecemos planes desde 3 meses con
-                opciones de pago mensual o prepago. Contactanos para recibir una
-                cotizacion personalizada.
-              </p>
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              En que galerias estan las pantallas?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                Actualmente operamos en 3 galerias comerciales de Maracaibo:
-                Calle 77 con Av. Bella Vista (24 pantallas), Cecilio Acosta en
-                Calle 67 (12 pantallas), y el Corredor Gastronomico en AV 3H (8
-                pantallas). Proximamente nos expandiremos a nuevas ubicaciones.
-              </p>
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              Cuantas personas ven los anuncios?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                Nuestras pantallas estan ubicadas en las entradas y zonas de
-                mayor trafico de las galerias comerciales mas concurridas de
-                Maracaibo, con exposicion las 24 horas del dia, los 7 dias de la
-                semana.
-              </p>
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              Que tipo de contenido puedo mostrar?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                Puedes mostrar imagenes estaticas o videos cortos en alta
-                resolucion. Incluimos 2 actualizaciones mensuales de contenido
-                sin costo adicional. Nuestro equipo te asesora para crear piezas
-                que maximicen el impacto visual.
-              </p>
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              Que es la exclusividad por subrubro?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                Garantizamos que en cada galeria solo habra un anunciante por
-                categoria de negocio (por ejemplo, solo una pizzeria, solo una
-                peluqueria). Esto maximiza la visibilidad de tu marca sin
-                competencia directa en la misma ubicacion.
-              </p>
-            </div>
-          </div>
-          <div class="faq-item reveal">
-            <button class="faq-question">
-              Cuanto tiempo toma activar mi anuncio?
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="faq-answer">
-              <p>
-                Una vez firmado el contrato y recibido tu contenido, tu anuncio
-                puede estar activo en las pantallas en menos de 48 horas. Si
-                necesitas ayuda con el diseno, nuestro equipo puede asistirte.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
 
+      <!-- ROADMAP -->
+      <section class="roadmap" id="roadmap">
+        <div class="container">
+          <div class="roadmap-header reveal">
+            <div class="section-label">Crecimiento</div>
+            <h2 class="section-title">
+              Donde habra nuevas pantallas LED en Maracaibo?
+            </h2>
+            <div class="section-subtitle">
+              Nuestra red crece. Conoce las proximas ubicaciones que se sumaran
+              a 1PIXEL.
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-phase reveal">
+              <div class="phase-badge phase-active">
+                <span><i class="fas fa-check-circle"></i> Fase 1 — Activa</span>
+              </div>
+              <div class="phase-items">
+                <div class="phase-item">
+                  <div class="check check-done">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="item-text">Calle 77 con Av. Bella Vista</span>
+                </div>
+                <div class="phase-item">
+                  <div class="check check-done">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="item-text">Calle 67 — Cecilio Acosta</span>
+                </div>
+                <div class="phase-item">
+                  <div class="check check-done">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="item-text">AV 3H — Corredor Gastronomico</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-phase reveal reveal-delay-2">
+              <div class="phase-badge phase-coming">
+                <span><i class="fas fa-clock"></i> Fase 2 — Proximamente</span>
+              </div>
+              <div class="phase-items">
+                <div class="phase-item">
+                  <div class="check check-soon">
+                    <i class="fas fa-hourglass-half"></i>
+                  </div>
+                  <span class="item-text">Bella Vista con Calle 72</span>
+                </div>
+                <div class="phase-item">
+                  <div class="check check-soon">
+                    <i class="fas fa-hourglass-half"></i>
+                  </div>
+                  <span class="item-text">5 de Julio con Delicias</span>
+                </div>
+                <div class="phase-item locked">
+                  <div class="check check-locked">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <span class="item-text">Galeria 6 — Coming Soon</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTO -->
+      <section class="contacto" id="contacto">
+        <div class="container">
+          <div class="reveal">
+            <div class="section-label">Contacto</div>
+            <h2 class="section-title">
+              Como anunciarse en pantallas LED<br />en Maracaibo?
+            </h2>
+          </div>
+          <div class="contacto-grid">
+            <div class="contacto-info reveal reveal-delay-1">
+              <h3>Hablemos de tu proxima campana</h3>
+              <p>
+                Cuentanos sobre tu marca y te asesoramos sobre la mejor
+                estrategia para maximizar tu visibilidad en nuestras pantallas
+                LED.
+              </p>
+              <div class="contact-methods">
+                <a
+                  href="https://wa.me/584222174935?text=Hola%2C%20quiero%20informacion%20sobre%20publicidad%20en%201PIXEL"
+                  class="contact-btn whatsapp"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fab fa-whatsapp"></i>
+                  <div class="contact-btn-text">
+                    <div class="label">WhatsApp</div>
+                    <div class="value">+58 422-217-4935</div>
+                  </div>
+                </a>
+                <a href="mailto:ventas@1pixelve.com" class="contact-btn email">
+                  <i class="fas fa-envelope"></i>
+                  <div class="contact-btn-text">
+                    <div class="label">Email Ventas</div>
+                    <div class="value">ventas@1pixelve.com</div>
+                  </div>
+                </a>
+                <a
+                  href="mailto:administracion@1pixelve.com"
+                  class="contact-btn email"
+                >
+                  <i class="fas fa-envelope"></i>
+                  <div class="contact-btn-text">
+                    <div class="label">Email Administracion</div>
+                    <div class="value">administracion@1pixelve.com</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="reveal reveal-delay-2">
+              <div class="contact-form" id="contactForm">
+                <form
+                  id="leadForm"
+                  action="https://api.web3forms.com/submit"
+                  method="POST"
+                >
+                  <!-- Web3Forms: reemplaza c30ee30a-5147-455d-9342-bb80886dd7aa con tu key de https://web3forms.com -->
+                  <input
+                    type="hidden"
+                    name="access_key"
+                    value="c30ee30a-5147-455d-9342-bb80886dd7aa"
+                  />
+                  <input
+                    type="hidden"
+                    name="subject"
+                    value="Nuevo lead desde 1PIXEL.ve"
+                  />
+                  <input
+                    type="hidden"
+                    name="from_name"
+                    value="1PIXEL Website"
+                  />
+                  <input type="hidden" name="redirect" value="" />
+                  <!-- Honeypot anti-spam (invisible) -->
+                  <input
+                    type="text"
+                    name="botcheck"
+                    style="display: none !important"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label
+                        >Nombre completo <span class="required">*</span></label
+                      >
+                      <input
+                        type="text"
+                        name="nombre"
+                        placeholder="Tu nombre"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Empresa</label>
+                      <input
+                        type="text"
+                        name="empresa"
+                        placeholder="Nombre de tu empresa"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label>Telefono <span class="required">*</span></label>
+                      <input
+                        type="tel"
+                        name="telefono"
+                        placeholder="+58 412-000-0000"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Email <span class="required">*</span></label>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="tu@email.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Que quieres promocionar?</label>
+                    <textarea
+                      name="mensaje"
+                      placeholder="Cuentanos sobre tu marca o producto..."
+                    ></textarea>
+                  </div>
+                  <div class="form-group captcha-group">
+                    <!-- Reemplaza TU_SITE_KEY con tu Site Key de https://www.google.com/recaptcha/admin -->
+                    <div
+                      class="g-recaptcha"
+                      data-sitekey="6LeKVaIsAAAAAMX7r940nTnf08QLuH5ZrDWuSgUW"
+                      data-theme="dark"
+                    ></div>
+                    <div class="captcha-error" id="captchaError">
+                      Debes completar el captcha.
+                    </div>
+                  </div>
+                  <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Quiero mas informacion
+                  </button>
+                </form>
+              </div>
+              <div class="form-success" id="formSuccess">
+                <i class="fas fa-check-circle"></i>
+                <h3>Mensaje enviado!</h3>
+                <p>
+                  Nos pondremos en contacto contigo pronto. Gracias por tu
+                  interes en 1PIXEL.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq" id="faq">
+        <div class="container">
+          <div class="reveal" style="text-align: center">
+            <div class="section-label">Preguntas frecuentes</div>
+            <h2 class="section-title">Todo lo que necesitas saber</h2>
+          </div>
+          <div class="faq-grid">
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                Cuanto cuesta anunciarse en 1PIXEL?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  El costo depende de la galeria, la cantidad de pantallas y la
+                  duracion del contrato. Ofrecemos planes desde 3 meses con
+                  opciones de pago mensual o prepago. Contactanos para recibir
+                  una cotizacion personalizada.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                En que galerias estan las pantallas?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Actualmente operamos en 3 galerias comerciales de Maracaibo:
+                  Calle 77 con Av. Bella Vista (24 pantallas), Cecilio Acosta en
+                  Calle 67 (12 pantallas), y el Corredor Gastronomico en AV 3H
+                  (8 pantallas). Proximamente nos expandiremos a nuevas
+                  ubicaciones.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                Cuantas personas ven los anuncios?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Nuestras pantallas estan ubicadas en las entradas y zonas de
+                  mayor trafico de las galerias comerciales mas concurridas de
+                  Maracaibo, con exposicion las 24 horas del dia, los 7 dias de
+                  la semana.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                Que tipo de contenido puedo mostrar?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Puedes mostrar imagenes estaticas o videos cortos en alta
+                  resolucion. Incluimos 2 actualizaciones mensuales de contenido
+                  sin costo adicional. Nuestro equipo te asesora para crear
+                  piezas que maximicen el impacto visual.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                Que es la exclusividad por subrubro?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Garantizamos que en cada galeria solo habra un anunciante por
+                  categoria de negocio (por ejemplo, solo una pizzeria, solo una
+                  peluqueria). Esto maximiza la visibilidad de tu marca sin
+                  competencia directa en la misma ubicacion.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                Cuanto tiempo toma activar mi anuncio?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Una vez firmado el contrato y recibido tu contenido, tu
+                  anuncio puede estar activo en las pantallas en menos de 48
+                  horas. Si necesitas ayuda con el diseno, nuestro equipo puede
+                  asistirte.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
     <!-- FOOTER -->
     <footer>
       <div class="container">
@@ -2474,10 +2502,21 @@
                 " /></a
           ></span>
           <span>Maracaibo, Venezuela</span>
+          <span>Actualizado: abril 2026</span>
         </div>
       </div>
     </footer>
 
+    <script>
+      // === HERO VIDEO SOURCE ===
+      (function () {
+        const vid = document.getElementById("hero-vid");
+        const src = vid.querySelector("source");
+        src.src =
+          window.innerWidth > 768 ? "hero-desktop.mp4" : "hero-mobile.mp4";
+        vid.load();
+      })();
+    </script>
     <script>
       // === PARTICLE SYSTEM ===
       (function () {
@@ -2897,10 +2936,60 @@
               "@type": "City",
               "name": "Maracaibo"
             },
+            "parentOrganization": {
+              "@type": "Corporation",
+              "name": "Liberti Global Corporation",
+              "url": "https://liberticorporation.com"
+            },
             "sameAs": [
               "https://www.instagram.com/1pixelve",
               "https://wa.me/584222174935"
             ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Publicidad en Pantallas LED",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Pantallas LED Galeria Calle 77",
+                    "description": "24 pantallas LED de alta resolucion en Calle 77 con Av. Bella Vista, zona de alto trafico peatonal y vehicular en Maracaibo",
+                    "areaServed": "Maracaibo, Zulia, Venezuela",
+                    "serviceType": "Publicidad LED"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Pantallas LED Galeria Cecilio Acosta",
+                    "description": "12 pantallas LED en Calle 67, Cecilio Acosta. Vida comercial diurna y zona gastronomica nocturna en Maracaibo",
+                    "areaServed": "Maracaibo, Zulia, Venezuela",
+                    "serviceType": "Publicidad LED"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Pantallas LED Corredor Gastronomico",
+                    "description": "8 pantallas LED en AV 3H, Corredor Gastronomico. Punto de encuentro y entretenimiento en Maracaibo",
+                    "areaServed": "Maracaibo, Zulia, Venezuela",
+                    "serviceType": "Publicidad LED"
+                  }
+                }
+              ]
+            },
+            "numberOfEmployees": {
+              "@type": "QuantitativeValue",
+              "value": "44",
+              "unitText": "pantallas activas"
+            },
+            "foundingLocation": {
+              "@type": "Place",
+              "name": "Maracaibo, Venezuela"
+            },
             "openingHoursSpecification": {
               "@type": "OpeningHoursSpecification",
               "dayOfWeek": [
