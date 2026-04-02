@@ -1997,13 +1997,22 @@
 
             // Enviar via Web3Forms
             const formData = new FormData(form);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                if (key !== 'g-recaptcha-response' && key !== 'botcheck') jsonData[key] = value;
+            });
+            jsonData['access_key'] = '03e7bee4-190d-407b-8872-f9061c5d96e4';
+            jsonData['subject'] = 'Nuevo lead desde 1PIXEL.ve';
+            jsonData['from_name'] = '1PIXEL Website';
+
             const submitBtn = form.querySelector('.btn-submit');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(jsonData)
             })
             .then(res => res.json())
             .then(data => {
