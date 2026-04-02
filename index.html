@@ -2016,16 +2016,18 @@
             })
             .then(res => res.json())
             .then(data => {
+                console.log('Web3Forms response:', data);
                 if (data.success) {
                     document.getElementById('contactForm').style.display = 'none';
                     document.getElementById('formSuccess').classList.add('show');
                 } else {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Quiero mas informacion';
-                    alert('Error al enviar. Intenta de nuevo o contactanos por WhatsApp.');
+                    alert('Error: ' + (data.message || 'Error al enviar. Intenta de nuevo o contactanos por WhatsApp.'));
                 }
             })
-            .catch(() => {
+            .catch(err => {
+                console.error('Fetch error:', err);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Quiero mas informacion';
                 alert('Error de conexion. Intenta de nuevo o contactanos por WhatsApp.');
