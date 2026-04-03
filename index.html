@@ -2535,7 +2535,7 @@
         src.src =
           window.innerWidth > 768 ? "hero-desktop.mp4" : "hero-mobile.mp4";
         vid.load();
-        vid.playbackRate = 2;
+        if (window.innerWidth > 768) vid.playbackRate = 2;
       })();
     </script>
     <script>
