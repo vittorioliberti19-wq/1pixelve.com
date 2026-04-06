@@ -807,7 +807,8 @@
         opacity: 1;
       }
 
-      .galeria-card:hover .galeria-photo img {
+      .galeria-card:hover .galeria-photo img,
+      .galeria-card:hover .galeria-photo video {
         transform: scale(1.05);
       }
 
@@ -822,7 +823,8 @@
         justify-content: center;
       }
 
-      .galeria-photo img {
+      .galeria-photo img,
+      .galeria-photo video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -1921,13 +1923,14 @@
           <div class="galerias-grid">
             <div class="galeria-card reveal reveal-delay-1">
               <div class="galeria-photo">
-                <img
-                  src="galeria-calle77-new.webp"
-                  alt="Pantallas LED 1PIXEL en Galeria Calle 77, Bella Vista, Maracaibo"
-                  width="1320"
-                  height="2868"
+                <video
+                  src="galeria-calle77.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
                   loading="lazy"
-                />
+                ></video>
               </div>
               <div class="galeria-card-body">
                 <div class="galeria-badge badge-active">
@@ -1946,13 +1949,14 @@
             </div>
             <div class="galeria-card reveal reveal-delay-2">
               <div class="galeria-photo">
-                <img
-                  src="galeria-cecilio-pepsi.webp"
-                  alt="Pantallas LED 1PIXEL en Galeria Cecilio Acosta, Maracaibo"
-                  width="1320"
-                  height="2868"
+                <video
+                  src="galeria-cecilio.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
                   loading="lazy"
-                />
+                ></video>
               </div>
               <div class="galeria-card-body">
                 <div class="galeria-badge badge-active">
@@ -1971,13 +1975,14 @@
             </div>
             <div class="galeria-card reveal reveal-delay-3">
               <div class="galeria-photo">
-                <img
-                  src="galeria-corredor.webp"
-                  alt="Pantallas LED 1PIXEL en Corredor Gastronomico AV 3H, Maracaibo"
-                  width="1126"
-                  height="1632"
+                <video
+                  src="galeria-corredor.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
                   loading="lazy"
-                />
+                ></video>
               </div>
               <div class="galeria-card-body">
                 <div class="galeria-badge badge-active">
