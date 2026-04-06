@@ -2540,7 +2540,7 @@
         src.src =
           window.innerWidth > 768 ? "hero-desktop.mp4" : "hero-mobile.mp4";
         vid.load();
-        if (window.innerWidth > 768) vid.playbackRate = 2;
+        if (window.innerWidth > 768) vid.playbackRate = 1;
         document.querySelectorAll(".galeria-photo video").forEach(function (v) {
           v.addEventListener("loadeddata", function () {
             v.playbackRate = 2;
