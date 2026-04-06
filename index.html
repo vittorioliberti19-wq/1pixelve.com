@@ -2542,7 +2542,10 @@
         vid.load();
         if (window.innerWidth > 768) vid.playbackRate = 2;
         document.querySelectorAll(".galeria-photo video").forEach(function (v) {
-          v.playbackRate = 2;
+          v.addEventListener("loadeddata", function () {
+            v.playbackRate = 2;
+          });
+          if (v.readyState >= 2) v.playbackRate = 2;
         });
       })();
     </script>
