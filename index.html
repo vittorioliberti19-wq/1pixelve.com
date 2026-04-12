@@ -2814,6 +2814,19 @@
           submitBtn.innerHTML =
             '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
+          // Also save to Google Sheet (fire-and-forget)
+          fetch("https://brief-api.liberticorporation.com/api/contact-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nombre: formData.get("nombre") || "",
+              empresa: formData.get("empresa") || "",
+              telefono: formData.get("telefono") || "",
+              email: formData.get("email") || "",
+              mensaje: formData.get("mensaje") || "",
+            }),
+          }).catch(() => {});
+
           fetch("https://api.web3forms.com/submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

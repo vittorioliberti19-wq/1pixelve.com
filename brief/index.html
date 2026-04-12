@@ -566,16 +566,91 @@
       /* Loading state */
       .chat-loading {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
         color: var(--gray);
         font-size: 0.95rem;
-        padding: 20px 0;
+        padding: 40px 20px;
+        text-align: center;
       }
 
-      .chat-loading i {
+      .loading-spinner {
+        font-size: 2.5rem;
         color: var(--cyan);
+        animation: glow-pulse 2s infinite;
+      }
+
+      @keyframes glow-pulse {
+        0%,
+        100% {
+          opacity: 1;
+          text-shadow: 0 0 20px var(--cyan);
+        }
+        50% {
+          opacity: 0.6;
+          text-shadow: 0 0 40px var(--cyan);
+        }
+      }
+
+      .loading-title {
         font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--white);
+      }
+
+      .loading-subtitle {
+        font-size: 0.9rem;
+        color: var(--gray);
+        max-width: 500px;
+        line-height: 1.5;
+      }
+
+      .loading-timer {
+        font-size: 0.85rem;
+        color: var(--gray);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .loading-timer span {
+        color: var(--cyan);
+        font-weight: 600;
+      }
+
+      .loading-steps {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 12px;
+        text-align: left;
+      }
+
+      .loading-step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+        color: var(--gray);
+        transition: color 0.3s;
+      }
+
+      .loading-step.active {
+        color: var(--green);
+      }
+
+      .loading-step.active i {
+        color: var(--green);
+      }
+
+      .loading-step.pending {
+        opacity: 0.4;
+      }
+
+      .loading-step i {
+        width: 16px;
+        text-align: center;
+        color: var(--cyan);
       }
 
       /* Error state */
@@ -913,7 +988,7 @@
     </footer>
 
     <script>
-      const API_URL = "https://brief-api.1pixelve.com";
+      const API_URL = "https://brief-api.liberticorporation.com";
 
       // "Todas" checkbox toggles all galleries
       const todasCheckbox = document.getElementById("galTodas");
@@ -1027,9 +1102,51 @@
 
           const messagesDiv = document.getElementById("chatMessages");
           messagesDiv.innerHTML =
-            '<div class="chat-loading"><i class="fas fa-spinner fa-spin"></i> Generando brief creativo para ' +
+            '<div class="chat-loading">' +
+            '<div class="loading-spinner"><i class="fas fa-wand-magic-sparkles fa-spin"></i></div>' +
+            '<div class="loading-title">Generando brief creativo para ' +
             escapeHtml(data.marca) +
-            "...</div>";
+            "</div>" +
+            '<div class="loading-subtitle">Nuestro Director Creativo IA esta analizando tu marca y preparando recomendaciones personalizadas para pantallas LED</div>' +
+            '<div class="loading-timer">Tiempo estimado: ~1-2 minutos &mdash; <span id="loadingTimer">0:00</span></div>' +
+            '<div class="loading-steps" id="loadingSteps">' +
+            '<div class="loading-step active"><i class="fas fa-check-circle"></i> Recibiendo datos de tu marca</div>' +
+            '<div class="loading-step"><i class="fas fa-circle-notch fa-spin"></i> Analizando rubro y objetivos</div>' +
+            '<div class="loading-step pending"><i class="far fa-circle"></i> Generando concepto creativo</div>' +
+            '<div class="loading-step pending"><i class="far fa-circle"></i> Preparando recomendaciones visuales</div>' +
+            '<div class="loading-step pending"><i class="far fa-circle"></i> Creando opciones y guia de diseno</div>' +
+            "</div></div>";
+
+          // Animate loading timer and steps
+          const timerStart = Date.now();
+          const timerEl = document.getElementById("loadingTimer");
+          const stepsEl = document.getElementById("loadingSteps");
+          const loadingInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - timerStart) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = String(elapsed % 60).padStart(2, "0");
+            if (timerEl) timerEl.textContent = mins + ":" + secs;
+            // Progress steps based on time
+            const steps = stepsEl
+              ? stepsEl.querySelectorAll(".loading-step")
+              : [];
+            const milestones = [0, 5, 20, 40, 60];
+            milestones.forEach((t, i) => {
+              if (elapsed >= t && steps[i]) {
+                steps[i].classList.add("active");
+                steps[i].classList.remove("pending");
+                steps[i].querySelector("i").className = "fas fa-check-circle";
+                if (
+                  steps[i + 1] &&
+                  !steps[i + 1].classList.contains("active")
+                ) {
+                  steps[i + 1].querySelector("i").className =
+                    "fas fa-circle-notch fa-spin";
+                  steps[i + 1].classList.remove("pending");
+                }
+              }
+            });
+          }, 1000);
 
           try {
             const response = await fetch(API_URL + "/api/brief", {
@@ -1046,6 +1163,7 @@
               } catch (parseErr) {
                 /* use default message */
               }
+              clearInterval(loadingInterval);
               messagesDiv.innerHTML =
                 '<div class="chat-error"><i class="fas fa-exclamation-circle"></i> ' +
                 escapeHtml(errMsg) +
@@ -1054,7 +1172,7 @@
             }
 
             // Stream SSE
-            messagesDiv.innerHTML = "";
+            let loadingCleared = false;
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let buffer = "";
@@ -1071,6 +1189,11 @@
                   try {
                     const payload = JSON.parse(line.slice(6));
                     if (payload.text) {
+                      if (!loadingCleared) {
+                        clearInterval(loadingInterval);
+                        messagesDiv.innerHTML = "";
+                        loadingCleared = true;
+                      }
                       fullText += payload.text;
                       messagesDiv.innerHTML = renderMarkdown(fullText);
                       messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -1086,6 +1209,7 @@
               }
             }
           } catch (err) {
+            clearInterval(loadingInterval);
             messagesDiv.innerHTML =
               '<div class="chat-error"><i class="fas fa-exclamation-circle"></i> Error de conexion. Intenta mas tarde o contactanos por WhatsApp.</div>';
           }
