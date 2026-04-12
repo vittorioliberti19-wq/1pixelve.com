@@ -1272,112 +1272,146 @@
             '<div class="loading-step pending"><i class="far fa-circle"></i> Creando opciones y guia de diseno</div>' +
             "</div></div>";
 
-          // Pixel cube animation
+          // Pixel cube animation: assembled → split into cubes → orbit in circle → reassemble
           (function () {
             const cvs = document.getElementById("pixelCubeCanvas");
             if (!cvs) return;
             const ctx = cvs.getContext("2d");
             const W = cvs.width,
               H = cvs.height;
-            const gridSize = 6;
-            const cellSize = W / gridSize;
+            const cx = W / 2,
+              cy = H / 2;
+            const gridSize = 4;
+            const cellSize = 14;
+            const gap = 2;
+            const totalSize = gridSize * (cellSize + gap) - gap;
+            const offset = (W - totalSize) / 2;
             const colors = [
               "#8b00ff",
+              "#a040ff",
               "#ff00ff",
-              "#00ff88",
-              "#6A00D4",
               "#E6005C",
+              "#00ff88",
               "#2ECC9B",
+              "#6A00D4",
+              "#cc00cc",
+              "#8b00ff",
+              "#a040ff",
+              "#ff00ff",
+              "#E6005C",
+              "#00ff88",
+              "#2ECC9B",
+              "#6A00D4",
+              "#cc00cc",
             ];
             const pixels = [];
+            let idx = 0;
             for (let r = 0; r < gridSize; r++) {
               for (let c = 0; c < gridSize; c++) {
                 pixels.push({
-                  homeX: c * cellSize,
-                  homeY: r * cellSize,
-                  x: c * cellSize,
-                  y: r * cellSize,
-                  targetX: c * cellSize,
-                  targetY: r * cellSize,
-                  color: colors[(r + c) % colors.length],
-                  size: cellSize - 2,
+                  homeX: offset + c * (cellSize + gap),
+                  homeY: offset + r * (cellSize + gap),
+                  x: 0,
+                  y: 0,
+                  angle: (idx / (gridSize * gridSize)) * Math.PI * 2,
+                  orbitRadius: 0,
+                  color: colors[idx % colors.length],
+                  size: cellSize,
                 });
+                idx++;
               }
             }
-            let phase = "assembled"; // assembled | exploding | scattered | assembling
-            let phaseTime = 0;
-            const ASSEMBLED_DUR = 1200;
-            const EXPLODE_DUR = 800;
-            const SCATTERED_DUR = 600;
-            const ASSEMBLE_DUR = 800;
 
-            function scatter(p) {
-              const angle = Math.random() * Math.PI * 2;
-              const dist = 30 + Math.random() * 40;
-              p.targetX = p.homeX + Math.cos(angle) * dist;
-              p.targetY = p.homeY + Math.sin(angle) * dist;
-            }
+            let phase = "assembled";
+            let phaseTime = 0;
+            const ASSEMBLED_DUR = 1000;
+            const SPLIT_DUR = 600;
+            const ORBIT_DUR = 3000;
+            const MERGE_DUR = 600;
+            const orbitR = 38;
 
             function lerp(a, b, t) {
               return a + (b - a) * t;
             }
-            function easeInOut(t) {
-              return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            function easeOut(t) {
+              return 1 - Math.pow(1 - t, 3);
+            }
+            function easeIn(t) {
+              return t * t * t;
             }
 
-            let lastTime = performance.now();
             let animId;
+            let lastTime = performance.now();
             function animate(now) {
               const dt = now - lastTime;
               lastTime = now;
               phaseTime += dt;
-
               ctx.clearRect(0, 0, W, H);
 
               if (phase === "assembled" && phaseTime > ASSEMBLED_DUR) {
-                phase = "exploding";
+                phase = "splitting";
                 phaseTime = 0;
-                pixels.forEach((p) => scatter(p));
-              } else if (phase === "exploding" && phaseTime > EXPLODE_DUR) {
-                phase = "scattered";
+              } else if (phase === "splitting" && phaseTime > SPLIT_DUR) {
+                phase = "orbiting";
                 phaseTime = 0;
-              } else if (phase === "scattered" && phaseTime > SCATTERED_DUR) {
-                phase = "assembling";
+              } else if (phase === "orbiting" && phaseTime > ORBIT_DUR) {
+                phase = "merging";
                 phaseTime = 0;
-                pixels.forEach((p) => {
-                  p.targetX = p.homeX;
-                  p.targetY = p.homeY;
-                });
-              } else if (phase === "assembling" && phaseTime > ASSEMBLE_DUR) {
+              } else if (phase === "merging" && phaseTime > MERGE_DUR) {
                 phase = "assembled";
                 phaseTime = 0;
               }
 
-              pixels.forEach((p) => {
-                let t;
-                if (phase === "exploding") {
-                  t = easeInOut(Math.min(phaseTime / EXPLODE_DUR, 1));
-                  p.x = lerp(p.homeX, p.targetX, t);
-                  p.y = lerp(p.homeY, p.targetY, t);
-                } else if (phase === "scattered") {
-                  p.x = p.targetX + (Math.random() - 0.5) * 2;
-                  p.y = p.targetY + (Math.random() - 0.5) * 2;
-                } else if (phase === "assembling") {
-                  t = easeInOut(Math.min(phaseTime / ASSEMBLE_DUR, 1));
-                  p.x = lerp(p.targetX, p.homeX, t);
-                  p.y = lerp(p.targetY, p.homeY, t);
+              const globalAngle = now / 1200;
+
+              pixels.forEach((p, i) => {
+                if (phase === "assembled") {
+                  p.x = p.homeX;
+                  p.y = p.homeY;
+                  ctx.globalAlpha = 1;
+                } else if (phase === "splitting") {
+                  const t = easeOut(Math.min(phaseTime / SPLIT_DUR, 1));
+                  const targetAngle = p.angle + globalAngle;
+                  const tx =
+                    cx + Math.cos(targetAngle) * orbitR * t - cellSize / 2;
+                  const ty =
+                    cy + Math.sin(targetAngle) * orbitR * t - cellSize / 2;
+                  p.x = lerp(p.homeX, tx, t);
+                  p.y = lerp(p.homeY, ty, t);
+                  ctx.globalAlpha = 1;
+                } else if (phase === "orbiting") {
+                  const spinSpeed = 1.5;
+                  const a =
+                    p.angle + globalAngle + (phaseTime / 1000) * spinSpeed;
+                  p.x = cx + Math.cos(a) * orbitR - cellSize / 2;
+                  p.y = cy + Math.sin(a) * orbitR - cellSize / 2;
+                  // Subtle size pulse
+                  const pulse = 1 + Math.sin(now / 300 + i) * 0.08;
+                  p.drawSize = cellSize * pulse;
+                  ctx.globalAlpha = 0.75 + Math.sin(now / 400 + i * 0.5) * 0.25;
+                } else if (phase === "merging") {
+                  const t = easeIn(Math.min(phaseTime / MERGE_DUR, 1));
+                  const a = p.angle + globalAngle + (ORBIT_DUR / 1000) * 1.5;
+                  const fromX = cx + Math.cos(a) * orbitR - cellSize / 2;
+                  const fromY = cy + Math.sin(a) * orbitR - cellSize / 2;
+                  p.x = lerp(fromX, p.homeX, t);
+                  p.y = lerp(fromY, p.homeY, t);
+                  ctx.globalAlpha = 0.75 + t * 0.25;
                 }
-                const alpha =
-                  phase === "scattered" ? 0.7 + Math.random() * 0.3 : 1;
-                ctx.globalAlpha = alpha;
+
+                const s = p.drawSize || p.size;
+                const round = 2;
                 ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, p.size, p.size);
+                ctx.beginPath();
+                ctx.roundRect(p.x, p.y, s, s, round);
+                ctx.fill();
+                p.drawSize = p.size;
               });
+
               ctx.globalAlpha = 1;
               animId = requestAnimationFrame(animate);
             }
             animId = requestAnimationFrame(animate);
-            // Store cancel function globally so we can stop it
             window._pixelCubeStop = () => cancelAnimationFrame(animId);
           })();
 
