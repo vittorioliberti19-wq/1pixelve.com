@@ -729,6 +729,25 @@
         opacity: 0.5;
       }
 
+      .developed-by {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* === PIXEL CUBE ANIMATION === */
+      .pixel-cube-container {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        margin: 0 auto;
+      }
+
+      .pixel-cube-container canvas {
+        width: 100%;
+        height: 100%;
+      }
+
       /* === RESPONSIVE === */
       @media (max-width: 768px) {
         .hero {
@@ -982,6 +1001,20 @@
             <img src="../logo.webp" alt="1PIXEL" />
             <span>&copy; 2026 1PIXEL. Todos los derechos reservados.</span>
           </div>
+          <span class="developed-by"
+            >Web developed by
+            <a href="https://1bite.studio/" target="_blank" rel="noopener"
+              ><img
+                src="../1bite-logo.webp"
+                alt="1bite Studio"
+                style="
+                  height: 18px;
+                  width: auto;
+                  filter: invert(1);
+                  vertical-align: middle;
+                "
+            /></a>
+          </span>
           <a href="/">1pixelve.com</a>
         </div>
       </div>
@@ -1103,7 +1136,7 @@
           const messagesDiv = document.getElementById("chatMessages");
           messagesDiv.innerHTML =
             '<div class="chat-loading">' +
-            '<div class="loading-spinner"><i class="fas fa-wand-magic-sparkles fa-spin"></i></div>' +
+            '<div class="pixel-cube-container"><canvas id="pixelCubeCanvas" width="120" height="120"></canvas></div>' +
             '<div class="loading-title">Generando brief creativo para ' +
             escapeHtml(data.marca) +
             "</div>" +
@@ -1116,6 +1149,115 @@
             '<div class="loading-step pending"><i class="far fa-circle"></i> Preparando recomendaciones visuales</div>' +
             '<div class="loading-step pending"><i class="far fa-circle"></i> Creando opciones y guia de diseno</div>' +
             "</div></div>";
+
+          // Pixel cube animation
+          (function () {
+            const cvs = document.getElementById("pixelCubeCanvas");
+            if (!cvs) return;
+            const ctx = cvs.getContext("2d");
+            const W = cvs.width,
+              H = cvs.height;
+            const gridSize = 6;
+            const cellSize = W / gridSize;
+            const colors = [
+              "#8b00ff",
+              "#ff00ff",
+              "#00ff88",
+              "#6A00D4",
+              "#E6005C",
+              "#2ECC9B",
+            ];
+            const pixels = [];
+            for (let r = 0; r < gridSize; r++) {
+              for (let c = 0; c < gridSize; c++) {
+                pixels.push({
+                  homeX: c * cellSize,
+                  homeY: r * cellSize,
+                  x: c * cellSize,
+                  y: r * cellSize,
+                  targetX: c * cellSize,
+                  targetY: r * cellSize,
+                  color: colors[(r + c) % colors.length],
+                  size: cellSize - 2,
+                });
+              }
+            }
+            let phase = "assembled"; // assembled | exploding | scattered | assembling
+            let phaseTime = 0;
+            const ASSEMBLED_DUR = 1200;
+            const EXPLODE_DUR = 800;
+            const SCATTERED_DUR = 600;
+            const ASSEMBLE_DUR = 800;
+
+            function scatter(p) {
+              const angle = Math.random() * Math.PI * 2;
+              const dist = 30 + Math.random() * 40;
+              p.targetX = p.homeX + Math.cos(angle) * dist;
+              p.targetY = p.homeY + Math.sin(angle) * dist;
+            }
+
+            function lerp(a, b, t) {
+              return a + (b - a) * t;
+            }
+            function easeInOut(t) {
+              return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
+
+            let lastTime = performance.now();
+            let animId;
+            function animate(now) {
+              const dt = now - lastTime;
+              lastTime = now;
+              phaseTime += dt;
+
+              ctx.clearRect(0, 0, W, H);
+
+              if (phase === "assembled" && phaseTime > ASSEMBLED_DUR) {
+                phase = "exploding";
+                phaseTime = 0;
+                pixels.forEach((p) => scatter(p));
+              } else if (phase === "exploding" && phaseTime > EXPLODE_DUR) {
+                phase = "scattered";
+                phaseTime = 0;
+              } else if (phase === "scattered" && phaseTime > SCATTERED_DUR) {
+                phase = "assembling";
+                phaseTime = 0;
+                pixels.forEach((p) => {
+                  p.targetX = p.homeX;
+                  p.targetY = p.homeY;
+                });
+              } else if (phase === "assembling" && phaseTime > ASSEMBLE_DUR) {
+                phase = "assembled";
+                phaseTime = 0;
+              }
+
+              pixels.forEach((p) => {
+                let t;
+                if (phase === "exploding") {
+                  t = easeInOut(Math.min(phaseTime / EXPLODE_DUR, 1));
+                  p.x = lerp(p.homeX, p.targetX, t);
+                  p.y = lerp(p.homeY, p.targetY, t);
+                } else if (phase === "scattered") {
+                  p.x = p.targetX + (Math.random() - 0.5) * 2;
+                  p.y = p.targetY + (Math.random() - 0.5) * 2;
+                } else if (phase === "assembling") {
+                  t = easeInOut(Math.min(phaseTime / ASSEMBLE_DUR, 1));
+                  p.x = lerp(p.targetX, p.homeX, t);
+                  p.y = lerp(p.targetY, p.homeY, t);
+                }
+                const alpha =
+                  phase === "scattered" ? 0.7 + Math.random() * 0.3 : 1;
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+              });
+              ctx.globalAlpha = 1;
+              animId = requestAnimationFrame(animate);
+            }
+            animId = requestAnimationFrame(animate);
+            // Store cancel function globally so we can stop it
+            window._pixelCubeStop = () => cancelAnimationFrame(animId);
+          })();
 
           // Animate loading timer and steps
           const timerStart = Date.now();
@@ -1164,6 +1306,7 @@
                 /* use default message */
               }
               clearInterval(loadingInterval);
+              if (window._pixelCubeStop) window._pixelCubeStop();
               messagesDiv.innerHTML =
                 '<div class="chat-error"><i class="fas fa-exclamation-circle"></i> ' +
                 escapeHtml(errMsg) +
@@ -1191,6 +1334,7 @@
                     if (payload.text) {
                       if (!loadingCleared) {
                         clearInterval(loadingInterval);
+                        if (window._pixelCubeStop) window._pixelCubeStop();
                         messagesDiv.innerHTML = "";
                         loadingCleared = true;
                       }
@@ -1210,6 +1354,7 @@
             }
           } catch (err) {
             clearInterval(loadingInterval);
+            if (window._pixelCubeStop) window._pixelCubeStop();
             messagesDiv.innerHTML =
               '<div class="chat-error"><i class="fas fa-exclamation-circle"></i> Error de conexion. Intenta mas tarde o contactanos por WhatsApp.</div>';
           }
