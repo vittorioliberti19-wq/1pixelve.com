@@ -477,9 +477,41 @@
         min-height: 300px;
         max-height: 70vh;
         overflow-y: auto;
+        overflow-x: hidden;
         line-height: 1.8;
         font-size: 0.95rem;
         scroll-behavior: smooth;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .chat-messages pre,
+      .chat-messages code {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-x: auto;
+        max-width: 100%;
+      }
+
+      .chat-messages table {
+        width: 100%;
+        table-layout: fixed;
+        word-wrap: break-word;
+        font-size: 0.85rem;
+        border-collapse: collapse;
+        margin: 12px 0;
+      }
+
+      .chat-messages table th,
+      .chat-messages table td {
+        padding: 6px 8px;
+        border: 1px solid rgba(139, 0, 255, 0.15);
+        text-align: left;
+      }
+
+      .chat-messages table th {
+        color: var(--cyan);
+        font-weight: 600;
       }
 
       .chat-messages::-webkit-scrollbar {
@@ -804,6 +836,7 @@
         }
       }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
     <!-- NAV -->
@@ -883,6 +916,13 @@
               <option value="servicios">Servicios</option>
               <option value="otro">Otro</option>
             </select>
+            <input
+              type="text"
+              id="rubroOtro"
+              name="rubroOtro"
+              placeholder="Especifica tu rubro..."
+              style="display: none; margin-top: 8px"
+            />
           </div>
 
           <div class="form-group">
@@ -902,6 +942,13 @@
               <option value="Trafico a tienda">Trafico a tienda</option>
               <option value="Otro">Otro</option>
             </select>
+            <input
+              type="text"
+              id="objetivoOtro"
+              name="objetivoOtro"
+              placeholder="Describe tu objetivo..."
+              style="display: none; margin-top: 8px"
+            />
           </div>
         </div>
 
@@ -957,6 +1004,31 @@
             name="colores"
             placeholder="Ej: Rojo, blanco, azul"
           />
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div
+          class="form-group"
+          style="display: flex; justify-content: center; margin-top: 8px"
+        >
+          <div
+            class="g-recaptcha"
+            data-sitekey="6LeKVaIsAAAAAMX7r940nTnf08QLuH5ZrDWuSgUW"
+            data-theme="dark"
+          ></div>
+        </div>
+        <div
+          class="captcha-error"
+          id="captchaError"
+          style="
+            display: none;
+            color: #ff4444;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 4px;
+          "
+        >
+          Debes completar el captcha.
         </div>
 
         <!-- Submit -->
@@ -1022,6 +1094,35 @@
 
     <script>
       const API_URL = "https://brief-api.liberticorporation.com";
+
+      // Show/hide "Otro" text inputs
+      document.getElementById("rubro").addEventListener("change", function () {
+        const otroInput = document.getElementById("rubroOtro");
+        if (this.value === "otro") {
+          otroInput.style.display = "block";
+          otroInput.required = true;
+          otroInput.focus();
+        } else {
+          otroInput.style.display = "none";
+          otroInput.required = false;
+          otroInput.value = "";
+        }
+      });
+
+      document
+        .getElementById("objetivo")
+        .addEventListener("change", function () {
+          const otroInput = document.getElementById("objetivoOtro");
+          if (this.value === "Otro") {
+            otroInput.style.display = "block";
+            otroInput.required = true;
+            otroInput.focus();
+          } else {
+            otroInput.style.display = "none";
+            otroInput.required = false;
+            otroInput.value = "";
+          }
+        });
 
       // "Todas" checkbox toggles all galleries
       const todasCheckbox = document.getElementById("galTodas");
@@ -1108,12 +1209,33 @@
             return;
           }
 
+          // Validate reCAPTCHA
+          const captchaError = document.getElementById("captchaError");
+          const recaptchaResponse = grecaptcha.getResponse();
+          if (!recaptchaResponse) {
+            captchaError.style.display = "block";
+            setTimeout(() => {
+              captchaError.style.display = "none";
+            }, 3000);
+            return;
+          }
+
+          // Use "otro" text if selected
+          const rubroValue =
+            form.rubro.value === "otro" && form.rubroOtro.value.trim()
+              ? form.rubroOtro.value.trim()
+              : form.rubro.value;
+          const objetivoValue =
+            form.objetivo.value === "Otro" && form.objetivoOtro.value.trim()
+              ? form.objetivoOtro.value.trim()
+              : form.objetivo.value;
+
           const data = {
             email: form.email.value.trim(),
             marca: form.marca.value.trim(),
-            rubro: form.rubro.value,
+            rubro: rubroValue,
             galeria: galerias,
-            objetivo: form.objetivo.value,
+            objetivo: objetivoValue,
             productos: form.productos.value.trim(),
             colores: form.colores.value.trim(),
           };
@@ -1141,7 +1263,7 @@
             escapeHtml(data.marca) +
             "</div>" +
             '<div class="loading-subtitle">Nuestro Director Creativo IA esta analizando tu marca y preparando recomendaciones personalizadas para pantallas LED</div>' +
-            '<div class="loading-timer">Tiempo estimado: ~1-2 minutos &mdash; <span id="loadingTimer">0:00</span></div>' +
+            '<div class="loading-timer">Tiempo estimado: ~2-4 minutos &mdash; <span id="loadingTimer">0:00</span></div>' +
             '<div class="loading-steps" id="loadingSteps">' +
             '<div class="loading-step active"><i class="fas fa-check-circle"></i> Recibiendo datos de tu marca</div>' +
             '<div class="loading-step"><i class="fas fa-circle-notch fa-spin"></i> Analizando rubro y objetivos</div>' +
