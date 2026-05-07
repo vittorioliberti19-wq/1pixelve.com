@@ -643,6 +643,25 @@
         transform: scale(1.08);
       }
 
+      .clientes-track .cliente-nombre {
+        flex-shrink: 0;
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+        white-space: nowrap;
+        transition:
+          color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .clientes-track .cliente-nombre:hover {
+        color: var(--white);
+        transform: scale(1.06);
+      }
+
       @media (max-width: 768px) {
         .clientes-section {
           padding: 36px 0;
@@ -654,6 +673,10 @@
         .clientes-track img {
           height: 44px;
           max-width: 120px;
+        }
+        .clientes-track .cliente-nombre {
+          font-size: 0.9rem;
+          letter-spacing: 0.8px;
         }
         .clientes-label {
           font-size: 0.7rem;
@@ -2021,153 +2044,49 @@
         <div class="clientes-label">Marcas que confían en nosotros</div>
         <div class="clientes-track-wrapper">
           <div class="clientes-track">
-            <img
-              src="clientes/polar.png"
-              alt="Cervecería Polar"
-              loading="lazy"
-            />
-            <img src="clientes/pepsi.png" alt="Pepsi" loading="lazy" />
-            <img src="clientes/mavesa.png" alt="Mavesa" loading="lazy" />
-            <img src="clientes/pan.png" alt="Harina P.A.N." loading="lazy" />
-            <img src="clientes/alkosto.png" alt="Alkosto" loading="lazy" />
-            <img
-              src="clientes/atun-margarita.png"
-              alt="Atún Margarita"
-              loading="lazy"
-            />
-            <img
-              src="clientes/palmira.png"
-              alt="Lácteos Palmira"
-              loading="lazy"
-            />
-            <img src="clientes/maraplus.png" alt="Maraplus" loading="lazy" />
-            <img src="clientes/yukery.png" alt="Yukery" loading="lazy" />
-            <img src="clientes/canel.png" alt="Canel" loading="lazy" />
-            <img src="clientes/disprocar.png" alt="Disprocar" loading="lazy" />
-            <img src="clientes/farruggio.png" alt="Farruggio" loading="lazy" />
-            <img src="clientes/oz.png" alt="OZ" loading="lazy" />
-            <img src="clientes/salvaje.png" alt="Salvaje" loading="lazy" />
-            <img src="clientes/san-simon.png" alt="San Simón" loading="lazy" />
-            <img src="clientes/javitour.svg" alt="Javitour" loading="lazy" />
-            <img
-              src="clientes/carorena.png"
-              alt="Sangría Carorena"
-              loading="lazy"
-            />
-            <img
-              src="clientes/cliente-18.png"
-              alt="Cliente 1PIXEL"
-              loading="lazy"
-            />
+            <span class="cliente-nombre">Cervecería Polar</span>
+            <span class="cliente-nombre">Pepsi</span>
+            <span class="cliente-nombre">Mavesa</span>
+            <span class="cliente-nombre">Harina P.A.N.</span>
+            <span class="cliente-nombre">Alkosto</span>
+            <span class="cliente-nombre">Atún Margarita</span>
+            <span class="cliente-nombre">Lácteos Palmira</span>
+            <span class="cliente-nombre">Maraplus</span>
+            <span class="cliente-nombre">Yukery</span>
+            <span class="cliente-nombre">Canel</span>
+            <span class="cliente-nombre">Disprocar</span>
+            <span class="cliente-nombre">Farruggio</span>
+            <span class="cliente-nombre">OZ</span>
+            <span class="cliente-nombre">Salvaje</span>
+            <span class="cliente-nombre">San Simón</span>
+            <span class="cliente-nombre">Javitour</span>
+            <span class="cliente-nombre">Sangría Carorena</span>
             <!-- duplicado para loop seamless -->
-            <img
-              src="clientes/polar.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/pepsi.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/mavesa.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/pan.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/alkosto.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/atun-margarita.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/palmira.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/maraplus.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/yukery.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/canel.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/disprocar.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/farruggio.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/oz.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/salvaje.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/san-simon.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/javitour.svg"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/carorena.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/cliente-18.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
+            <span class="cliente-nombre" aria-hidden="true"
+              >Cervecería Polar</span
+            >
+            <span class="cliente-nombre" aria-hidden="true">Pepsi</span>
+            <span class="cliente-nombre" aria-hidden="true">Mavesa</span>
+            <span class="cliente-nombre" aria-hidden="true">Harina P.A.N.</span>
+            <span class="cliente-nombre" aria-hidden="true">Alkosto</span>
+            <span class="cliente-nombre" aria-hidden="true"
+              >Atún Margarita</span
+            >
+            <span class="cliente-nombre" aria-hidden="true"
+              >Lácteos Palmira</span
+            >
+            <span class="cliente-nombre" aria-hidden="true">Maraplus</span>
+            <span class="cliente-nombre" aria-hidden="true">Yukery</span>
+            <span class="cliente-nombre" aria-hidden="true">Canel</span>
+            <span class="cliente-nombre" aria-hidden="true">Disprocar</span>
+            <span class="cliente-nombre" aria-hidden="true">Farruggio</span>
+            <span class="cliente-nombre" aria-hidden="true">OZ</span>
+            <span class="cliente-nombre" aria-hidden="true">Salvaje</span>
+            <span class="cliente-nombre" aria-hidden="true">San Simón</span>
+            <span class="cliente-nombre" aria-hidden="true">Javitour</span>
+            <span class="cliente-nombre" aria-hidden="true"
+              >Sangría Carorena</span
+            >
           </div>
         </div>
       </section>
