@@ -125,7 +125,15 @@
             <article class="kpi kpi-main">
               <div class="kpi-label" id="kpi-main-label">Hoy</div>
               <div class="kpi-value" id="kpi-main">—</div>
+              <div class="kpi-delta" id="kpi-delta" hidden></div>
               <div class="kpi-foot" id="kpi-main-foot">objetos únicos</div>
+            </article>
+            <article class="kpi kpi-impacts">
+              <div class="kpi-label">Impactos publicitarios</div>
+              <div class="kpi-value" id="kpi-impacts">—</div>
+              <div class="kpi-foot" id="kpi-impacts-foot">
+                estimado del período
+              </div>
             </article>
             <article class="kpi kpi-peak">
               <div class="kpi-label">Pico de tráfico</div>
@@ -151,12 +159,50 @@
             </div>
           </section>
 
-          <section class="panel panel-types">
+          <section class="panel panel-chart">
             <header class="panel-head">
-              <h3 id="types-title">Desglose por tipo · Hoy</h3>
-              <span class="panel-sub" id="types-sample">—</span>
+              <h3 id="context-chart-title">Tráfico por día · 7 días</h3>
+              <span class="panel-sub">Comparación diaria</span>
             </header>
-            <div id="types-grid" class="types-grid"></div>
+            <div class="chart-wrap">
+              <canvas id="context-chart"></canvas>
+            </div>
+          </section>
+
+          <section class="panels-row">
+            <article class="panel panel-rank">
+              <header class="panel-head">
+                <h3>Horas más concurridas</h3>
+                <span class="panel-sub">Top 3</span>
+              </header>
+              <ol id="rank-hours" class="rank-list"></ol>
+            </article>
+            <article class="panel panel-rank">
+              <header class="panel-head">
+                <h3>Días de mayor afluencia</h3>
+                <span class="panel-sub">Top 3 (promedio)</span>
+              </header>
+              <ol id="rank-weekdays" class="rank-list"></ol>
+            </article>
+          </section>
+
+          <section class="panels-row">
+            <article class="panel panel-donut">
+              <header class="panel-head">
+                <h3>Mix vehicular</h3>
+                <span class="panel-sub" id="donut-sub">—</span>
+              </header>
+              <div class="donut-wrap">
+                <canvas id="types-donut"></canvas>
+              </div>
+            </article>
+            <article class="panel panel-types">
+              <header class="panel-head">
+                <h3 id="types-title">Desglose por tipo · Hoy</h3>
+                <span class="panel-sub" id="types-sample">—</span>
+              </header>
+              <div id="types-grid" class="types-grid"></div>
+            </article>
           </section>
         </div>
       </main>
@@ -171,6 +217,6 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-    <script src="conteo.js?v=10" defer></script>
+    <script src="conteo.js?v=11" defer></script>
   </body>
 </html>

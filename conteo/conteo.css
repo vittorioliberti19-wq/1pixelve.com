@@ -482,6 +482,36 @@ body::before {
     transparent 50%
   );
 }
+.kpi-impacts::before {
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(92, 188, 255, 0.18),
+    transparent 50%
+  );
+}
+
+.kpi-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  width: fit-content;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-delta.is-up {
+  background: rgba(0, 255, 163, 0.14);
+  color: #4dffbf;
+  border: 1px solid rgba(0, 255, 163, 0.3);
+}
+.kpi-delta.is-down {
+  background: rgba(255, 84, 112, 0.14);
+  color: #ff8aa1;
+  border: 1px solid rgba(255, 84, 112, 0.3);
+}
 .kpi-lifetime::before {
   background: radial-gradient(
     circle at 100% 0%,
@@ -586,6 +616,89 @@ body::before {
 }
 .type-card.is-zero:hover {
   opacity: 0.7;
+}
+
+/* Panel rows (2-col) */
+.panels-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.panels-row > .panel {
+  margin-bottom: 0;
+}
+
+/* Donut */
+.donut-wrap {
+  position: relative;
+  height: 280px;
+}
+
+/* Rankings */
+.rank-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.rank-list li {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.rank-list li:first-child {
+  border-color: rgba(139, 92, 255, 0.35);
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 255, 0.12),
+    rgba(255, 59, 212, 0.06)
+  );
+}
+.rank-pos {
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.2rem 0;
+}
+.rank-list li:first-child .rank-pos {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  border-color: transparent;
+}
+.rank-label {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.rank-val {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.rank-empty {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .panels-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 /* Foot */

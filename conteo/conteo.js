@@ -4,6 +4,10 @@ const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
 const TOKEN_KEY = "1pixel_conteo_token";
 const REFRESH_MS = 60 * 60 * 1000;
 
+// Impactos publicitarios: probabilidad que un vehículo que pasa
+// realmente vea un anuncio en el ciclo de la pantalla LED.
+const IMPACTS_FACTOR = 0.25;
+
 const GALLERIES = [
   {
     id: "3h",
@@ -72,6 +76,8 @@ let currentGallery = "3h";
 let currentPeriod = "day";
 let currentDate = todayKey();
 let chart = null;
+let contextChart = null;
+let donutChart = null;
 let refreshTimer = null;
 
 function todayKey() {
@@ -305,6 +311,9 @@ function renderData(data) {
   document.getElementById("kpi-main").textContent = fmt(mainValue);
   document.getElementById("kpi-main-foot").textContent = meta.footMain;
 
+  renderDelta(data.delta);
+  renderImpacts(data.totals.raw, data.period);
+
   document.getElementById("kpi-lifetime").textContent = fmt(
     data.totals.lifetime,
   );
@@ -337,11 +346,269 @@ function renderData(data) {
       : `Desglose por tipo · ${formatScopeLabel(data.breakdown_scope)}`;
 
   renderChart(data.series, data.period);
+  renderContextChart(data);
   renderTypes(
     data.byType || {},
     data.unknown_types || {},
     data.sample_events || 0,
   );
+  renderDonut(data.byType || {}, data.unknown_types || {});
+  renderRankings(data.top_hours || [], data.top_weekdays || []);
+}
+
+function renderDelta(delta) {
+  const el = document.getElementById("kpi-delta");
+  if (!delta || delta.pct_change == null) {
+    el.hidden = true;
+    return;
+  }
+  const pct = delta.pct_change;
+  const up = pct >= 0;
+  el.hidden = false;
+  el.classList.toggle("is-up", up);
+  el.classList.toggle("is-down", !up);
+  const arrow = up ? "▲" : "▼";
+  const sign = up ? "+" : "";
+  el.textContent = `${arrow} ${sign}${pct.toFixed(1)}% vs período anterior`;
+}
+
+function renderImpacts(raw, period) {
+  const el = document.getElementById("kpi-impacts");
+  const foot = document.getElementById("kpi-impacts-foot");
+  if (!raw) {
+    el.textContent = "—";
+    return;
+  }
+  const impacts = Math.round(raw * IMPACTS_FACTOR);
+  el.textContent = impacts.toLocaleString("es-VE");
+  const periodTxt =
+    period === "day"
+      ? "estimado hoy"
+      : period === "week"
+        ? "estimado en 7 días"
+        : "estimado en 30 días";
+  foot.textContent = `${periodTxt} · factor ${(IMPACTS_FACTOR * 100).toFixed(0)}%`;
+}
+
+function renderContextChart(data) {
+  const titleEl = document.getElementById("context-chart-title");
+  let ctxData = null;
+  let isHourly = false;
+  if (data.period === "day" && data.daily_context) {
+    titleEl.textContent = "Tráfico por día · 7 días alrededor";
+    ctxData = data.daily_context;
+    isHourly = false;
+  } else if (
+    (data.period === "week" || data.period === "month") &&
+    data.hourly_context
+  ) {
+    titleEl.textContent = `Tráfico por hora · ${formatScopeLabel(data.breakdown_scope)}`;
+    ctxData = data.hourly_context;
+    isHourly = true;
+  } else {
+    return;
+  }
+
+  const canvas = document.getElementById("context-chart");
+  const ctx = canvas.getContext("2d");
+  const grad = ctx.createLinearGradient(0, 0, 0, 280);
+  grad.addColorStop(0, "rgba(255, 59, 212, 0.55)");
+  grad.addColorStop(1, "rgba(255, 59, 212, 0.02)");
+
+  if (contextChart) contextChart.destroy();
+  contextChart = new Chart(ctx, {
+    type: isHourly ? "line" : "bar",
+    data: {
+      labels: ctxData.labels,
+      datasets: [
+        {
+          label: "Conteo",
+          data: ctxData.data,
+          fill: isHourly,
+          backgroundColor: isHourly ? grad : "rgba(255, 59, 212, 0.55)",
+          borderColor: "#ff8de2",
+          borderWidth: isHourly ? 2 : 0,
+          borderRadius: isHourly ? 0 : 8,
+          tension: 0.35,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+        },
+      ],
+    },
+    options: chartOptions(isHourly),
+  });
+}
+
+function chartOptions(isHourly) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#1c1c25",
+        borderColor: "rgba(139, 92, 255, 0.4)",
+        borderWidth: 1,
+        titleColor: "#fff",
+        bodyColor: "#d6d6e0",
+        padding: 12,
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: "rgba(255,255,255,0.04)" },
+        ticks: {
+          color: "#5e5e6e",
+          font: { size: 10 },
+          maxRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: isHourly ? 12 : 10,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: { color: "rgba(255,255,255,0.04)" },
+        ticks: { color: "#5e5e6e", font: { size: 10 }, precision: 0 },
+      },
+    },
+  };
+}
+
+function renderDonut(byType, unknown) {
+  const merged = {};
+  for (const [k, v] of Object.entries(byType)) {
+    if (k === "Bike" || k === "Bicycle" || k === "Motorcycle") {
+      merged.MotoBike = (merged.MotoBike || 0) + v;
+    } else if (v > 0) {
+      merged[k] = v;
+    }
+  }
+  for (const [k, v] of Object.entries(unknown || {})) {
+    if (k === "Bike" || k === "Bicycle" || k === "Motorcycle") {
+      merged.MotoBike = (merged.MotoBike || 0) + v;
+    } else if (v > 0) {
+      merged[`?${k}`] = v;
+    }
+  }
+  const colors = [
+    "#8b5cff",
+    "#ff3bd4",
+    "#00ffa3",
+    "#ffb547",
+    "#5cbcff",
+    "#ff5470",
+    "#a5ff5c",
+    "#5c6bff",
+  ];
+  const entries = Object.entries(merged).sort((a, b) => b[1] - a[1]);
+  const labels = entries.map(([k]) => {
+    if (k.startsWith("?")) return k.slice(1);
+    const meta = VEHICLE_META[k];
+    return meta ? meta.label : k;
+  });
+  const data = entries.map(([, v]) => v);
+  const total = data.reduce((a, b) => a + b, 0);
+  document.getElementById("donut-sub").textContent =
+    total > 0 ? `${total.toLocaleString("es-VE")} objetos` : "sin datos";
+
+  const ctx = document.getElementById("types-donut").getContext("2d");
+  if (donutChart) donutChart.destroy();
+  if (total === 0) return;
+  donutChart = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor: colors.slice(0, entries.length),
+          borderColor: "#0c0c10",
+          borderWidth: 2,
+          hoverOffset: 8,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: "62%",
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { color: "#9b9bab", font: { size: 11 }, boxWidth: 12 },
+        },
+        tooltip: {
+          backgroundColor: "#1c1c25",
+          borderColor: "rgba(139, 92, 255, 0.4)",
+          borderWidth: 1,
+          callbacks: {
+            label: (ctx) => {
+              const v = ctx.parsed;
+              const pct = ((v / total) * 100).toFixed(1);
+              return ` ${ctx.label}: ${v.toLocaleString("es-VE")} (${pct}%)`;
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+function renderRankings(topHours, topWeekdays) {
+  const fmt = (n) => Number(n).toLocaleString("es-VE");
+  const hList = document.getElementById("rank-hours");
+  while (hList.firstChild) hList.removeChild(hList.firstChild);
+  if (topHours.length === 0) {
+    const li = document.createElement("li");
+    li.className = "rank-empty";
+    li.textContent = "Sin datos suficientes.";
+    hList.appendChild(li);
+  } else {
+    for (let i = 0; i < topHours.length; i++) {
+      const item = topHours[i];
+      const li = document.createElement("li");
+      const rank = document.createElement("span");
+      rank.className = "rank-pos";
+      rank.textContent = `${i + 1}`;
+      const lbl = document.createElement("span");
+      lbl.className = "rank-label";
+      lbl.textContent = item.label;
+      const val = document.createElement("span");
+      val.className = "rank-val";
+      val.textContent = fmt(item.count);
+      li.appendChild(rank);
+      li.appendChild(lbl);
+      li.appendChild(val);
+      hList.appendChild(li);
+    }
+  }
+
+  const wdList = document.getElementById("rank-weekdays");
+  while (wdList.firstChild) wdList.removeChild(wdList.firstChild);
+  if (topWeekdays.length === 0) {
+    const li = document.createElement("li");
+    li.className = "rank-empty";
+    li.textContent = "Sin datos suficientes.";
+    wdList.appendChild(li);
+  } else {
+    for (let i = 0; i < topWeekdays.length; i++) {
+      const item = topWeekdays[i];
+      const li = document.createElement("li");
+      const rank = document.createElement("span");
+      rank.className = "rank-pos";
+      rank.textContent = `${i + 1}`;
+      const lbl = document.createElement("span");
+      lbl.className = "rank-label";
+      lbl.textContent = item.label;
+      const val = document.createElement("span");
+      val.className = "rank-val";
+      val.textContent = `${fmt(Math.round(item.avg))} prom.`;
+      li.appendChild(rank);
+      li.appendChild(lbl);
+      li.appendChild(val);
+      wdList.appendChild(li);
+    }
+  }
 }
 
 function formatScopeLabel(yyyymmdd) {
