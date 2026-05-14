@@ -55,10 +55,8 @@ let refreshTimer = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
-  bindLogin();
   bindDashboardControls();
-  if (getToken()) showDashboard();
-  else showLogin();
+  showDashboard();
 });
 
 // ---------- Auth ----------
@@ -128,11 +126,6 @@ function bindLogin() {
 }
 
 function bindDashboardControls() {
-  document.getElementById("logout-btn").addEventListener("click", () => {
-    clearToken();
-    if (refreshTimer) clearInterval(refreshTimer);
-    showLogin();
-  });
   document
     .getElementById("refresh-btn")
     .addEventListener("click", () =>
@@ -192,21 +185,12 @@ function setState(name) {
 // ---------- Data ----------
 
 async function loadGallery(galleryId, { force = false } = {}) {
-  const token = getToken();
-  if (!token) return showLogin();
-
   setState("loading");
   document.getElementById("last-update").textContent = "Cargando…";
 
   try {
     const url = `${API_BASE}/api/data?gallery=${encodeURIComponent(galleryId)}${force ? "&_=" + Date.now() : ""}`;
-    const res = await fetch(url, {
-      headers: { Authorization: "Bearer " + token },
-    });
-    if (res.status === 401) {
-      clearToken();
-      return showLogin();
-    }
+    const res = await fetch(url);
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.detail || body.error || `HTTP ${res.status}`);
