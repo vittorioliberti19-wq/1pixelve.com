@@ -39,12 +39,10 @@ const GALLERIES = [
 
 const VEHICLE_META = {
   Car: { label: "Carros", icon: "🚗" },
-  Motorcycle: { label: "Motos", icon: "🏍" },
+  MotoBike: { label: "Motos/Bicicletas", icon: "🏍" },
   Truck: { label: "Camiones", icon: "🚚" },
   Van: { label: "Camionetas", icon: "🚐" },
   Bus: { label: "Buses", icon: "🚌" },
-  Bike: { label: "Bicicletas", icon: "🚲" },
-  Bicycle: { label: "Bicicletas", icon: "🚲" },
   Human: { label: "Peatones", icon: "🚶" },
 };
 
