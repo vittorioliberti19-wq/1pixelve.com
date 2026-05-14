@@ -204,6 +204,66 @@
               <div id="types-grid" class="types-grid"></div>
             </article>
           </section>
+
+          <section class="panel panel-methodology">
+            <header class="panel-head">
+              <h3>Metodología de cálculo</h3>
+              <span class="panel-sub">Cómo se estiman los impactos</span>
+            </header>
+            <div class="method-body">
+              <p class="method-intro">
+                Los <strong>Impactos publicitarios</strong> estiman cuántas
+                personas vieron efectivamente la pantalla LED en el período.
+                Fórmula:
+                <code>vehículos × personas/vehículo × tasa de atención</code>.
+              </p>
+
+              <div class="method-cols">
+                <div class="method-col">
+                  <h4>Ocupancia (personas por vehículo)</h4>
+                  <table id="method-occupancy" class="method-table">
+                    <thead>
+                      <tr>
+                        <th>Tipo</th>
+                        <th>Personas</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="method-col">
+                  <h4>Tasa de atención</h4>
+                  <p class="method-attention">
+                    <span id="method-attention-val">—</span>
+                    <span class="method-attention-lbl"
+                      >de los presentes ve la pantalla</span
+                    >
+                  </p>
+                  <h4>Períodos contados</h4>
+                  <ul class="method-periods">
+                    <li>
+                      <strong>Día:</strong> eventos del día seleccionado
+                      (00:00–23:59 hora Caracas).
+                    </li>
+                    <li>
+                      <strong>Semana:</strong> suma de los últimos 7 días hasta
+                      la fecha de referencia.
+                    </li>
+                    <li>
+                      <strong>Mes:</strong> suma de los últimos 30 días hasta la
+                      fecha de referencia.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <p class="method-note">
+                Valores conservadores de la industria OOH para zonas comerciales
+                con tráfico lento. Ajustables conforme se levanten mediciones en
+                campo.
+              </p>
+            </div>
+          </section>
         </div>
       </main>
 
@@ -217,6 +277,6 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-    <script src="conteo.js?v=13" defer></script>
+    <script src="conteo.js?v=14" defer></script>
   </body>
 </html>

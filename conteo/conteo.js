@@ -119,9 +119,53 @@ document.addEventListener("DOMContentLoaded", () => {
   initDateInput();
   bindControls();
   renderTabs();
+  renderMethodology();
   if (getToken()) enterDashboard();
   else showLogin();
 });
+
+const OCCUPANCY_LABELS = {
+  Car: "Carros",
+  Motorcycle: "Motos",
+  Bike: "Motos (alt.)",
+  Bicycle: "Bicicletas",
+  Van: "Camionetas / por puesto",
+  Truck: "Camiones",
+  Bus: "Buses",
+  Human: "Peatones",
+};
+
+function renderMethodology() {
+  const tbody = document.querySelector("#method-occupancy tbody");
+  if (!tbody) return;
+  while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+  const order = [
+    "Car",
+    "Motorcycle",
+    "Van",
+    "Truck",
+    "Bus",
+    "Bicycle",
+    "Human",
+  ];
+  for (const type of order) {
+    const occ = OCCUPANCY[type];
+    if (occ == null) continue;
+    const tr = document.createElement("tr");
+    const tdLabel = document.createElement("td");
+    tdLabel.textContent = OCCUPANCY_LABELS[type] || type;
+    const tdVal = document.createElement("td");
+    tdVal.textContent = occ.toLocaleString("es-VE", {
+      minimumFractionDigits: occ % 1 === 0 ? 0 : 1,
+      maximumFractionDigits: 1,
+    });
+    tr.appendChild(tdLabel);
+    tr.appendChild(tdVal);
+    tbody.appendChild(tr);
+  }
+  const att = document.getElementById("method-attention-val");
+  if (att) att.textContent = `${Math.round(ATTENTION_FACTOR * 100)}%`;
+}
 
 function getToken() {
   try {
@@ -424,7 +468,7 @@ function renderImpacts(data) {
       : period === "week"
         ? "estimado en 7 días"
         : "estimado en 30 días";
-  foot.textContent = `${periodTxt} · ${pplPerVehicle.toFixed(1)} pers/veh · atención ${(ATTENTION_FACTOR * 100).toFixed(0)}%`;
+  foot.textContent = periodTxt;
 }
 
 function renderContextChart(data) {
