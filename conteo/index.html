@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>1PIXEL · Conteo</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="conteo.css" />
+  </head>
+  <body>
+    <!-- Login -->
+    <section id="login-view" class="view">
+      <div class="login-card">
+        <img src="/logo.png" alt="1PIXEL" class="login-logo" />
+        <h1 class="login-title">Conteo Vehicular</h1>
+        <p class="login-sub">Acceso restringido</p>
+        <form id="login-form" autocomplete="off">
+          <input
+            id="password"
+            type="password"
+            placeholder="Contraseña"
+            required
+            autocomplete="current-password"
+          />
+          <button type="submit" id="login-btn">
+            <span class="btn-text">Entrar</span>
+            <span class="btn-spinner" hidden></span>
+          </button>
+          <div id="login-error" class="form-error" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard-view" class="view" hidden>
+      <header class="topbar">
+        <div class="topbar-left">
+          <img src="/logo.png" alt="1PIXEL" class="topbar-logo" />
+          <div class="topbar-titles">
+            <h1>Conteo Vehicular</h1>
+            <p id="last-update">Cargando…</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button id="refresh-btn" title="Actualizar ahora" class="icon-btn">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+              <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+            </svg>
+          </button>
+          <button id="logout-btn" title="Cerrar sesión" class="icon-btn">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <nav class="tabs" id="tabs"></nav>
+
+      <main class="dashboard">
+        <!-- Empty / inactive state -->
+        <div id="state-inactive" class="state-card" hidden>
+          <div class="state-icon">⌛</div>
+          <h2>Galería próximamente</h2>
+          <p>Esta galería aún no tiene cámaras activas para conteo.</p>
+        </div>
+
+        <div id="state-error" class="state-card state-error" hidden>
+          <div class="state-icon">⚠</div>
+          <h2>No pudimos cargar los datos</h2>
+          <p id="state-error-msg"></p>
+          <button id="retry-btn" class="primary-btn">Reintentar</button>
+        </div>
+
+        <div id="state-loading" class="state-card">
+          <div class="state-spinner"></div>
+          <h2>Cargando datos…</h2>
+          <p>Trayendo data fresca de Camlytics.</p>
+        </div>
+
+        <div id="state-data" hidden>
+          <!-- KPI row -->
+          <div class="kpis">
+            <article class="kpi kpi-today">
+              <div class="kpi-label">Hoy</div>
+              <div class="kpi-value" id="kpi-today">—</div>
+              <div class="kpi-foot">eventos detectados</div>
+            </article>
+            <article class="kpi kpi-week">
+              <div class="kpi-label">Últimos 7 días</div>
+              <div class="kpi-value" id="kpi-week">—</div>
+              <div class="kpi-foot">tráfico semanal</div>
+            </article>
+            <article class="kpi kpi-month">
+              <div class="kpi-label">Últimos 30 días</div>
+              <div class="kpi-value" id="kpi-month">—</div>
+              <div class="kpi-foot">tráfico mensual</div>
+            </article>
+          </div>
+
+          <!-- Hourly chart -->
+          <section class="panel panel-chart">
+            <header class="panel-head">
+              <h3>Tráfico por hora · Hoy</h3>
+              <span class="panel-sub">Hora local Caracas (GMT-4)</span>
+            </header>
+            <div class="chart-wrap">
+              <canvas id="hourly-chart"></canvas>
+            </div>
+          </section>
+
+          <!-- Vehicle breakdown -->
+          <section class="panel panel-types">
+            <header class="panel-head">
+              <h3>Desglose por tipo · Hoy</h3>
+              <span class="panel-sub" id="types-sample">—</span>
+            </header>
+            <div id="types-grid" class="types-grid"></div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="page-foot">
+        <span
+          >Powered by Camlytics · Cache 1h · 1PIXEL ©<span id="year"></span
+        ></span>
+      </footer>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+    <script src="conteo.js" defer></script>
+  </body>
+</html>
