@@ -314,27 +314,29 @@ function renderTypes(byType, unknown, sample) {
   while (grid.firstChild) grid.removeChild(grid.firstChild);
 
   const knownEntries = Object.entries(byType);
-  // Merge Bike and Bicycle into single bucket
   const merged = {};
   for (const [key, count] of knownEntries) {
-    if (key === "Bike" || key === "Bicycle") {
-      merged.Bicycle = (merged.Bicycle || 0) + count;
+    if (key === "Bike" || key === "Bicycle" || key === "Motorcycle") {
+      merged.MotoBike = (merged.MotoBike || 0) + count;
     } else {
       merged[key] = (merged[key] || 0) + count;
     }
   }
   const final = [
     ["Car", merged.Car || 0],
-    ["Motorcycle", merged.Motorcycle || 0],
-    ["Bicycle", merged.Bicycle || 0],
+    ["MotoBike", merged.MotoBike || 0],
     ["Van", merged.Van || 0],
     ["Truck", merged.Truck || 0],
     ["Bus", merged.Bus || 0],
     ["Human", merged.Human || 0],
   ];
-  // Add unknown buckets (excluding any that happen to match known)
   for (const [key, count] of Object.entries(unknown || {})) {
-    if (key === "Bike") continue; // already merged
+    if (key === "Bike" || key === "Bicycle" || key === "Motorcycle") {
+      // also fold any unknown bike/moto labels into the same bucket
+      const motoIdx = final.findIndex(([k]) => k === "MotoBike");
+      if (motoIdx >= 0) final[motoIdx][1] += count;
+      continue;
+    }
     final.push([`unknown:${key}`, count]);
   }
 
