@@ -1,6 +1,7 @@
 // 1PIXEL Conteo dashboard
 
 const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
+const TOKEN_KEY = "1pixel_conteo_token";
 const REFRESH_MS = 60 * 60 * 1000;
 
 const GALLERIES = [
@@ -83,13 +84,94 @@ function todayKey() {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
+  bindLogin();
   initDateInput();
   bindControls();
   renderTabs();
+  if (getToken()) enterDashboard();
+  else showLogin();
+});
+
+function getToken() {
+  try {
+    const raw = localStorage.getItem(TOKEN_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed.exp && parsed.exp * 1000 < Date.now()) {
+      localStorage.removeItem(TOKEN_KEY);
+      return null;
+    }
+    return parsed.token;
+  } catch {
+    return null;
+  }
+}
+
+function setToken(token, exp) {
+  localStorage.setItem(TOKEN_KEY, JSON.stringify({ token, exp }));
+}
+
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+function showLogin() {
+  document.getElementById("login-view").hidden = false;
+  document.getElementById("dashboard-view").hidden = true;
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+  setTimeout(() => document.getElementById("password").focus(), 50);
+}
+
+function enterDashboard() {
+  document.getElementById("login-view").hidden = true;
+  document.getElementById("dashboard-view").hidden = false;
   loadData();
   if (refreshTimer) clearInterval(refreshTimer);
   refreshTimer = setInterval(loadData, REFRESH_MS);
-});
+}
+
+function bindLogin() {
+  const form = document.getElementById("login-form");
+  const btn = document.getElementById("login-btn");
+  const errBox = document.getElementById("login-error");
+  const input = document.getElementById("password");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errBox.hidden = true;
+    btn.disabled = true;
+    btn.querySelector(".btn-text").textContent = "Validando…";
+    btn.querySelector(".btn-spinner").hidden = false;
+    try {
+      const res = await fetch(`${API_BASE}/auth`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: input.value }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          data.error === "invalid_password"
+            ? "Contraseña incorrecta."
+            : data.detail || "Error de autenticación.",
+        );
+      }
+      setToken(data.token, data.exp);
+      input.value = "";
+      enterDashboard();
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.hidden = false;
+    } finally {
+      btn.disabled = false;
+      btn.querySelector(".btn-text").textContent = "Entrar";
+      btn.querySelector(".btn-spinner").hidden = true;
+    }
+  });
+}
 
 function initDateInput() {
   const inp = document.getElementById("date-input");
@@ -104,6 +186,10 @@ function bindControls() {
   document
     .getElementById("retry-btn")
     .addEventListener("click", () => loadData());
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    clearToken();
+    showLogin();
+  });
 
   for (const btn of document.querySelectorAll(".period-btn")) {
     btn.addEventListener("click", () => {
@@ -173,7 +259,19 @@ async function loadData({ force = false } = {}) {
       params.set("_", String(Date.now()));
     }
     const url = `${API_BASE}/api/data?${params.toString()}`;
-    const res = await fetch(url);
+    const token = getToken();
+    if (!token) {
+      showLogin();
+      return;
+    }
+    const res = await fetch(url, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    if (res.status === 401) {
+      clearToken();
+      showLogin();
+      return;
+    }
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.detail || body.error || `HTTP ${res.status}`);

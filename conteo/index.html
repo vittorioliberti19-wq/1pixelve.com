@@ -15,7 +15,32 @@
     <link rel="stylesheet" href="conteo.css" />
   </head>
   <body>
-    <section id="dashboard-view" class="view">
+    <section id="login-view" class="view">
+      <div class="login-card">
+        <img src="/logo.png" alt="1PIXEL" class="login-logo" />
+        <h1 class="login-title">Conteo Vehicular</h1>
+        <p class="login-sub">Acceso restringido</p>
+        <form id="login-form" autocomplete="off">
+          <input
+            id="password"
+            type="password"
+            placeholder="Contraseña"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+            required
+            autocomplete="current-password"
+          />
+          <button type="submit" id="login-btn">
+            <span class="btn-text">Entrar</span>
+            <span class="btn-spinner" hidden></span>
+          </button>
+          <div id="login-error" class="form-error" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="view" hidden>
       <header class="topbar">
         <div class="topbar-left">
           <img src="/logo.png" alt="1PIXEL" class="topbar-logo" />
@@ -40,6 +65,22 @@
               <polyline points="1 20 1 14 7 14"></polyline>
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
               <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+            </svg>
+          </button>
+          <button id="logout-btn" title="Cerrar sesión" class="icon-btn">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
           </button>
         </div>
@@ -130,6 +171,6 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-    <script src="conteo.js?v=8" defer></script>
+    <script src="conteo.js?v=9" defer></script>
   </body>
 </html>
