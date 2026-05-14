@@ -246,6 +246,13 @@ body::before {
   border-color: rgba(139, 92, 255, 0.4);
   background: var(--bg-3);
 }
+.icon-btn.is-spinning svg {
+  animation: spin 1s linear infinite;
+}
+.icon-btn.is-spinning {
+  color: var(--accent);
+  border-color: rgba(139, 92, 255, 0.5);
+}
 
 /* Tabs */
 .tabs {

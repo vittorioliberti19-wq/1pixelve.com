@@ -156,7 +156,11 @@ function setState(name) {
 
 async function loadData({ force = false } = {}) {
   setState("loading");
-  document.getElementById("last-update").textContent = "Cargando…";
+  document.getElementById("last-update").textContent = force
+    ? "Trayendo datos en vivo… (~10s)"
+    : "Cargando…";
+  const refreshBtn = document.getElementById("refresh-btn");
+  if (force) refreshBtn.classList.add("is-spinning");
 
   try {
     const params = new URLSearchParams({
@@ -164,7 +168,10 @@ async function loadData({ force = false } = {}) {
       period: currentPeriod,
       date: currentDate,
     });
-    if (force) params.set("_", String(Date.now()));
+    if (force) {
+      params.set("fresh", "1");
+      params.set("_", String(Date.now()));
+    }
     const url = `${API_BASE}/api/data?${params.toString()}`;
     const res = await fetch(url);
     if (!res.ok) {
@@ -185,6 +192,8 @@ async function loadData({ force = false } = {}) {
     document.getElementById("state-error-msg").textContent = err.message;
     setState("error");
     document.getElementById("last-update").textContent = "Error al cargar";
+  } finally {
+    document.getElementById("refresh-btn").classList.remove("is-spinning");
   }
 }
 
