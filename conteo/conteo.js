@@ -294,5 +294,5 @@ function renderTypes(byType, sample) {
     grid.appendChild(card);
   }
   document.getElementById("types-sample").textContent =
-    `Sobre ${sample.toLocaleString("es-VE")} eventos analizados`;
+    `${total.toLocaleString("es-VE")} objetos únicos · ${sample.toLocaleString("es-VE")} eventos`;
 }
