@@ -4,9 +4,19 @@ const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
 const TOKEN_KEY = "1pixel_conteo_token";
 const REFRESH_MS = 60 * 60 * 1000;
 
-// Impactos publicitarios: probabilidad que un vehículo que pasa
-// realmente vea un anuncio en el ciclo de la pantalla LED.
-const IMPACTS_FACTOR = 0.25;
+// Impactos publicitarios: personas estimadas por vehículo × tasa de atención
+// efectiva sobre la pantalla LED. Personas (Human) no multiplican ocupancia.
+const OCCUPANCY = {
+  Car: 2.2,
+  Motorcycle: 1.5,
+  Bike: 1.5,
+  Bicycle: 1.0,
+  Van: 3.5,
+  Truck: 1.5,
+  Bus: 35,
+  Human: 1.0,
+};
+const ATTENTION_FACTOR = 0.6;
 
 const GALLERIES = [
   {
@@ -312,7 +322,7 @@ function renderData(data) {
   document.getElementById("kpi-main-foot").textContent = meta.footMain;
 
   renderDelta(data.delta);
-  renderImpacts(data.totals.raw, data.period);
+  renderImpacts(data);
 
   document.getElementById("kpi-lifetime").textContent = fmt(
     data.totals.lifetime,
@@ -372,14 +382,26 @@ function renderDelta(delta) {
   el.textContent = `${arrow} ${sign}${pct.toFixed(1)}% vs período anterior`;
 }
 
-function renderImpacts(raw, period) {
+function renderImpacts(data) {
   const el = document.getElementById("kpi-impacts");
   const foot = document.getElementById("kpi-impacts-foot");
+  const raw = data?.totals?.raw || 0;
+  const byType = data?.byType || {};
+  const period = data?.period || "day";
   if (!raw) {
     el.textContent = "—";
+    foot.textContent = "sin datos";
     return;
   }
-  const impacts = Math.round(raw * IMPACTS_FACTOR);
+  let people = 0;
+  let vehicles = 0;
+  for (const [type, count] of Object.entries(byType)) {
+    const occ = OCCUPANCY[type] ?? 1;
+    people += count * occ;
+    vehicles += count;
+  }
+  const pplPerVehicle = vehicles > 0 ? people / vehicles : 1;
+  const impacts = Math.round(raw * pplPerVehicle * ATTENTION_FACTOR);
   el.textContent = impacts.toLocaleString("es-VE");
   const periodTxt =
     period === "day"
@@ -387,7 +409,7 @@ function renderImpacts(raw, period) {
       : period === "week"
         ? "estimado en 7 días"
         : "estimado en 30 días";
-  foot.textContent = `${periodTxt} · factor ${(IMPACTS_FACTOR * 100).toFixed(0)}%`;
+  foot.textContent = `${periodTxt} · ${pplPerVehicle.toFixed(1)} pers/veh · atención ${(ATTENTION_FACTOR * 100).toFixed(0)}%`;
 }
 
 function renderContextChart(data) {
