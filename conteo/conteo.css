@@ -410,6 +410,13 @@ body::before {
     transparent 50%
   );
 }
+.kpi-lifetime::before {
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(255, 181, 71, 0.14),
+    transparent 50%
+  );
+}
 
 .kpi-label {
   font-size: 0.75rem;

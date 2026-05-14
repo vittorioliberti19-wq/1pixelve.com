@@ -174,6 +174,9 @@ function renderData(data) {
   document.getElementById("kpi-month").textContent = fmtNumber(
     data.totals.month,
   );
+  document.getElementById("kpi-lifetime").textContent = fmtNumber(
+    data.totals.lifetime,
+  );
 
   const ts = data.generated_at ? new Date(data.generated_at) : new Date();
   const cachedTag = data.cached ? " · desde caché" : "";
