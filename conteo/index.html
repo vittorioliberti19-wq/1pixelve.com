@@ -15,34 +15,8 @@
     <link rel="stylesheet" href="conteo.css" />
   </head>
   <body>
-    <!-- Login -->
-    <section id="login-view" class="view">
-      <div class="login-card">
-        <img src="/logo.png" alt="1PIXEL" class="login-logo" />
-        <h1 class="login-title">Conteo Vehicular</h1>
-        <p class="login-sub">Acceso restringido</p>
-        <form id="login-form" autocomplete="off">
-          <input
-            id="password"
-            type="password"
-            placeholder="Contraseña"
-            autocapitalize="none"
-            autocorrect="off"
-            spellcheck="false"
-            required
-            autocomplete="current-password"
-          />
-          <button type="submit" id="login-btn">
-            <span class="btn-text">Entrar</span>
-            <span class="btn-spinner" hidden></span>
-          </button>
-          <div id="login-error" class="form-error" hidden></div>
-        </form>
-      </div>
-    </section>
-
     <!-- Dashboard -->
-    <section id="dashboard-view" class="view" hidden>
+    <section id="dashboard-view" class="view">
       <header class="topbar">
         <div class="topbar-left">
           <img src="/logo.png" alt="1PIXEL" class="topbar-logo" />
@@ -161,6 +135,6 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
-    <script src="conteo.js?v=2" defer></script>
+    <script src="conteo.js?v=3" defer></script>
   </body>
 </html>

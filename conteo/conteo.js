@@ -84,47 +84,6 @@ function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
 }
 
-function bindLogin() {
-  const form = document.getElementById("login-form");
-  const btn = document.getElementById("login-btn");
-  const errBox = document.getElementById("login-error");
-  const input = document.getElementById("password");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    errBox.hidden = true;
-    btn.disabled = true;
-    btn.querySelector(".btn-text").textContent = "Validando…";
-    btn.querySelector(".btn-spinner").hidden = false;
-
-    try {
-      const res = await fetch(`${API_BASE}/auth`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: input.value }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(
-          data.error === "invalid_password"
-            ? "Contraseña incorrecta."
-            : data.detail || "Error de autenticación.",
-        );
-      }
-      setToken(data.token, data.exp);
-      input.value = "";
-      showDashboard();
-    } catch (err) {
-      errBox.textContent = err.message;
-      errBox.hidden = false;
-    } finally {
-      btn.disabled = false;
-      btn.querySelector(".btn-text").textContent = "Entrar";
-      btn.querySelector(".btn-spinner").hidden = true;
-    }
-  });
-}
-
 function bindDashboardControls() {
   document
     .getElementById("refresh-btn")
@@ -138,15 +97,7 @@ function bindDashboardControls() {
 
 // ---------- Views ----------
 
-function showLogin() {
-  document.getElementById("login-view").hidden = false;
-  document.getElementById("dashboard-view").hidden = true;
-  setTimeout(() => document.getElementById("password").focus(), 50);
-}
-
 function showDashboard() {
-  document.getElementById("login-view").hidden = true;
-  document.getElementById("dashboard-view").hidden = false;
   renderTabs();
   loadGallery(currentGallery);
   if (refreshTimer) clearInterval(refreshTimer);
