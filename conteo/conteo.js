@@ -1,8 +1,6 @@
 // 1PIXEL Conteo dashboard
-// Reads `1pixel-conteo-api` Worker for password-gated Camlytics data.
 
 const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
-const TOKEN_KEY = "1pixel_conteo_token";
 const REFRESH_MS = 60 * 60 * 1000;
 
 const GALLERIES = [
@@ -43,65 +41,90 @@ const VEHICLE_META = {
   Car: { label: "Carros", icon: "🚗" },
   Motorcycle: { label: "Motos", icon: "🏍" },
   Truck: { label: "Camiones", icon: "🚚" },
+  Van: { label: "Camionetas", icon: "🚐" },
   Bus: { label: "Buses", icon: "🚌" },
+  Bike: { label: "Bicicletas", icon: "🚲" },
   Bicycle: { label: "Bicicletas", icon: "🚲" },
   Human: { label: "Peatones", icon: "🚶" },
-  Other: { label: "Otros", icon: "·" },
+};
+
+const PERIOD_LABEL = {
+  day: {
+    title: "Hoy",
+    footMain: "objetos únicos",
+    chartTitle: "Tráfico por hora",
+    chartSub: "Hora local Caracas (GMT-4)",
+  },
+  week: {
+    title: "Últimos 7 días",
+    footMain: "detecciones (eventos)",
+    chartTitle: "Tráfico por día",
+    chartSub: "Suma diaria de eventos",
+  },
+  month: {
+    title: "Últimos 30 días",
+    footMain: "detecciones (eventos)",
+    chartTitle: "Tráfico por día",
+    chartSub: "Suma diaria de eventos",
+  },
 };
 
 let currentGallery = "3h";
+let currentPeriod = "day";
+let currentDate = todayKey();
 let chart = null;
 let refreshTimer = null;
 
+function todayKey() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  // We want the Caracas calendar day (UTC-4). For most users we approximate
+  // with their local day; the worker converts internally either way.
+  return local.toISOString().slice(0, 10);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
-  bindDashboardControls();
-  showDashboard();
+  initDateInput();
+  bindControls();
+  renderTabs();
+  loadData();
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(loadData, REFRESH_MS);
 });
 
-// ---------- Auth ----------
-
-function getToken() {
-  try {
-    const raw = localStorage.getItem(TOKEN_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (parsed.exp && parsed.exp * 1000 < Date.now()) {
-      localStorage.removeItem(TOKEN_KEY);
-      return null;
-    }
-    return parsed.token;
-  } catch {
-    return null;
-  }
+function initDateInput() {
+  const inp = document.getElementById("date-input");
+  inp.value = currentDate;
+  inp.max = todayKey();
 }
 
-function setToken(token, exp) {
-  localStorage.setItem(TOKEN_KEY, JSON.stringify({ token, exp }));
-}
-
-function clearToken() {
-  localStorage.removeItem(TOKEN_KEY);
-}
-
-function bindDashboardControls() {
+function bindControls() {
   document
     .getElementById("refresh-btn")
-    .addEventListener("click", () =>
-      loadGallery(currentGallery, { force: true }),
-    );
+    .addEventListener("click", () => loadData({ force: true }));
   document
     .getElementById("retry-btn")
-    .addEventListener("click", () => loadGallery(currentGallery));
-}
+    .addEventListener("click", () => loadData());
 
-// ---------- Views ----------
+  for (const btn of document.querySelectorAll(".period-btn")) {
+    btn.addEventListener("click", () => {
+      const period = btn.dataset.period;
+      if (period === currentPeriod) return;
+      currentPeriod = period;
+      for (const b of document.querySelectorAll(".period-btn")) {
+        b.classList.toggle("active", b.dataset.period === period);
+      }
+      loadData();
+    });
+  }
 
-function showDashboard() {
-  renderTabs();
-  loadGallery(currentGallery);
-  if (refreshTimer) clearInterval(refreshTimer);
-  refreshTimer = setInterval(() => loadGallery(currentGallery), REFRESH_MS);
+  document.getElementById("date-input").addEventListener("change", (e) => {
+    const v = e.target.value;
+    if (!v) return;
+    currentDate = v;
+    loadData();
+  });
 }
 
 function renderTabs() {
@@ -120,7 +143,7 @@ function renderTabs() {
       for (const child of wrap.children) {
         child.classList.toggle("active", child.dataset.gallery === g.id);
       }
-      loadGallery(g.id);
+      loadData();
     });
     wrap.appendChild(btn);
   }
@@ -133,14 +156,18 @@ function setState(name) {
   }
 }
 
-// ---------- Data ----------
-
-async function loadGallery(galleryId, { force = false } = {}) {
+async function loadData({ force = false } = {}) {
   setState("loading");
   document.getElementById("last-update").textContent = "Cargando…";
 
   try {
-    const url = `${API_BASE}/api/data?gallery=${encodeURIComponent(galleryId)}${force ? "&_=" + Date.now() : ""}`;
+    const params = new URLSearchParams({
+      gallery: currentGallery,
+      period: currentPeriod,
+      date: currentDate,
+    });
+    if (force) params.set("_", String(Date.now()));
+    const url = `${API_BASE}/api/data?${params.toString()}`;
     const res = await fetch(url);
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
@@ -150,9 +177,7 @@ async function loadGallery(galleryId, { force = false } = {}) {
     if (!data.active) {
       setState("inactive");
       const el = document.querySelector("#state-inactive p");
-      if (el)
-        el.textContent =
-          data.message || "Galería próximamente. Sin datos disponibles aún.";
+      if (el) el.textContent = data.message || "Galería próximamente.";
       document.getElementById("last-update").textContent = data.label || "";
       return;
     }
@@ -166,53 +191,82 @@ async function loadGallery(galleryId, { force = false } = {}) {
 }
 
 function renderData(data) {
-  const fmtNumber = (n) => (n || 0).toLocaleString("es-VE");
-  document.getElementById("kpi-today").textContent = fmtNumber(
-    data.totals.today,
-  );
-  document.getElementById("kpi-week").textContent = fmtNumber(data.totals.week);
-  document.getElementById("kpi-month").textContent = fmtNumber(
-    data.totals.month,
-  );
-  document.getElementById("kpi-lifetime").textContent = fmtNumber(
+  const fmt = (n) => (n == null ? "—" : Number(n).toLocaleString("es-VE"));
+  const meta = PERIOD_LABEL[data.period] || PERIOD_LABEL.day;
+
+  document.getElementById("kpi-main-label").textContent = meta.title;
+  const mainValue =
+    data.totals.unique != null ? data.totals.unique : data.totals.raw;
+  document.getElementById("kpi-main").textContent = fmt(mainValue);
+  document.getElementById("kpi-main-foot").textContent = meta.footMain;
+
+  document.getElementById("kpi-lifetime").textContent = fmt(
     data.totals.lifetime,
   );
 
+  if (data.peak && data.peak.count > 0) {
+    document.getElementById("kpi-peak").textContent = fmt(data.peak.count);
+    document.getElementById("kpi-peak-foot").textContent =
+      data.period === "day"
+        ? `En ${data.peak.label}`
+        : `Día más alto: ${data.peak.label}`;
+  } else {
+    document.getElementById("kpi-peak").textContent = "—";
+    document.getElementById("kpi-peak-foot").textContent = "sin datos";
+  }
+
   const ts = data.generated_at ? new Date(data.generated_at) : new Date();
-  const cachedTag = data.cached ? " · desde caché" : "";
+  const cachedTag = data.cached ? " · caché" : "";
   document.getElementById("last-update").textContent =
     `${data.label} · Actualizado ${ts.toLocaleTimeString("es-VE", {
       hour: "2-digit",
       minute: "2-digit",
     })}${cachedTag}`;
 
-  renderHourly(data.hourly || []);
-  renderTypes(data.byType || {}, data.sample_events || 0);
+  document.getElementById("chart-title").textContent =
+    `${meta.chartTitle} · ${meta.title}`;
+  document.getElementById("chart-sub").textContent = meta.chartSub;
+  document.getElementById("types-title").textContent =
+    data.period === "day"
+      ? "Desglose por tipo · Hoy"
+      : `Desglose por tipo · ${formatScopeLabel(data.breakdown_scope)}`;
+
+  renderChart(data.series, data.period);
+  renderTypes(
+    data.byType || {},
+    data.unknown_types || {},
+    data.sample_events || 0,
+  );
 }
 
-function renderHourly(hourly) {
+function formatScopeLabel(yyyymmdd) {
+  if (!yyyymmdd) return "último día";
+  const [y, m, d] = yyyymmdd.split("-").map(Number);
+  return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
+}
+
+function renderChart(series, period) {
   const ctx = document.getElementById("hourly-chart").getContext("2d");
-  const labels = Array.from(
-    { length: 24 },
-    (_, i) => i.toString().padStart(2, "0") + "h",
-  );
+  const labels = series.labels || [];
+  const data = series.data || [];
   const grad = ctx.createLinearGradient(0, 0, 0, 280);
   grad.addColorStop(0, "rgba(139, 92, 255, 0.55)");
   grad.addColorStop(1, "rgba(139, 92, 255, 0.02)");
 
   if (chart) chart.destroy();
   chart = new Chart(ctx, {
-    type: "line",
+    type: period === "day" ? "line" : "bar",
     data: {
       labels,
       datasets: [
         {
           label: "Conteo",
-          data: hourly,
-          fill: true,
-          backgroundColor: grad,
+          data,
+          fill: period === "day",
+          backgroundColor: period === "day" ? grad : "rgba(139,92,255,0.6)",
           borderColor: "#b69bff",
-          borderWidth: 2,
+          borderWidth: period === "day" ? 2 : 0,
+          borderRadius: period === "day" ? 0 : 8,
           tension: 0.35,
           pointRadius: 0,
           pointHoverRadius: 5,
@@ -237,7 +291,13 @@ function renderHourly(hourly) {
       scales: {
         x: {
           grid: { color: "rgba(255,255,255,0.04)" },
-          ticks: { color: "#5e5e6e", font: { size: 10 } },
+          ticks: {
+            color: "#5e5e6e",
+            font: { size: 10 },
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: period === "day" ? 12 : 10,
+          },
         },
         y: {
           beginAtZero: true,
@@ -249,38 +309,60 @@ function renderHourly(hourly) {
   });
 }
 
-function renderTypes(byType, sample) {
+function renderTypes(byType, unknown, sample) {
   const grid = document.getElementById("types-grid");
   while (grid.firstChild) grid.removeChild(grid.firstChild);
 
-  const entries = Object.entries(byType).filter(([, v]) => v > 0);
-  entries.sort((a, b) => b[1] - a[1]);
-  const total = entries.reduce((a, [, v]) => a + v, 0) || 1;
-
-  if (entries.length === 0) {
-    const msg = document.createElement("p");
-    msg.style.color = "var(--text-faint)";
-    msg.style.fontSize = "0.85rem";
-    msg.textContent = "Sin detecciones registradas para hoy.";
-    grid.appendChild(msg);
-    document.getElementById("types-sample").textContent = "0 eventos";
-    return;
+  const knownEntries = Object.entries(byType);
+  // Merge Bike and Bicycle into single bucket
+  const merged = {};
+  for (const [key, count] of knownEntries) {
+    if (key === "Bike" || key === "Bicycle") {
+      merged.Bicycle = (merged.Bicycle || 0) + count;
+    } else {
+      merged[key] = (merged[key] || 0) + count;
+    }
+  }
+  const final = [
+    ["Car", merged.Car || 0],
+    ["Motorcycle", merged.Motorcycle || 0],
+    ["Bicycle", merged.Bicycle || 0],
+    ["Van", merged.Van || 0],
+    ["Truck", merged.Truck || 0],
+    ["Bus", merged.Bus || 0],
+    ["Human", merged.Human || 0],
+  ];
+  // Add unknown buckets (excluding any that happen to match known)
+  for (const [key, count] of Object.entries(unknown || {})) {
+    if (key === "Bike") continue; // already merged
+    final.push([`unknown:${key}`, count]);
   }
 
-  for (const [key, count] of entries) {
-    const meta = VEHICLE_META[key] || { label: key, icon: "·" };
-    const pct = ((count / total) * 100).toFixed(1);
+  const total = final.reduce((a, [, v]) => a + v, 0) || 1;
 
+  for (const [key, count] of final) {
     const card = document.createElement("div");
-    card.className = "type-card";
+    card.className = "type-card" + (count === 0 ? " is-zero" : "");
+
+    let label, icon;
+    if (key.startsWith("unknown:")) {
+      const raw = key.slice("unknown:".length);
+      label = raw;
+      icon = "·";
+    } else {
+      const meta = VEHICLE_META[key] || { label: key, icon: "·" };
+      label = meta.label;
+      icon = meta.icon;
+    }
+    const pct = total ? ((count / total) * 100).toFixed(1) : "0.0";
 
     const iconEl = document.createElement("span");
     iconEl.className = "type-icon";
-    iconEl.textContent = meta.icon;
+    iconEl.textContent = icon;
 
     const labelEl = document.createElement("span");
     labelEl.className = "type-label";
-    labelEl.textContent = meta.label;
+    labelEl.textContent = label;
 
     const valueEl = document.createElement("span");
     valueEl.className = "type-value";
@@ -296,6 +378,7 @@ function renderTypes(byType, sample) {
     card.appendChild(pctEl);
     grid.appendChild(card);
   }
+
   document.getElementById("types-sample").textContent =
     `${total.toLocaleString("es-VE")} objetos únicos · ${sample.toLocaleString("es-VE")} eventos`;
 }
