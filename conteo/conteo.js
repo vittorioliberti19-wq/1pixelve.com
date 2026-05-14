@@ -18,6 +18,21 @@ const OCCUPANCY = {
 };
 const ATTENTION_FACTOR = 0.6;
 
+function formatHourLabel(label) {
+  if (!label) return label;
+  const match = /^(\d{1,2})h$/.exec(String(label).trim());
+  if (!match) return label;
+  const h = parseInt(match[1], 10);
+  if (h === 0) return "12:00 AM";
+  if (h < 12) return `${h}:00 AM`;
+  if (h === 12) return "12:00 PM";
+  return `${h - 12}:00 PM`;
+}
+
+function formatHourLabels(arr) {
+  return (arr || []).map(formatHourLabel);
+}
+
 const GALLERIES = [
   {
     id: "3h",
@@ -332,7 +347,7 @@ function renderData(data) {
     document.getElementById("kpi-peak").textContent = fmt(data.peak.count);
     document.getElementById("kpi-peak-foot").textContent =
       data.period === "day"
-        ? `En ${data.peak.label}`
+        ? `En ${formatHourLabel(data.peak.label)}`
         : `Día más alto: ${data.peak.label}`;
   } else {
     document.getElementById("kpi-peak").textContent = "—";
@@ -441,7 +456,7 @@ function renderContextChart(data) {
   contextChart = new Chart(ctx, {
     type: isHourly ? "line" : "bar",
     data: {
-      labels: ctxData.labels,
+      labels: isHourly ? formatHourLabels(ctxData.labels) : ctxData.labels,
       datasets: [
         {
           label: "Conteo",
@@ -594,7 +609,7 @@ function renderRankings(topHours, topWeekdays) {
       rank.textContent = `${i + 1}`;
       const lbl = document.createElement("span");
       lbl.className = "rank-label";
-      lbl.textContent = item.label;
+      lbl.textContent = formatHourLabel(item.label);
       const val = document.createElement("span");
       val.className = "rank-val";
       val.textContent = fmt(item.count);
@@ -641,7 +656,8 @@ function formatScopeLabel(yyyymmdd) {
 
 function renderChart(series, period) {
   const ctx = document.getElementById("hourly-chart").getContext("2d");
-  const labels = series.labels || [];
+  const rawLabels = series.labels || [];
+  const labels = period === "day" ? formatHourLabels(rawLabels) : rawLabels;
   const data = series.data || [];
   const grad = ctx.createLinearGradient(0, 0, 0, 280);
   grad.addColorStop(0, "rgba(139, 92, 255, 0.55)");
