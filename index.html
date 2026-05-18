@@ -626,16 +626,26 @@
       }
 
       .clientes-track img {
-        height: 50px;
+        height: 60px;
         width: auto;
         max-width: 160px;
         object-fit: contain;
         flex-shrink: 0;
-        opacity: 0.75;
-        filter: brightness(0) invert(1);
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: 12px;
+        padding: 10px 16px;
+        box-sizing: content-box;
         transition:
           opacity 0.3s ease,
           transform 0.3s ease;
+      }
+
+      .clientes-track img.logo-lg {
+        height: 90px;
+        max-width: 200px;
       }
 
       .clientes-track img:hover {
@@ -2044,49 +2054,208 @@
         <div class="clientes-label">Marcas que confían en nosotros</div>
         <div class="clientes-track-wrapper">
           <div class="clientes-track">
-            <span class="cliente-nombre">Cervecería Polar</span>
-            <span class="cliente-nombre">Pepsi</span>
-            <span class="cliente-nombre">Mavesa</span>
-            <span class="cliente-nombre">Harina P.A.N.</span>
-            <span class="cliente-nombre">Alkosto</span>
-            <span class="cliente-nombre">Atún Margarita</span>
-            <span class="cliente-nombre">Lácteos Palmira</span>
-            <span class="cliente-nombre">Maraplus</span>
-            <span class="cliente-nombre">Yukery</span>
-            <span class="cliente-nombre">Canel</span>
-            <span class="cliente-nombre">Disprocar</span>
-            <span class="cliente-nombre">Farruggio</span>
-            <span class="cliente-nombre">OZ</span>
-            <span class="cliente-nombre">Salvaje</span>
-            <span class="cliente-nombre">San Simón</span>
-            <span class="cliente-nombre">Javitour</span>
-            <span class="cliente-nombre">Sangría Carorena</span>
+            <img
+              class="logo-chip"
+              src="clientes/polar.png"
+              alt="Cervecería Polar"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/pepsi.png"
+              alt="Pepsi"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/mavesa.png"
+              alt="Mavesa"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/pan.png"
+              alt="Harina P.A.N."
+              loading="lazy"
+            />
+            <img
+              class="logo-lg"
+              src="clientes/alkosto.png"
+              alt="Alkosto"
+              loading="lazy"
+            />
+            <img
+              src="clientes/margarita.png"
+              alt="Atún Margarita"
+              loading="lazy"
+            />
+            <img src="clientes/maraplus.png" alt="Maraplus" loading="lazy" />
+            <img
+              class="logo-lg"
+              src="clientes/yukery.png"
+              alt="Yukery"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip logo-lg"
+              src="clientes/canel.png"
+              alt="Canel"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/disprocar.png"
+              alt="Disprocar"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip logo-lg"
+              src="clientes/farruggio.png"
+              alt="Farruggio"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/oz.png"
+              alt="OZ"
+              loading="lazy"
+            />
+            <img
+              class="logo-lg"
+              src="clientes/salvaje.png"
+              alt="Salvaje"
+              loading="lazy"
+            />
+            <img src="clientes/san-simon.png" alt="San Simón" loading="lazy" />
+            <img src="clientes/javitour.png" alt="Javitour" loading="lazy" />
+            <img
+              class="logo-chip"
+              src="clientes/carorena.png"
+              alt="Sangría Carorena"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/bnc.png"
+              alt="BNC"
+              loading="lazy"
+            />
             <!-- duplicado para loop seamless -->
-            <span class="cliente-nombre" aria-hidden="true"
-              >Cervecería Polar</span
-            >
-            <span class="cliente-nombre" aria-hidden="true">Pepsi</span>
-            <span class="cliente-nombre" aria-hidden="true">Mavesa</span>
-            <span class="cliente-nombre" aria-hidden="true">Harina P.A.N.</span>
-            <span class="cliente-nombre" aria-hidden="true">Alkosto</span>
-            <span class="cliente-nombre" aria-hidden="true"
-              >Atún Margarita</span
-            >
-            <span class="cliente-nombre" aria-hidden="true"
-              >Lácteos Palmira</span
-            >
-            <span class="cliente-nombre" aria-hidden="true">Maraplus</span>
-            <span class="cliente-nombre" aria-hidden="true">Yukery</span>
-            <span class="cliente-nombre" aria-hidden="true">Canel</span>
-            <span class="cliente-nombre" aria-hidden="true">Disprocar</span>
-            <span class="cliente-nombre" aria-hidden="true">Farruggio</span>
-            <span class="cliente-nombre" aria-hidden="true">OZ</span>
-            <span class="cliente-nombre" aria-hidden="true">Salvaje</span>
-            <span class="cliente-nombre" aria-hidden="true">San Simón</span>
-            <span class="cliente-nombre" aria-hidden="true">Javitour</span>
-            <span class="cliente-nombre" aria-hidden="true"
-              >Sangría Carorena</span
-            >
+            <img
+              class="logo-chip"
+              src="clientes/polar.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/pepsi.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/mavesa.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/pan.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-lg"
+              src="clientes/alkosto.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              src="clientes/margarita.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              src="clientes/maraplus.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-lg"
+              src="clientes/yukery.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip logo-lg"
+              src="clientes/canel.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/disprocar.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip logo-lg"
+              src="clientes/farruggio.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/oz.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-lg"
+              src="clientes/salvaje.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              src="clientes/san-simon.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              src="clientes/javitour.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/carorena.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
+            <img
+              class="logo-chip"
+              src="clientes/bnc.png"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
