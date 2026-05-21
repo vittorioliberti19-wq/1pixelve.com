@@ -2,6 +2,7 @@
 
 const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
 const TOKEN_KEY = "1pixel_conteo_token";
+const GALLERY_KEY = "1pixel_conteo_gallery";
 const REFRESH_MS = 60 * 60 * 1000;
 
 // Impactos publicitarios: personas estimadas por vehículo × tasa de atención
@@ -97,7 +98,19 @@ const PERIOD_LABEL = {
   },
 };
 
-let currentGallery = "3h";
+function loadStoredGallery() {
+  try {
+    const saved = localStorage.getItem(GALLERY_KEY);
+    if (!saved) return "3h";
+    if (saved === "all") return "all";
+    const found = GALLERIES.find((g) => g.id === saved && g.active);
+    return found ? found.id : "3h";
+  } catch {
+    return "3h";
+  }
+}
+
+let currentGallery = loadStoredGallery();
 let currentPeriod = "day";
 let currentDate = todayKey();
 let chart = null;
@@ -289,7 +302,17 @@ function bindControls() {
 function renderTabs() {
   const wrap = document.getElementById("tabs");
   while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
-  for (const g of GALLERIES) {
+  const activeCount = GALLERIES.filter((g) => g.active).length;
+  const items = [
+    {
+      id: "all",
+      short: `Todas (${activeCount})`,
+      label: "Todas las galerías activas",
+      active: activeCount > 0,
+    },
+    ...GALLERIES,
+  ];
+  for (const g of items) {
     const btn = document.createElement("button");
     btn.className = "tab" + (g.id === currentGallery ? " active" : "");
     btn.dataset.gallery = g.id;
@@ -299,6 +322,9 @@ function renderTabs() {
     btn.appendChild(document.createTextNode(g.short));
     btn.addEventListener("click", () => {
       currentGallery = g.id;
+      try {
+        localStorage.setItem(GALLERY_KEY, g.id);
+      } catch {}
       for (const child of wrap.children) {
         child.classList.toggle("active", child.dataset.gallery === g.id);
       }
@@ -324,41 +350,54 @@ async function loadData({ force = false } = {}) {
   if (force) refreshBtn.classList.add("is-spinning");
 
   try {
-    const params = new URLSearchParams({
-      gallery: currentGallery,
-      period: currentPeriod,
-      date: currentDate,
-    });
-    if (force) {
-      params.set("fresh", "1");
-      params.set("_", String(Date.now()));
-    }
-    const url = `${API_BASE}/api/data?${params.toString()}`;
     const token = getToken();
     if (!token) {
       showLogin();
       return;
     }
-    const res = await fetch(url, {
-      headers: { Authorization: "Bearer " + token },
-    });
-    if (res.status === 401) {
-      clearToken();
-      showLogin();
-      return;
+    let data;
+    if (currentGallery === "all") {
+      data = await fetchAllGalleries(token, force);
+      if (!data) {
+        setState("inactive");
+        const el = document.querySelector("#state-inactive p");
+        if (el) el.textContent = "Sin galerías activas.";
+        return;
+      }
+    } else {
+      const params = new URLSearchParams({
+        gallery: currentGallery,
+        period: currentPeriod,
+        date: currentDate,
+      });
+      if (force) {
+        params.set("fresh", "1");
+        params.set("_", String(Date.now()));
+      }
+      const url = `${API_BASE}/api/data?${params.toString()}`;
+      const res = await fetch(url, {
+        headers: { Authorization: "Bearer " + token },
+      });
+      if (res.status === 401) {
+        clearToken();
+        showLogin();
+        return;
+      }
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || body.error || `HTTP ${res.status}`);
+      }
+      data = await res.json();
+      if (!data.active) {
+        setState("inactive");
+        const el = document.querySelector("#state-inactive p");
+        if (el) el.textContent = data.message || "Galería próximamente.";
+        document.getElementById("last-update").textContent = data.label || "";
+        renderSourcesBanner(null);
+        return;
+      }
     }
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(body.detail || body.error || `HTTP ${res.status}`);
-    }
-    const data = await res.json();
-    if (!data.active) {
-      setState("inactive");
-      const el = document.querySelector("#state-inactive p");
-      if (el) el.textContent = data.message || "Galería próximamente.";
-      document.getElementById("last-update").textContent = data.label || "";
-      return;
-    }
+    renderSourcesBanner(data.sources || null);
     renderData(data);
     setState("data");
   } catch (err) {
@@ -837,4 +876,188 @@ function renderTypes(byType, unknown, sample) {
 
   document.getElementById("types-sample").textContent =
     `${total.toLocaleString("es-VE")} objetos únicos · ${sample.toLocaleString("es-VE")} eventos`;
+}
+
+function renderSourcesBanner(sources) {
+  const el = document.getElementById("sources-banner");
+  if (!el) return;
+  if (!sources || !sources.length) {
+    el.hidden = true;
+    while (el.firstChild) el.removeChild(el.firstChild);
+    return;
+  }
+  el.hidden = false;
+  while (el.firstChild) el.removeChild(el.firstChild);
+  const strong = document.createElement("strong");
+  strong.textContent = `Sumando ${sources.length} galerías:`;
+  el.appendChild(strong);
+  for (const s of sources) {
+    const chip = document.createElement("span");
+    chip.className = "src-chip";
+    chip.textContent = s.label;
+    el.appendChild(chip);
+  }
+}
+
+async function fetchAllGalleries(token, force) {
+  const active = GALLERIES.filter((g) => g.active);
+  if (!active.length) return null;
+  const fetchOne = async (g) => {
+    const params = new URLSearchParams({
+      gallery: g.id,
+      period: currentPeriod,
+      date: currentDate,
+    });
+    if (force) {
+      params.set("fresh", "1");
+      params.set("_", String(Date.now()));
+    }
+    const res = await fetch(`${API_BASE}/api/data?${params.toString()}`, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    if (res.status === 401) throw new Error("unauthorized");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(
+        `${g.short}: ${body.detail || body.error || "HTTP " + res.status}`,
+      );
+    }
+    const data = await res.json();
+    data._gallery = g;
+    return data;
+  };
+  const results = await Promise.all(active.map(fetchOne));
+  return aggregateGalleries(results.filter((r) => r.active));
+}
+
+function aggregateGalleries(results) {
+  if (!results.length) return null;
+  const base = results[0];
+  const agg = {
+    gallery: "all",
+    label: `Todas las galerías activas (${results.length})`,
+    active: true,
+    period: base.period,
+    range: base.range,
+    breakdown_scope: base.breakdown_scope,
+    generated_at: new Date().toISOString(),
+    cached: results.every((r) => r.cached),
+    totals: { unique: 0, raw: 0, lifetime: 0 },
+    byType: {},
+    unknown_types: {},
+    sample_events: 0,
+    series: base.series
+      ? {
+          kind: base.series.kind,
+          labels: [...(base.series.labels || [])],
+          data: new Array((base.series.data || []).length).fill(0),
+        }
+      : null,
+    daily_context: base.daily_context
+      ? {
+          labels: [...base.daily_context.labels],
+          data: new Array(base.daily_context.data.length).fill(0),
+        }
+      : null,
+    hourly_context: base.hourly_context
+      ? {
+          labels: [...base.hourly_context.labels],
+          data: new Array(base.hourly_context.data.length).fill(0),
+        }
+      : null,
+    sources: results.map((r) => ({
+      id: r._gallery.id,
+      label: r._gallery.label,
+      short: r._gallery.short,
+      total: r.totals?.unique ?? r.totals?.raw ?? 0,
+    })),
+  };
+  let curSum = 0;
+  let prevSum = 0;
+  for (const r of results) {
+    agg.totals.unique += r.totals?.unique || 0;
+    agg.totals.raw += r.totals?.raw || 0;
+    agg.totals.lifetime += r.totals?.lifetime || 0;
+    agg.sample_events += r.sample_events || 0;
+    for (const [k, v] of Object.entries(r.byType || {})) {
+      agg.byType[k] = (agg.byType[k] || 0) + v;
+    }
+    for (const [k, v] of Object.entries(r.unknown_types || {})) {
+      agg.unknown_types[k] = (agg.unknown_types[k] || 0) + v;
+    }
+    sumInto(agg.series, r.series);
+    sumInto(agg.daily_context, r.daily_context);
+    sumInto(agg.hourly_context, r.hourly_context);
+    if (r.delta) {
+      curSum += r.delta.current || 0;
+      prevSum += r.delta.previous || 0;
+    }
+  }
+  if (agg.series?.data?.length) {
+    let maxV = -1;
+    let maxI = 0;
+    for (let i = 0; i < agg.series.data.length; i++) {
+      if (agg.series.data[i] > maxV) {
+        maxV = agg.series.data[i];
+        maxI = i;
+      }
+    }
+    agg.peak = { label: agg.series.labels[maxI], count: maxV };
+  }
+  agg.top_hours = computeTopHours(agg);
+  agg.top_weekdays = aggregateTopWeekdays(results);
+  if (prevSum > 0) {
+    const abs = curSum - prevSum;
+    agg.delta = {
+      current: curSum,
+      previous: prevSum,
+      abs_change: abs,
+      pct_change: (abs / prevSum) * 100,
+    };
+  }
+  return agg;
+}
+
+function sumInto(target, source) {
+  if (!target || !source || !source.data) return;
+  for (let i = 0; i < target.data.length && i < source.data.length; i++) {
+    target.data[i] += source.data[i] || 0;
+  }
+}
+
+function computeTopHours(data) {
+  let labels, arr;
+  if (data.period === "day" && data.series?.kind === "hourly") {
+    labels = data.series.labels;
+    arr = data.series.data;
+  } else if (data.hourly_context) {
+    labels = data.hourly_context.labels;
+    arr = data.hourly_context.data;
+  } else {
+    return [];
+  }
+  return labels
+    .map((label, i) => ({ label, count: arr[i] || 0, idx: i }))
+    .filter((x) => x.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+}
+
+function aggregateTopWeekdays(results) {
+  const m = {};
+  for (const r of results) {
+    for (const w of r.top_weekdays || []) {
+      if (!m[w.label]) m[w.label] = { total: 0, n: 0 };
+      m[w.label].total += w.total || 0;
+      m[w.label].n += 1;
+    }
+  }
+  return Object.entries(m)
+    .map(([label, v]) => ({
+      label,
+      total: v.total,
+      avg: v.n > 0 ? v.total / v.n : 0,
+    }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 3);
 }
