@@ -50,7 +50,7 @@ const GALLERIES = [
     id: "cecilio",
     short: "Cecilio Acosta",
     label: "Calle 67 Cecilio Acosta",
-    active: false,
+    active: true,
   },
   {
     id: "bellavista",
