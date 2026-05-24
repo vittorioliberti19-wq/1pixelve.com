@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Estado Galerías · 1PIXEL</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
       :root {
         --bg-0: #050505;
@@ -103,9 +104,9 @@
       }
       #app {
         display: none;
-        max-width: 1100px;
+        max-width: 1140px;
         margin: 0 auto;
-        padding: 26px 18px 60px;
+        padding: 26px 18px 70px;
       }
       header {
         display: flex;
@@ -128,7 +129,7 @@
       .sub {
         color: var(--text-faint);
         font-size: 0.78rem;
-        margin-bottom: 22px;
+        margin-bottom: 18px;
         display: flex;
         gap: 14px;
         align-items: center;
@@ -160,6 +161,33 @@
         font-size: 0.83rem;
         margin-bottom: 18px;
         display: none;
+      }
+      .alerts {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .alert {
+        background: rgba(255, 181, 71, 0.1);
+        border: 1px solid rgba(255, 181, 71, 0.35);
+        color: #ffd79a;
+        border-radius: 10px;
+        padding: 9px 13px;
+        font-size: 0.82rem;
+      }
+      .alert.crit {
+        background: rgba(255, 84, 112, 0.12);
+        border-color: rgba(255, 84, 112, 0.4);
+        color: #ffb0bf;
+      }
+      h2.sec {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 30px 0 14px;
+        color: var(--text);
+        border-left: 3px solid var(--accent);
+        padding-left: 10px;
       }
       .grid {
         display: grid;
@@ -273,11 +301,206 @@
         color: #ffb0bf;
         border-color: rgba(255, 84, 112, 0.3);
       }
+      .panel {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px;
+      }
+      /* SLA */
+      .sla {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+      }
+      .slaItem {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .slaItem .nm {
+        font-size: 0.82rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+      }
+      .slaItem .pc {
+        font-size: 1.7rem;
+        font-weight: 700;
+      }
+      .slaItem .tg {
+        font-size: 0.7rem;
+        color: var(--text-faint);
+        margin-top: 3px;
+      }
+      .slaItem .pill {
+        font-size: 0.66rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-left: auto;
+      }
+      /* timeline */
+      .tl {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tlRow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .tlRow .lbl {
+        width: 130px;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        flex-shrink: 0;
+      }
+      .tlTrack {
+        position: relative;
+        flex: 1;
+        height: 22px;
+        background: var(--bg-3);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .tlSeg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background: var(--danger);
+        opacity: 0.85;
+      }
+      .tlSeg.est {
+        background: var(--warn);
+        opacity: 0.7;
+      }
+      .tlAxis {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.64rem;
+        color: var(--text-faint);
+        margin: 6px 0 0 140px;
+      }
+      /* heatmap */
+      .hm {
+        display: grid;
+        grid-template-columns: 34px repeat(24, 1fr);
+        gap: 2px;
+        font-size: 0.6rem;
+      }
+      .hmH {
+        color: var(--text-faint);
+        text-align: center;
+        padding-bottom: 2px;
+      }
+      .hmRowL {
+        color: var(--text-faint);
+        display: flex;
+        align-items: center;
+      }
+      .hmC {
+        aspect-ratio: 1;
+        border-radius: 2px;
+        background: var(--bg-3);
+      }
+      .hmLeg {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        margin-top: 10px;
+      }
+      .hmLeg i {
+        width: 16px;
+        height: 10px;
+        border-radius: 2px;
+        display: inline-block;
+      }
+      /* ranking / stats */
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 720px) {
+        .two {
+          grid-template-columns: 1fr;
+        }
+      }
+      .rk {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .rkItem {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+      }
+      .rkItem .n {
+        color: var(--text-faint);
+        width: 18px;
+      }
+      .rkItem .bar {
+        flex: 1;
+        height: 8px;
+        background: var(--bg-3);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+      .rkItem .bar i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+      .rkItem .val {
+        font-size: 0.76rem;
+        color: var(--text-dim);
+        width: 74px;
+        text-align: right;
+      }
+      .statG {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .statB {
+        background: var(--bg-3);
+        border-radius: 10px;
+        padding: 11px 13px;
+      }
+      .statB .k {
+        font-size: 0.66rem;
+        color: var(--text-faint);
+        text-transform: uppercase;
+      }
+      .statB .v {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-top: 3px;
+      }
+      .statB .s {
+        font-size: 0.66rem;
+        color: var(--text-faint);
+      }
       footer {
         text-align: center;
         color: var(--text-faint);
         font-size: 0.72rem;
-        margin-top: 30px;
+        margin-top: 34px;
+      }
+      .note {
+        font-size: 0.7rem;
+        color: var(--text-faint);
+        margin-top: 8px;
       }
     </style>
   </head>
@@ -304,14 +527,70 @@
       </header>
       <div class="sub" id="sub"></div>
       <div class="stale" id="stale"></div>
+      <div class="alerts" id="alerts"></div>
+
       <div class="grid" id="grid"></div>
-      <footer>1PIXEL · monitoreo interno · datos cada 5 min</footer>
+
+      <h2 class="sec">SLA · Disponibilidad</h2>
+      <div class="sla" id="sla"></div>
+
+      <h2 class="sec">Impacto comercial de cortes (estimado, 30d)</h2>
+      <div class="panel">
+        <div class="statG" id="impacts"></div>
+        <div class="note">
+          Estimado = horas diurnas sin luz × tráfico promedio/hora × 25% que ve
+          el anuncio. Tráfico promedio aproximado.
+        </div>
+      </div>
+
+      <h2 class="sec">Línea de tiempo de cortes (30 días)</h2>
+      <div class="panel">
+        <div class="tl" id="timeline"></div>
+        <div class="tlAxis" id="tlAxis"></div>
+      </div>
+
+      <h2 class="sec">Patrón horario de cortes (todas las galerías)</h2>
+      <div class="panel">
+        <div class="hm" id="heatmap"></div>
+        <div class="hmLeg">
+          Frecuencia de cortes: <i style="background: var(--bg-3)"></i>0
+          <i style="background: rgba(255, 181, 71, 0.45)"></i>bajo
+          <i style="background: rgba(255, 84, 112, 0.6)"></i>medio
+          <i style="background: var(--danger)"></i>alto
+        </div>
+      </div>
+
+      <h2 class="sec">Disponibilidad diaria (14 días)</h2>
+      <div class="panel"><canvas id="availChart" height="110"></canvas></div>
+
+      <div class="two" style="margin-top: 16px">
+        <div>
+          <h2 class="sec">Ranking estabilidad (30d)</h2>
+          <div class="panel">
+            <div class="rk" id="ranking"></div>
+            <div class="note">
+              Ordenado por horas totales sin luz. Menos = más estable.
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="sec">Estadísticas de cortes (30d)</h2>
+          <div class="panel"><div id="stats"></div></div>
+        </div>
+      </div>
+
+      <footer>
+        1PIXEL · monitoreo interno · datos cada 5 min · cortes "estimado"
+        inferidos de actividad de cámara
+      </footer>
     </div>
 
     <script>
       const API = "https://1pixel-conteo-api.ai-ffd.workers.dev/estado/data";
-      const PWD = "Direccion2026";
-      const AUTH_KEY = "estado_auth_v1";
+      const PWD = "Direccion2026",
+        AUTH_KEY = "estado_auth_v1",
+        SLA_TARGET = 95;
+      let availChart = null;
 
       function unlocked() {
         return localStorage.getItem(AUTH_KEY) === "1";
@@ -336,10 +615,10 @@
       if (unlocked()) showApp();
 
       // helpers
-      function el(tag, cls, txt) {
-        const e = document.createElement(tag);
-        if (cls) e.className = cls;
-        if (txt != null) e.textContent = txt;
+      function el(t, c, x) {
+        const e = document.createElement(t);
+        if (c) e.className = c;
+        if (x != null) e.textContent = x;
         return e;
       }
       function fmtDate(iso) {
@@ -354,9 +633,9 @@
         });
       }
       function durMin(a, b) {
-        const t1 = new Date(a),
-          t2 = b ? new Date(b) : new Date();
-        const m = Math.round((t2 - t1) / 60000);
+        const m = Math.round(
+          ((b ? new Date(b) : new Date()) - new Date(a)) / 60000,
+        );
         if (m < 60) return m + " min";
         return Math.floor(m / 60) + "h " + (m % 60) + "min";
       }
@@ -364,9 +643,34 @@
         const n = parseFloat(String(x).replace(/[^0-9.]/g, ""));
         return isNaN(n) ? null : n;
       }
+      function parseO(o) {
+        const s = new Date(o.lost_at),
+          e = o.restored_at ? new Date(o.restored_at) : new Date();
+        return { s, e, inferred: !!o.inferred };
+      }
+      function hoursOf(o) {
+        return Math.max(0, (o.e - o.s) / 3600000);
+      }
+      // horas diurnas (6-22) de un corte
+      function daytimeHours(o) {
+        let t = new Date(o.s),
+          end = o.e,
+          h = 0;
+        t.setMinutes(0, 0, 0);
+        while (t < end) {
+          const hr = t.getHours();
+          if (hr >= 6 && hr < 22) {
+            const next = new Date(t);
+            next.setHours(hr + 1);
+            const seg = (Math.min(next, end) - Math.max(t, o.s)) / 3600000;
+            if (seg > 0) h += seg;
+          }
+          t.setHours(t.getHours() + 1);
+        }
+        return h;
+      }
 
       async function load() {
-        const grid = document.getElementById("grid");
         try {
           const r = await fetch(API, { cache: "no-store" });
           const d = await r.json();
@@ -381,7 +685,6 @@
               ageMin +
               " min — el monitor (macgia) puede estar caído o sin internet.";
           } else staleEl.style.display = "none";
-
           const onCount = gals.filter((g) => g.online).length;
           const sub = document.getElementById("sub");
           sub.textContent = "";
@@ -398,26 +701,68 @@
           sub.appendChild(
             el("span", null, "Última lectura: " + fmtDate(d.generated_at)),
           );
-
+          renderAlerts(gals);
+          const grid = document.getElementById("grid");
           grid.textContent = "";
           gals.forEach((g) => grid.appendChild(card(g)));
-          if (!gals.length)
-            grid.appendChild(el("div", "card", "Sin datos todavía."));
+          renderSLA(gals);
+          renderImpacts(gals);
+          renderTimeline(gals);
+          renderHeatmap(gals);
+          renderAvailChart(gals);
+          renderRanking(gals);
+          renderStats(gals);
         } catch (e) {
-          grid.textContent = "";
-          const c = el("div", "card");
-          c.appendChild(el("div", "name", "Error cargando datos"));
-          c.appendChild(el("div", "chip bad", String(e.message)));
-          grid.appendChild(c);
+          document.getElementById("grid").textContent = "Error: " + e.message;
         }
       }
 
-      function card(g) {
-        const off = !g.online;
-        const av24 = g.availability_24h != null ? g.availability_24h : 100;
-        const av7 = g.availability_7d != null ? g.availability_7d : 100;
-        const c = el("div", "card" + (off ? " off" : ""));
+      function renderAlerts(gals) {
+        const box = document.getElementById("alerts");
+        box.textContent = "";
+        gals.forEach((g) => {
+          const a = [];
+          if (!g.online)
+            a.push([
+              "crit",
+              g.emoji + " " + g.name + ": OFFLINE / posible corte",
+            ]);
+          if (g.online && g.vlc && g.vlc !== "SI")
+            a.push([
+              "crit",
+              g.emoji + " " + g.name + ": VLC caído (pantalla negra)",
+            ]);
+          if (g.online && g.wd && g.wd !== "OK")
+            a.push(["warn", g.emoji + " " + g.name + ": watchdog " + g.wd]);
+          if (g.online && g.sync && g.sync !== "OK")
+            a.push(["warn", g.emoji + " " + g.name + ": sync " + g.sync]);
+          const ct = num(g.cpu_temp),
+            st = num(g.ssd_temp);
+          if (ct && ct > 78)
+            a.push(["warn", g.emoji + " " + g.name + ": CPU " + g.cpu_temp]);
+          if (st && st > 62)
+            a.push(["warn", g.emoji + " " + g.name + ": SSD " + g.ssd_temp]);
+          a.forEach(([k, t]) =>
+            box.appendChild(
+              el(
+                "div",
+                "alert" + (k === "crit" ? " crit" : ""),
+                (k === "crit" ? "🔴 " : "🟡 ") + t,
+              ),
+            ),
+          );
+        });
+        if (!box.children.length)
+          box.appendChild(
+            el("div", "alert", "🟢 Todo operando normal — sin alertas activas"),
+          );
+      }
 
+      function card(g) {
+        const off = !g.online,
+          av24 = g.availability_24h != null ? g.availability_24h : 100,
+          av7 = g.availability_7d != null ? g.availability_7d : 100;
+        const c = el("div", "card" + (off ? " off" : ""));
         const top = el("div", "top");
         top.appendChild(el("span", "emoji", g.emoji || "📺"));
         top.appendChild(el("span", "name", g.name || g.id));
@@ -429,7 +774,6 @@
           ),
         );
         c.appendChild(top);
-
         const m = el("div", "metrics");
         const m1 = el("div", "metric");
         m1.appendChild(el("div", "k", "Uptime"));
@@ -442,7 +786,6 @@
         );
         m.appendChild(m2);
         c.appendChild(m);
-
         const av = el("div", "avail");
         av.appendChild(
           el(
@@ -457,9 +800,8 @@
         bar.appendChild(fill);
         av.appendChild(bar);
         c.appendChild(av);
-
-        const lo = g.last_outage;
-        const ot = el("div", "outage");
+        const lo = g.last_outage,
+          ot = el("div", "outage");
         if (lo) {
           if (!lo.restored_at) {
             ot.appendChild(el("b", null, "Sin luz ahora"));
@@ -472,36 +814,329 @@
                   ")",
               ),
             );
-          } else {
+          } else
             ot.textContent =
               "Último corte: " +
               fmtDate(lo.lost_at) +
               " · duró " +
               durMin(lo.lost_at, lo.restored_at);
-          }
           if (lo.inferred) {
-            const est = el("span", "chip", "estimado");
-            est.style.marginLeft = "7px";
-            ot.appendChild(est);
+            const e = el("span", "chip", "estimado");
+            e.style.marginLeft = "7px";
+            ot.appendChild(e);
           }
         } else ot.textContent = "Sin cortes registrados ✓";
         c.appendChild(ot);
-
-        const cpuT = num(g.cpu_temp),
-          ssdT = num(g.ssd_temp);
-        const chips = el("div", "chips");
-        const addChip = (txt, bad) =>
-          chips.appendChild(el("span", "chip" + (bad ? " bad" : ""), txt));
-        addChip("VLC " + (g.vlc === "SI" ? "✓" : "✗"), g.vlc !== "SI");
-        addChip("CPU " + (g.cpu != null ? g.cpu : "?") + "%", false);
-        addChip("RAM " + (g.ram_pct != null ? g.ram_pct : "?") + "%", false);
-        if (cpuT != null) addChip("CPU " + g.cpu_temp, cpuT > 75);
-        if (ssdT != null) addChip("SSD " + g.ssd_temp, ssdT > 62);
-        if (g.wd && g.wd !== "OK") addChip("WD " + g.wd, true);
-        if (g.sync && g.sync !== "OK") addChip("Sync " + g.sync, true);
+        const ct = num(g.cpu_temp),
+          st = num(g.ssd_temp),
+          chips = el("div", "chips");
+        const ch = (t, b) =>
+          chips.appendChild(el("span", "chip" + (b ? " bad" : ""), t));
+        ch("VLC " + (g.vlc === "SI" ? "✓" : "✗"), g.vlc !== "SI");
+        ch("CPU " + (g.cpu ?? "?") + "%");
+        ch("RAM " + (g.ram_pct ?? "?") + "%");
+        if (ct != null) ch("CPU " + g.cpu_temp, ct > 75);
+        if (st != null) ch("SSD " + g.ssd_temp, st > 62);
+        if (g.wd && g.wd !== "OK") ch("WD " + g.wd, true);
+        if (g.sync && g.sync !== "OK") ch("Sync " + g.sync, true);
         c.appendChild(chips);
-
         return c;
+      }
+
+      function renderSLA(gals) {
+        const box = document.getElementById("sla");
+        box.textContent = "";
+        gals.forEach((g) => {
+          const av7 = g.availability_7d != null ? g.availability_7d : 100;
+          const ok = av7 >= SLA_TARGET;
+          const it = el("div", "slaItem");
+          const nm = el("div", "nm");
+          nm.appendChild(
+            el("span", null, (g.emoji || "") + " " + (g.name || g.id)),
+          );
+          const pill = el("span", "pill");
+          pill.textContent = ok ? "OK" : "BAJO";
+          pill.style.background = ok
+            ? "rgba(0,255,163,.13)"
+            : "rgba(255,84,112,.15)";
+          pill.style.color = ok ? "var(--ok)" : "var(--danger)";
+          nm.appendChild(pill);
+          it.appendChild(nm);
+          const pc = el("div", "pc", av7 + "%");
+          pc.style.color = ok ? "var(--ok)" : "var(--danger)";
+          it.appendChild(pc);
+          it.appendChild(
+            el("div", "tg", "Disponibilidad 7d · objetivo " + SLA_TARGET + "%"),
+          );
+          box.appendChild(it);
+        });
+      }
+
+      function renderImpacts(gals) {
+        const box = document.getElementById("impacts");
+        box.textContent = "";
+        const since = Date.now() - 30 * 864e5;
+        gals.forEach((g) => {
+          const vph = g.avg_vph || 0,
+            fac = g.impact_factor || 0.25;
+          let dh = 0;
+          (g.outages || []).forEach((o) => {
+            const p = parseO(o);
+            if (p.e >= since) dh += daytimeHours(p);
+          });
+          const lost = Math.round(dh * vph * fac);
+          const b = el("div", "statB");
+          b.appendChild(
+            el("div", "k", (g.emoji || "") + " " + (g.name || g.id)),
+          );
+          b.appendChild(
+            el("div", "v", vph ? lost.toLocaleString("es-VE") : "—"),
+          );
+          b.appendChild(
+            el(
+              "div",
+              "s",
+              vph
+                ? "impactos perdidos · " + dh.toFixed(1) + "h diurnas sin luz"
+                : "sin conteo",
+            ),
+          );
+          box.appendChild(b);
+        });
+      }
+
+      function renderTimeline(gals) {
+        const box = document.getElementById("timeline");
+        box.textContent = "";
+        const now = Date.now(),
+          span = 30 * 864e5,
+          start = now - span;
+        gals.forEach((g) => {
+          const row = el("div", "tlRow");
+          row.appendChild(
+            el("div", "lbl", (g.emoji || "") + " " + (g.name || g.id)),
+          );
+          const tr = el("div", "tlTrack");
+          (g.outages || []).forEach((o) => {
+            const p = parseO(o);
+            if (p.e < start) return;
+            const s = Math.max(p.s.getTime(), start),
+              e = Math.min(p.e.getTime(), now);
+            const seg = el("div", "tlSeg" + (p.inferred ? " est" : ""));
+            seg.style.left = ((s - start) / span) * 100 + "%";
+            seg.style.width = Math.max(0.5, ((e - s) / span) * 100) + "%";
+            seg.title = fmtDate(o.lost_at) + (o.inferred ? " (estimado)" : "");
+            tr.appendChild(seg);
+          });
+          row.appendChild(tr);
+          box.appendChild(row);
+        });
+        const ax = document.getElementById("tlAxis");
+        ax.textContent = "";
+        for (let i = 30; i >= 0; i -= 6) {
+          const d = new Date(now - i * 864e5);
+          ax.appendChild(
+            el(
+              "span",
+              null,
+              d.toLocaleDateString("es-VE", {
+                day: "2-digit",
+                month: "2-digit",
+              }),
+            ),
+          );
+        }
+      }
+
+      function renderHeatmap(gals) {
+        const box = document.getElementById("heatmap");
+        box.textContent = "";
+        const days = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+        const grid = {};
+        for (let d = 0; d < 7; d++)
+          for (let h = 0; h < 24; h++) grid[d + "_" + h] = 0;
+        gals.forEach((g) =>
+          (g.outages || []).forEach((o) => {
+            const p = parseO(o);
+            let t = new Date(p.s);
+            t.setMinutes(0, 0, 0);
+            while (t < p.e) {
+              grid[t.getDay() + "_" + t.getHours()]++;
+              t.setHours(t.getHours() + 1);
+            }
+          }),
+        );
+        let max = 0;
+        Object.values(grid).forEach((v) => {
+          if (v > max) max = v;
+        });
+        box.appendChild(el("div", "hmH", ""));
+        for (let h = 0; h < 24; h++)
+          box.appendChild(el("div", "hmH", h % 3 === 0 ? h : ""));
+        for (let d = 0; d < 7; d++) {
+          box.appendChild(el("div", "hmRowL", days[d]));
+          for (let h = 0; h < 24; h++) {
+            const v = grid[d + "_" + h],
+              c = el("div", "hmC");
+            if (v > 0) {
+              const r = max ? v / max : 0;
+              c.style.background =
+                r > 0.66
+                  ? "var(--danger)"
+                  : r > 0.33
+                    ? "rgba(255,84,112,.6)"
+                    : "rgba(255,181,71,.45)";
+              c.title = days[d] + " " + h + "h: " + v + " corte-horas";
+            }
+            box.appendChild(c);
+          }
+        }
+      }
+
+      function dailyAvail(g, dayStart) {
+        const dayEnd = dayStart + 864e5;
+        let down = 0;
+        (g.outages || []).forEach((o) => {
+          const p = parseO(o);
+          const s = Math.max(p.s.getTime(), dayStart),
+            e = Math.min(p.e.getTime(), dayEnd);
+          if (e > s) down += e - s;
+        });
+        return Math.max(0, Math.min(100, (1 - down / 864e5) * 100));
+      }
+      function renderAvailChart(gals) {
+        const labels = [],
+          sets = [];
+        const cols = ["#8b5cff", "#ff3bd4", "#00ffa3", "#ffb547"];
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        for (let i = 13; i >= 0; i--) {
+          const d = new Date(today - i * 864e5);
+          labels.push(
+            d.toLocaleDateString("es-VE", { day: "2-digit", month: "2-digit" }),
+          );
+        }
+        gals.forEach((g, idx) => {
+          const data = [];
+          for (let i = 13; i >= 0; i--) {
+            const ds = today.getTime() - i * 864e5;
+            data.push(+dailyAvail(g, ds).toFixed(1));
+          }
+          sets.push({
+            label: (g.emoji || "") + " " + (g.name || g.id),
+            data,
+            borderColor: cols[idx % cols.length],
+            backgroundColor: cols[idx % cols.length] + "22",
+            tension: 0.3,
+            fill: false,
+            pointRadius: 2,
+          });
+        });
+        const ctx = document.getElementById("availChart");
+        if (availChart) availChart.destroy();
+        availChart = new Chart(ctx, {
+          type: "line",
+          data: { labels, datasets: sets },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                min: 0,
+                max: 100,
+                ticks: { color: "#9b9bab", callback: (v) => v + "%" },
+                grid: { color: "rgba(255,255,255,.05)" },
+              },
+              x: { ticks: { color: "#9b9bab" }, grid: { display: false } },
+            },
+            plugins: {
+              legend: { labels: { color: "#f4f4f6", font: { size: 11 } } },
+            },
+          },
+        });
+      }
+
+      function renderRanking(gals) {
+        const box = document.getElementById("ranking");
+        box.textContent = "";
+        const since = Date.now() - 30 * 864e5;
+        const arr = gals.map((g) => {
+          let h = 0,
+            n = 0;
+          (g.outages || []).forEach((o) => {
+            const p = parseO(o);
+            if (p.e >= since) {
+              h += hoursOf(p);
+              n++;
+            }
+          });
+          return { g, h, n };
+        });
+        const max = Math.max(1, ...arr.map((a) => a.h));
+        arr.sort((a, b) => a.h - b.h);
+        arr.forEach((a, i) => {
+          const it = el("div", "rkItem");
+          it.appendChild(el("span", "n", i + 1 + ""));
+          it.appendChild(
+            el("span", null, (a.g.emoji || "") + " " + (a.g.name || a.g.id)),
+          );
+          const bar = el("div", "bar");
+          const fi = el("i");
+          fi.style.width = (a.h / max) * 100 + "%";
+          bar.appendChild(fi);
+          it.appendChild(bar);
+          it.appendChild(el("span", "val", a.h.toFixed(1) + "h · " + a.n));
+          box.appendChild(it);
+        });
+      }
+
+      function renderStats(gals) {
+        const box = document.getElementById("stats");
+        box.textContent = "";
+        const since = Date.now() - 30 * 864e5;
+        gals.forEach((g) => {
+          let h = 0,
+            n = 0;
+          (g.outages || []).forEach((o) => {
+            const p = parseO(o);
+            if (p.e >= since) {
+              h += hoursOf(p);
+              n++;
+            }
+          });
+          const avg = n ? h / n : 0,
+            perWeek = (n / 30) * 7;
+          const wrap = el("div");
+          wrap.style.marginBottom = "12px";
+          wrap.appendChild(
+            el("div", null, (g.emoji || "") + " " + (g.name || g.id)),
+          ).style.fontSize = ".82rem";
+          const sg = el("div", "statG");
+          const mk = (k, v, s) => {
+            const b = el("div", "statB");
+            b.appendChild(el("div", "k", k));
+            b.appendChild(el("div", "v", v));
+            if (s) b.appendChild(el("div", "s", s));
+            return b;
+          };
+          sg.appendChild(
+            mk("Horas sin luz", h.toFixed(1) + "h", "últimos 30d"),
+          );
+          sg.appendChild(
+            mk("Cortes", String(n), perWeek.toFixed(1) + "/semana"),
+          );
+          sg.appendChild(
+            mk("Duración prom", avg ? avg.toFixed(1) + "h" : "—", "por corte"),
+          );
+          sg.appendChild(
+            mk(
+              "Disponib. 7d",
+              (g.availability_7d != null ? g.availability_7d : 100) + "%",
+              "",
+            ),
+          );
+          wrap.appendChild(sg);
+          box.appendChild(wrap);
+        });
       }
     </script>
   </body>
