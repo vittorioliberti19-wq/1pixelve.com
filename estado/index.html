@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Estado Galerías · 1PIXEL</title>
+    <style>
+      :root {
+        --bg-0: #050505;
+        --bg-1: #0c0c10;
+        --bg-2: #131319;
+        --bg-3: #1c1c25;
+        --line: rgba(255, 255, 255, 0.07);
+        --text: #f4f4f6;
+        --text-dim: #9b9bab;
+        --text-faint: #5e5e6e;
+        --accent: #8b5cff;
+        --accent-2: #ff3bd4;
+        --ok: #00ffa3;
+        --warn: #ffb547;
+        --danger: #ff5470;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg-0);
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        min-height: 100vh;
+        background-image: radial-gradient(
+          1200px 600px at 50% -10%,
+          rgba(139, 92, 255, 0.12),
+          transparent 60%
+        );
+      }
+      #login {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-0);
+        z-index: 50;
+      }
+      .lcard {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 38px 32px;
+        width: min(360px, 90vw);
+        text-align: center;
+      }
+      .lcard h1 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .lcard p {
+        color: var(--text-dim);
+        font-size: 0.82rem;
+        margin-bottom: 22px;
+      }
+      .lcard input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 11px;
+        border: 1px solid var(--line);
+        background: var(--bg-1);
+        color: var(--text);
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        outline: none;
+      }
+      .lcard input:focus {
+        border-color: var(--accent);
+      }
+      .lcard button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 11px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+      .lerr {
+        color: var(--danger);
+        font-size: 0.78rem;
+        height: 16px;
+        margin-bottom: 8px;
+      }
+      #app {
+        display: none;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 26px 18px 60px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+      header h1 {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+      header h1 span {
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .sub {
+        color: var(--text-faint);
+        font-size: 0.78rem;
+        margin-bottom: 22px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .dot {
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .refresh {
+        background: var(--bg-3);
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        border-radius: 9px;
+        padding: 7px 12px;
+        font-size: 0.78rem;
+        cursor: pointer;
+      }
+      .stale {
+        background: rgba(255, 84, 112, 0.12);
+        border: 1px solid rgba(255, 84, 112, 0.4);
+        color: #ffb0bf;
+        border-radius: 11px;
+        padding: 11px 15px;
+        font-size: 0.83rem;
+        margin-bottom: 18px;
+        display: none;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--bg-2);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px 18px 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      .card.off {
+        border-color: rgba(255, 84, 112, 0.45);
+      }
+      .card .top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .card .emoji {
+        font-size: 1.4rem;
+      }
+      .card .name {
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.1;
+      }
+      .badge {
+        margin-left: auto;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
+      .badge.on {
+        background: rgba(0, 255, 163, 0.13);
+        color: var(--ok);
+      }
+      .badge.off {
+        background: rgba(255, 84, 112, 0.15);
+        color: var(--danger);
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .metric .k {
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .metric .v {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin-top: 2px;
+      }
+      .avail {
+        margin-bottom: 12px;
+      }
+      .avail .k {
+        font-size: 0.68rem;
+        color: var(--text-faint);
+      }
+      .avail .bar {
+        height: 7px;
+        border-radius: 5px;
+        background: var(--bg-3);
+        overflow: hidden;
+        margin-top: 5px;
+      }
+      .avail .fill {
+        height: 100%;
+        border-radius: 5px;
+        background: linear-gradient(90deg, var(--ok), #3affc0);
+      }
+      .avail .fill.low {
+        background: linear-gradient(90deg, var(--warn), var(--danger));
+      }
+      .outage {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
+        margin-top: 4px;
+      }
+      .outage b {
+        color: var(--warn);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .chip {
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        background: var(--bg-3);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 3px 8px;
+      }
+      .chip.bad {
+        color: #ffb0bf;
+        border-color: rgba(255, 84, 112, 0.3);
+      }
+      footer {
+        text-align: center;
+        color: var(--text-faint);
+        font-size: 0.72rem;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="login">
+      <div class="lcard">
+        <h1>Estado Galerías 1PIXEL</h1>
+        <p>Panel interno · acceso restringido</p>
+        <div class="lerr" id="lerr"></div>
+        <input
+          id="pwd"
+          type="password"
+          placeholder="Clave de acceso"
+          autocomplete="off"
+        />
+        <button id="lbtn">Entrar</button>
+      </div>
+    </div>
+
+    <div id="app">
+      <header>
+        <h1><span>Estado Galerías</span> · 1PIXEL</h1>
+        <button class="refresh" id="refresh">↻ Actualizar</button>
+      </header>
+      <div class="sub" id="sub"></div>
+      <div class="stale" id="stale"></div>
+      <div class="grid" id="grid"></div>
+      <footer>1PIXEL · monitoreo interno · datos cada 5 min</footer>
+    </div>
+
+    <script>
+      const API = "https://1pixel-conteo-api.ai-ffd.workers.dev/estado/data";
+      const PWD = "Direccion2026";
+      const AUTH_KEY = "estado_auth_v1";
+
+      function unlocked() {
+        return localStorage.getItem(AUTH_KEY) === "1";
+      }
+      function showApp() {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("app").style.display = "block";
+        load();
+        setInterval(load, 60000);
+      }
+      document.getElementById("lbtn").onclick = tryLogin;
+      document.getElementById("pwd").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") tryLogin();
+      });
+      document.getElementById("refresh").onclick = load;
+      function tryLogin() {
+        if (document.getElementById("pwd").value === PWD) {
+          localStorage.setItem(AUTH_KEY, "1");
+          showApp();
+        } else document.getElementById("lerr").textContent = "Clave incorrecta";
+      }
+      if (unlocked()) showApp();
+
+      // helpers
+      function el(tag, cls, txt) {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (txt != null) e.textContent = txt;
+        return e;
+      }
+      function fmtDate(iso) {
+        if (!iso) return "—";
+        const d = new Date(iso);
+        if (isNaN(d)) return "—";
+        return d.toLocaleString("es-VE", {
+          day: "2-digit",
+          month: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+      function durMin(a, b) {
+        const t1 = new Date(a),
+          t2 = b ? new Date(b) : new Date();
+        const m = Math.round((t2 - t1) / 60000);
+        if (m < 60) return m + " min";
+        return Math.floor(m / 60) + "h " + (m % 60) + "min";
+      }
+      function num(x) {
+        const n = parseFloat(String(x).replace(/[^0-9.]/g, ""));
+        return isNaN(n) ? null : n;
+      }
+
+      async function load() {
+        const grid = document.getElementById("grid");
+        try {
+          const r = await fetch(API, { cache: "no-store" });
+          const d = await r.json();
+          const gals = d.galleries || [];
+          const recv = d.received_at ? new Date(d.received_at) : null;
+          const ageMin = recv ? Math.round((Date.now() - recv) / 60000) : null;
+          const staleEl = document.getElementById("stale");
+          if (ageMin !== null && ageMin > 13) {
+            staleEl.style.display = "block";
+            staleEl.textContent =
+              "⚠️ Datos sin actualizar hace " +
+              ageMin +
+              " min — el monitor (macgia) puede estar caído o sin internet.";
+          } else staleEl.style.display = "none";
+
+          const onCount = gals.filter((g) => g.online).length;
+          const sub = document.getElementById("sub");
+          sub.textContent = "";
+          const s1 = el("span");
+          const dot = el("span", "dot");
+          dot.style.background = "var(--ok)";
+          s1.appendChild(dot);
+          s1.appendChild(
+            document.createTextNode(
+              onCount + " online / " + gals.length + " galerías",
+            ),
+          );
+          sub.appendChild(s1);
+          sub.appendChild(
+            el("span", null, "Última lectura: " + fmtDate(d.generated_at)),
+          );
+
+          grid.textContent = "";
+          gals.forEach((g) => grid.appendChild(card(g)));
+          if (!gals.length)
+            grid.appendChild(el("div", "card", "Sin datos todavía."));
+        } catch (e) {
+          grid.textContent = "";
+          const c = el("div", "card");
+          c.appendChild(el("div", "name", "Error cargando datos"));
+          c.appendChild(el("div", "chip bad", String(e.message)));
+          grid.appendChild(c);
+        }
+      }
+
+      function card(g) {
+        const off = !g.online;
+        const av24 = g.availability_24h != null ? g.availability_24h : 100;
+        const av7 = g.availability_7d != null ? g.availability_7d : 100;
+        const c = el("div", "card" + (off ? " off" : ""));
+
+        const top = el("div", "top");
+        top.appendChild(el("span", "emoji", g.emoji || "📺"));
+        top.appendChild(el("span", "name", g.name || g.id));
+        top.appendChild(
+          el(
+            "span",
+            "badge " + (off ? "off" : "on"),
+            off ? "OFFLINE" : "ONLINE",
+          ),
+        );
+        c.appendChild(top);
+
+        const m = el("div", "metrics");
+        const m1 = el("div", "metric");
+        m1.appendChild(el("div", "k", "Uptime"));
+        m1.appendChild(el("div", "v", g.uptime || "—"));
+        m.appendChild(m1);
+        const m2 = el("div", "metric");
+        m2.appendChild(el("div", "k", "Cortes 24h"));
+        m2.appendChild(
+          el("div", "v", String(g.outages_24h != null ? g.outages_24h : 0)),
+        );
+        m.appendChild(m2);
+        c.appendChild(m);
+
+        const av = el("div", "avail");
+        av.appendChild(
+          el(
+            "div",
+            "k",
+            "Disponibilidad 24h · " + av24 + "%　|　7d · " + av7 + "%",
+          ),
+        );
+        const bar = el("div", "bar");
+        const fill = el("div", "fill" + (av24 < 99 ? " low" : ""));
+        fill.style.width = av24 + "%";
+        bar.appendChild(fill);
+        av.appendChild(bar);
+        c.appendChild(av);
+
+        const lo = g.last_outage;
+        const ot = el("div", "outage");
+        if (lo) {
+          if (!lo.restored_at) {
+            ot.appendChild(el("b", null, "Sin luz ahora"));
+            ot.appendChild(
+              document.createTextNode(
+                " desde " +
+                  fmtDate(lo.lost_at) +
+                  " (" +
+                  durMin(lo.lost_at, null) +
+                  ")",
+              ),
+            );
+          } else {
+            ot.textContent =
+              "Último corte: " +
+              fmtDate(lo.lost_at) +
+              " · duró " +
+              durMin(lo.lost_at, lo.restored_at);
+          }
+        } else ot.textContent = "Sin cortes registrados ✓";
+        c.appendChild(ot);
+
+        const cpuT = num(g.cpu_temp),
+          ssdT = num(g.ssd_temp);
+        const chips = el("div", "chips");
+        const addChip = (txt, bad) =>
+          chips.appendChild(el("span", "chip" + (bad ? " bad" : ""), txt));
+        addChip("VLC " + (g.vlc === "SI" ? "✓" : "✗"), g.vlc !== "SI");
+        addChip("CPU " + (g.cpu != null ? g.cpu : "?") + "%", false);
+        addChip("RAM " + (g.ram_pct != null ? g.ram_pct : "?") + "%", false);
+        if (cpuT != null) addChip("CPU " + g.cpu_temp, cpuT > 75);
+        if (ssdT != null) addChip("SSD " + g.ssd_temp, ssdT > 62);
+        if (g.wd && g.wd !== "OK") addChip("WD " + g.wd, true);
+        if (g.sync && g.sync !== "OK") addChip("Sync " + g.sync, true);
+        c.appendChild(chips);
+
+        return c;
+      }
+    </script>
+  </body>
+</html>
