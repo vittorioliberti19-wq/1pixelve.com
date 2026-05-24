@@ -479,6 +479,11 @@
               " · duró " +
               durMin(lo.lost_at, lo.restored_at);
           }
+          if (lo.inferred) {
+            const est = el("span", "chip", "estimado");
+            est.style.marginLeft = "7px";
+            ot.appendChild(est);
+          }
         } else ot.textContent = "Sin cortes registrados ✓";
         c.appendChild(ot);
 
