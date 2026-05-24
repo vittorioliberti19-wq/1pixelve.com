@@ -579,6 +579,105 @@
         </div>
       </div>
 
+      <h2 class="sec">Glosario — qué mide cada cosa</h2>
+      <div class="panel">
+        <dl
+          style="
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 12px 18px;
+            font-size: 0.84rem;
+            line-height: 1.5;
+          "
+        >
+          <dt style="color: var(--accent); font-weight: 600">SLA</dt>
+          <dd style="color: var(--text-dim)">
+            <i>Service Level Agreement</i> (Acuerdo de Nivel de Servicio). La
+            promesa de cuánto tiempo algo está funcionando, medido en % de
+            disponibilidad. Objetivo 95% = en 30 días permite ~36h de caída
+            máximo. Sirve para detectar galerías inestables y para prometerle a
+            un anunciante "tu anuncio se ve 95%+ del tiempo".
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">Disponibilidad</dt>
+          <dd style="color: var(--text-dim)">
+            % del tiempo que la galería estuvo encendida y operando (no caída
+            por corte de luz). Se calcula sobre las últimas 24h y 7 días.
+            <b style="color: var(--ok)">Verde</b> ≥95%,
+            <b style="color: var(--danger)">rojo</b> si no cumple.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">Uptime</dt>
+          <dd style="color: var(--text-dim)">
+            Horas que lleva la PC encendida sin reiniciarse (desde el último
+            arranque). No es lo mismo que disponibilidad: uptime es de la PC,
+            disponibilidad considera los cortes.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Impactos perdidos
+          </dt>
+          <dd style="color: var(--text-dim)">
+            Estimación comercial de cuántas personas/vehículos NO vieron el
+            anuncio por culpa de un corte. Cálculo: horas diurnas sin luz ×
+            tráfico promedio por hora × 25% (los que alcanzan a ver la pantalla
+            en su ciclo). Es estimado.
+          </dd>
+
+          <dt style="color: var(--warn); font-weight: 600">Estimado</dt>
+          <dd style="color: var(--text-dim)">
+            Corte inferido del histórico viejo: la cámara no detectó actividad
+            por 3+ horas en horario diurno (cuando siempre hay tráfico) →
+            asumimos que la PC estaba apagada por corte de luz. No es 100%
+            confirmado. Los cortes nuevos se detectan en vivo y NO llevan esta
+            etiqueta.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Timeline de cortes
+          </dt>
+          <dd style="color: var(--text-dim)">
+            Línea de tiempo de los últimos 30 días por galería. Cada marca = un
+            corte. Rojo = confirmado, ámbar = estimado. Ves de un vistazo cuándo
+            y con qué frecuencia se fue la luz.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Patrón horario (heatmap)
+          </dt>
+          <dd style="color: var(--text-dim)">
+            Cuadrícula día de la semana × hora. Mientras más rojo una celda, más
+            seguido se va la luz a esa hora. Revela si los cortes son a horas
+            predecibles (útil para decidir UPS o planta eléctrica).
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Ranking estabilidad
+          </dt>
+          <dd style="color: var(--text-dim)">
+            Galerías ordenadas por total de horas sin luz en 30 días. La de
+            arriba es la más estable (menos cortes), la de abajo la más
+            problemática. El número al lado: horas sin luz · cantidad de cortes.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Watchdog / Sync
+          </dt>
+          <dd style="color:var(--text-dim))">
+            <b>Watchdog</b>: vigilante que relanza el video si VLC se cae.
+            <b>Sync</b>: sincronización de la lista de videos con Google Drive.
+            Ambos en "OK" = la pantalla se auto-recupera y tiene los videos al
+            día.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">VLC</dt>
+          <dd style="color: var(--text-dim)">
+            El reproductor que pone los videos en la pantalla LED. "VLC ✓" =
+            reproduciendo; "✗" = pantalla negra (problema).
+          </dd>
+        </dl>
+      </div>
+
       <footer>
         1PIXEL · monitoreo interno · datos cada 5 min · cortes "estimado"
         inferidos de actividad de cámara
