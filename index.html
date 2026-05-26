@@ -573,11 +573,8 @@
         box-shadow: 0 0 10px var(--cyan);
       }
 
-      /* === CLIENTES CINTILLO === */
+      /* === CLIENTES GRID PIXEL === */
       .clientes-section {
-        overflow: hidden;
-        max-width: 100vw;
-        padding: 48px 0;
         background: var(--bg-light);
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -591,107 +588,123 @@
         letter-spacing: 4px;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.45);
-        margin-bottom: 32px;
+        margin-bottom: 40px;
       }
 
-      .clientes-track-wrapper {
+      .clientes-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-auto-rows: 110px;
+        gap: 1px;
+        width: 92%;
+        max-width: 1160px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+      }
+
+      .logo-cell {
         position: relative;
+        display: grid;
+        place-items: center;
         overflow: hidden;
-        mask-image: linear-gradient(
-          90deg,
-          transparent 0,
-          #000 80px,
-          #000 calc(100% - 80px),
-          transparent 100%
-        );
-        -webkit-mask-image: linear-gradient(
-          90deg,
-          transparent 0,
-          #000 80px,
-          #000 calc(100% - 80px),
-          transparent 100%
-        );
+        background: var(--bg-card);
+        cursor: pointer;
+        user-select: none;
+        isolation: isolate;
+        transition: box-shadow 0.3s ease;
       }
 
-      .clientes-track {
-        display: flex;
-        width: max-content;
-        align-items: center;
-        gap: 64px;
-        animation: marquee 50s linear infinite;
+      .logo-cell:hover {
+        z-index: 2;
+        box-shadow:
+          0 8px 24px -8px rgba(139, 0, 255, 0.3),
+          inset 0 0 0 1px rgba(139, 0, 255, 0.45);
       }
 
-      .clientes-track:hover {
-        animation-play-state: paused;
+      .logo-cell canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
       }
 
-      .clientes-track img {
-        height: 60px;
+      .logo-cell img {
+        position: relative;
+        z-index: 1;
         width: auto;
-        max-width: 160px;
+        max-width: 62%;
+        max-height: 48px;
         object-fit: contain;
-        flex-shrink: 0;
-        opacity: 1;
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border-radius: 12px;
-        padding: 10px 16px;
-        box-sizing: content-box;
+        opacity: 0.5;
+        filter: grayscale(1);
         transition:
           opacity 0.3s ease,
+          filter 0.3s ease,
           transform 0.3s ease;
       }
 
-      .clientes-track img.logo-lg {
-        height: 90px;
-        max-width: 200px;
-      }
-
-      .clientes-track img:hover {
+      .logo-cell:hover img {
         opacity: 1;
-        transform: scale(1.08);
-      }
-
-      .clientes-track .cliente-nombre {
-        flex-shrink: 0;
-        font-family: var(--font-display);
-        font-size: 1.05rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.7);
-        white-space: nowrap;
-        transition:
-          color 0.3s ease,
-          transform 0.3s ease;
-      }
-
-      .clientes-track .cliente-nombre:hover {
-        color: var(--white);
+        filter: grayscale(0);
         transform: scale(1.06);
       }
 
+      .clientes-textblock {
+        grid-column: 2 / span 3;
+        grid-row: 2 / span 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: var(--bg-card);
+        text-align: center;
+        padding: 24px;
+      }
+
+      .clientes-textblock .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 999px;
+        background: var(--bg-light);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      .clientes-textblock h2 {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+        color: var(--white);
+        max-width: 460px;
+      }
+
       @media (max-width: 768px) {
-        .clientes-section {
-          padding: 36px 0;
+        .clientes-grid {
+          grid-template-columns: repeat(3, 1fr);
+          grid-auto-rows: 92px;
         }
-        .clientes-track {
-          gap: 40px;
-          animation-duration: 40s;
+        .clientes-textblock {
+          grid-column: 1 / -1;
+          grid-row: 1;
+          padding: 28px 16px;
         }
-        .clientes-track img {
-          height: 44px;
-          max-width: 120px;
+        .clientes-textblock h2 {
+          font-size: 1.25rem;
         }
-        .clientes-track .cliente-nombre {
-          font-size: 0.9rem;
-          letter-spacing: 0.8px;
+        .logo-cell img {
+          max-width: 70%;
+          max-height: 38px;
         }
         .clientes-label {
           font-size: 0.7rem;
           letter-spacing: 3px;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
         }
       }
 
@@ -2046,218 +2059,10 @@
         </div>
       </section>
 
-      <!-- CLIENTES CINTILLO -->
-      <section
-        class="clientes-section"
-        aria-label="Marcas que confían en 1PIXEL"
-      >
+      <!-- CLIENTES GRID PIXEL -->
+      <section class="clientes-section" aria-label="Marcas que confían en 1PIXEL">
         <div class="clientes-label">Marcas que confían en nosotros</div>
-        <div class="clientes-track-wrapper">
-          <div class="clientes-track">
-            <img
-              class="logo-chip"
-              src="clientes/polar.png"
-              alt="Cervecería Polar"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/pepsi.png"
-              alt="Pepsi"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/mavesa.png"
-              alt="Mavesa"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/pan.png"
-              alt="Harina P.A.N."
-              loading="lazy"
-            />
-            <img
-              class="logo-lg"
-              src="clientes/alkosto.png"
-              alt="Alkosto"
-              loading="lazy"
-            />
-            <img
-              src="clientes/margarita.png"
-              alt="Atún Margarita"
-              loading="lazy"
-            />
-            <img src="clientes/maraplus.png" alt="Maraplus" loading="lazy" />
-            <img
-              class="logo-lg"
-              src="clientes/yukery.png"
-              alt="Yukery"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip logo-lg"
-              src="clientes/canel.png"
-              alt="Canel"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/disprocar.png"
-              alt="Disprocar"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip logo-lg"
-              src="clientes/farruggio.png"
-              alt="Farruggio"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/oz.png"
-              alt="OZ"
-              loading="lazy"
-            />
-            <img
-              class="logo-lg"
-              src="clientes/salvaje.png"
-              alt="Salvaje"
-              loading="lazy"
-            />
-            <img src="clientes/san-simon.png" alt="San Simón" loading="lazy" />
-            <img src="clientes/javitour.png" alt="Javitour" loading="lazy" />
-            <img
-              class="logo-chip"
-              src="clientes/carorena.png"
-              alt="Sangría Carorena"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/bnc.png"
-              alt="BNC"
-              loading="lazy"
-            />
-            <!-- duplicado para loop seamless -->
-            <img
-              class="logo-chip"
-              src="clientes/polar.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/pepsi.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/mavesa.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/pan.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-lg"
-              src="clientes/alkosto.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/margarita.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/maraplus.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-lg"
-              src="clientes/yukery.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip logo-lg"
-              src="clientes/canel.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/disprocar.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip logo-lg"
-              src="clientes/farruggio.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/oz.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-lg"
-              src="clientes/salvaje.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/san-simon.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              src="clientes/javitour.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/carorena.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-            <img
-              class="logo-chip"
-              src="clientes/bnc.png"
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-            />
-          </div>
-        </div>
+        <div class="clientes-grid" id="clientesGrid"></div>
       </section>
 
       <!-- GALERIAS -->
@@ -3528,6 +3333,145 @@
           }
         ]
       }
+    </script>
+    <script>
+      /* === CLIENTES GRID PIXEL (shimmer hover) === */
+      (function () {
+        var CLIENTES = [
+          { src: "clientes/polar.png", name: "Cervecería Polar" },
+          { src: "clientes/pepsi.png", name: "Pepsi" },
+          { src: "clientes/mavesa.png", name: "Mavesa" },
+          { src: "clientes/pan.png", name: "Harina P.A.N." },
+          { src: "clientes/alkosto.png", name: "Alkosto" },
+          { src: "clientes/margarita.png", name: "Atún Margarita" },
+          { src: "clientes/maraplus.png", name: "Maraplus" },
+          { src: "clientes/yukery.png", name: "Yukery" },
+          { src: "clientes/canel.png", name: "Canel" },
+          { src: "clientes/disprocar.png", name: "Disprocar" },
+          { src: "clientes/farruggio.png", name: "Farruggio" },
+          { src: "clientes/oz.png", name: "OZ" },
+          { src: "clientes/salvaje.png", name: "Salvaje" },
+          { src: "clientes/san-simon.png", name: "San Simón" },
+          { src: "clientes/javitour.png", name: "Javitour" },
+          { src: "clientes/carorena.png", name: "Sangría Carorena" },
+          { src: "clientes/bnc.png", name: "BNC" },
+          { src: "clientes/palmira.png", name: "Palmira" }
+        ];
+        var COLORS = ["#8b00ff", "#ff00ff", "#00ff88"];
+        var TOTAL_CELLS = 24; // 5 cols x 6 rows - 6 center text cells = 24 (incl text uses reserved area)
+        var grid = document.getElementById("clientesGrid");
+        if (!grid) return;
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        var tb = document.createElement("div");
+        tb.className = "clientes-textblock";
+        tb.innerHTML =
+          '<span class="pill">Nuestros clientes</span>' +
+          '<h2>Marcas líderes que confían en nuestras pantallas LED</h2>';
+        grid.appendChild(tb);
+
+        function rand(min, max) { return Math.random() * (max - min) + min; }
+
+        function attachPixels(cell) {
+          var canvas = document.createElement("canvas");
+          cell.appendChild(canvas);
+          var ctx = canvas.getContext("2d");
+          var pixels = [], raf = 0, last = performance.now();
+
+          function mkPixel(x, y, color, spd, delay) {
+            var p = {
+              x: x, y: y, color: color, speed: spd, size: 0,
+              sizeStep: Math.random() * 0.4, minSize: 0.5, maxSizeInt: 2,
+              maxSize: rand(0.5, 2), delay: delay, counter: 0,
+              counterStep: Math.random() * 4 + (canvas.width + canvas.height) * 0.01,
+              isIdle: false, isReverse: false, isShimmer: false
+            };
+            p.draw = function () {
+              var off = p.maxSizeInt * 0.5 - p.size * 0.5;
+              ctx.fillStyle = p.color;
+              ctx.fillRect(p.x + off, p.y + off, p.size, p.size);
+            };
+            p.shimmer = function () {
+              if (p.size >= p.maxSize) p.isReverse = true;
+              else if (p.size <= p.minSize) p.isReverse = false;
+              if (p.isReverse) p.size -= p.speed; else p.size += p.speed;
+            };
+            p.appear = function () {
+              p.isIdle = false;
+              if (p.counter <= p.delay) { p.counter += p.counterStep; return; }
+              if (p.size >= p.maxSize) p.isShimmer = true;
+              if (p.isShimmer) p.shimmer(); else p.size += p.sizeStep;
+              p.draw();
+            };
+            p.disappear = function () {
+              p.isShimmer = false;
+              p.counter = 0;
+              if (p.size <= 0) { p.isIdle = true; return; }
+              p.size -= 0.1;
+              p.draw();
+            };
+            return p;
+          }
+
+          function init() {
+            var r = cell.getBoundingClientRect();
+            var w = Math.floor(r.width), h = Math.floor(r.height);
+            if (!w || !h) return;
+            canvas.width = w; canvas.height = h;
+            canvas.style.width = w + "px"; canvas.style.height = h + "px";
+            var gap = 5, speed = reduce ? 0 : 0.03;
+            pixels = [];
+            for (var x = 0; x < w; x += gap) {
+              for (var y = 0; y < h; y += gap) {
+                var color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                var dx = x - w / 2, dy = y - h / 2;
+                var delay = reduce ? 0 : Math.sqrt(dx * dx + dy * dy);
+                pixels.push(mkPixel(x, y, color, rand(0.1, 0.9) * speed, delay));
+              }
+            }
+          }
+
+          function animate(mode) {
+            cancelAnimationFrame(raf);
+            var fi = 1000 / 60;
+            function loop() {
+              raf = requestAnimationFrame(loop);
+              var now = performance.now(), el = now - last;
+              if (el < fi) return;
+              last = now - (el % fi);
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              for (var i = 0; i < pixels.length; i++) pixels[i][mode]();
+              if (pixels.every(function (p) { return p.isIdle; })) cancelAnimationFrame(raf);
+            }
+            raf = requestAnimationFrame(loop);
+          }
+
+          init();
+          if (typeof ResizeObserver !== "undefined") {
+            new ResizeObserver(function () { init(); }).observe(cell);
+          }
+          cell.addEventListener("mouseenter", function () { animate("appear"); });
+          cell.addEventListener("mouseleave", function () { animate("disappear"); });
+        }
+
+        function makeCell(client) {
+          var cell = document.createElement("div");
+          cell.className = "logo-cell";
+          if (client) {
+            var img = document.createElement("img");
+            img.src = client.src;
+            img.alt = client.name;
+            img.loading = "lazy";
+            cell.appendChild(img);
+          }
+          grid.appendChild(cell);
+          attachPixels(cell);
+        }
+
+        CLIENTES.forEach(function (c) { makeCell(c); });
+        var decor = TOTAL_CELLS - CLIENTES.length;
+        for (var d = 0; d < decor; d++) makeCell(null);
+      })();
     </script>
   </body>
 </html>
