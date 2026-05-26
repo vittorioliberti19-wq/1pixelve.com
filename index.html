@@ -300,7 +300,7 @@
         width: 100%;
       }
 
-      .nav-cta {
+      .nav-cta:not(.shiny-cta) {
         background: transparent;
         border: 1px solid var(--cyan);
         color: var(--cyan) !important;
@@ -315,13 +315,15 @@
         letter-spacing: 1px;
       }
 
-      .nav-cta:hover {
+      .nav-cta:not(.shiny-cta):hover {
         background: var(--cyan);
         color: var(--bg) !important;
         box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
       }
 
-      .nav-cta::after {
+      /* el botón nav comparte ::after con el subrayado del nav; lo
+         suprimimos (alta especificidad) para que no choque con shiny */
+      .nav-links a.nav-cta::after {
         display: none !important;
       }
 
@@ -426,7 +428,12 @@
         font-weight: 500;
         letter-spacing: 2px;
         text-transform: uppercase;
-        color: var(--cyan);
+        color: #c89bff;
+        background: rgba(10, 10, 10, 0.55);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-color: rgba(139, 0, 255, 0.6);
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
         margin-bottom: 24px;
         animation: fade-in-up 0.8s ease forwards;
         animation-delay: 0.2s;
@@ -521,6 +528,189 @@
         box-shadow: 0 0 20px rgba(0, 245, 255, 0.15);
       }
 
+      /* === SHINY CTA (estilo global de botones) === */
+      @property --gradient-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-angle-offset {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-percent {
+        syntax: "<percentage>";
+        initial-value: 5%;
+        inherits: false;
+      }
+      @property --gradient-shine {
+        syntax: "<color>";
+        initial-value: #f0f0f0;
+        inherits: false;
+      }
+
+      .shiny-cta {
+        --shiny-cta-bg: #0a0a0a;
+        --shiny-cta-bg-subtle: #1a1622;
+        --shiny-cta-fg: #f0f0f0;
+        --shiny-cta-highlight: #8b00ff;
+        --shiny-cta-highlight-subtle: #b366ff;
+        --animation: gradient-angle linear infinite;
+        --duration: 3s;
+        --shadow-size: 2px;
+        --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
+        isolation: isolate;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        outline-offset: 4px;
+        padding: 1rem 2.2rem;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.2;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 1px solid transparent;
+        border-radius: 360px;
+        color: var(--shiny-cta-fg);
+        background:
+          linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+          conic-gradient(
+              from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+              transparent,
+              var(--shiny-cta-highlight) var(--gradient-percent),
+              var(--gradient-shine) calc(var(--gradient-percent) * 2),
+              var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+              transparent calc(var(--gradient-percent) * 4)
+            )
+            border-box;
+        box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+        transition: var(--transition);
+        transition-property:
+          --gradient-angle-offset, --gradient-percent, --gradient-shine;
+      }
+      .shiny-cta::before,
+      .shiny-cta::after,
+      .shiny-cta span::before {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        translate: -50% -50%;
+        z-index: -1;
+      }
+      .shiny-cta:active {
+        translate: 0 1px;
+      }
+      .shiny-cta::before {
+        --size: calc(100% - var(--shadow-size) * 3);
+        --position: 2px;
+        --space: calc(var(--position) * 2);
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(
+            circle at var(--position) var(--position),
+            #fff calc(var(--position) / 4),
+            transparent 0
+          )
+          padding-box;
+        background-size: var(--space) var(--space);
+        background-repeat: space;
+        mask-image: conic-gradient(
+          from calc(var(--gradient-angle) + 45deg),
+          black,
+          transparent 10% 90%,
+          black
+        );
+        border-radius: inherit;
+        opacity: 0.4;
+        z-index: -1;
+      }
+      .shiny-cta::after {
+        --animation: shimmer linear infinite;
+        width: 100%;
+        aspect-ratio: 1;
+        background: linear-gradient(
+          -50deg,
+          transparent,
+          var(--shiny-cta-highlight),
+          transparent
+        );
+        mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+        opacity: 0.6;
+      }
+      .shiny-cta span {
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--shiny-cta-fg);
+      }
+      .shiny-cta span::before {
+        --size: calc(100% + 1rem);
+        width: var(--size);
+        height: var(--size);
+        box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+        opacity: 0;
+        transition: opacity var(--transition);
+        animation: calc(var(--duration) * 1.5) breathe linear infinite;
+      }
+      .shiny-cta,
+      .shiny-cta::before,
+      .shiny-cta::after {
+        animation:
+          var(--animation) var(--duration),
+          var(--animation) calc(var(--duration) / 0.4) reverse paused;
+        animation-composition: add;
+      }
+      .shiny-cta:is(:hover, :focus-visible) {
+        --gradient-percent: 20%;
+        --gradient-angle-offset: 95deg;
+        --gradient-shine: var(--shiny-cta-highlight-subtle);
+      }
+      .shiny-cta:is(:hover, :focus-visible),
+      .shiny-cta:is(:hover, :focus-visible)::before,
+      .shiny-cta:is(:hover, :focus-visible)::after {
+        animation-play-state: running;
+      }
+      .shiny-cta:is(:hover, :focus-visible) span::before {
+        opacity: 1;
+      }
+      .shiny-cta.shiny-sm {
+        padding: 0.55rem 1.4rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .shiny-cta,
+        .shiny-cta::before,
+        .shiny-cta::after {
+          animation: none;
+        }
+      }
+      @keyframes gradient-angle {
+        to {
+          --gradient-angle: 360deg;
+        }
+      }
+      @keyframes shimmer {
+        to {
+          rotate: 360deg;
+        }
+      }
+      @keyframes breathe {
+        from,
+        to {
+          scale: 1;
+        }
+        50% {
+          scale: 1.2;
+        }
+      }
+
       .hero-scroll {
         position: absolute;
         bottom: 40px;
@@ -593,8 +783,8 @@
 
       .clientes-grid {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-auto-rows: 110px;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 128px;
         gap: 1px;
         width: 92%;
         max-width: 1160px;
@@ -632,21 +822,15 @@
         position: relative;
         z-index: 1;
         width: auto;
-        max-width: 62%;
-        max-height: 48px;
+        max-width: 78%;
+        max-height: 70px;
         object-fit: contain;
-        opacity: 0.5;
-        filter: grayscale(1);
-        transition:
-          opacity 0.3s ease,
-          filter 0.3s ease,
-          transform 0.3s ease;
+        opacity: 1;
+        transition: transform 0.3s ease;
       }
 
       .logo-cell:hover img {
-        opacity: 1;
-        filter: grayscale(0);
-        transform: scale(1.06);
+        transform: scale(1.08);
       }
 
       .clientes-textblock {
@@ -698,8 +882,8 @@
           font-size: 1.25rem;
         }
         .logo-cell img {
-          max-width: 70%;
-          max-height: 38px;
+          max-width: 80%;
+          max-height: 50px;
         }
         .clientes-label {
           font-size: 0.7rem;
@@ -1440,23 +1624,6 @@
 
       .btn-submit {
         width: 100%;
-        padding: 16px;
-        background: linear-gradient(135deg, var(--cyan), #00c8d4);
-        color: var(--bg);
-        font-family: var(--font-body);
-        font-size: 1rem;
-        font-weight: 700;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .btn-submit:hover {
-        box-shadow: 0 0 30px rgba(0, 245, 255, 0.4);
-        transform: translateY(-2px);
       }
 
       .captcha-group {
@@ -1926,7 +2093,11 @@
           <li><a href="#galerias">Galerías</a></li>
           <li><a href="#ventajas">Ventajas</a></li>
           <li><a href="#roadmap">Expansión</a></li>
-          <li><a href="#contacto" class="nav-cta">Contacto</a></li>
+          <li>
+            <a href="#contacto" class="nav-cta shiny-cta shiny-sm"
+              ><span>Contacto</span></a
+            >
+          </li>
         </ul>
         <button class="hamburger" id="hamburger" aria-label="Menú">
           <span></span><span></span><span></span>
@@ -1959,14 +2130,14 @@
         <div class="hero-buttons">
           <a
             href="https://wa.me/584222174935?text=Hola%2C%20quiero%20anunciarme%20en%201PIXEL"
-            class="btn-primary"
+            class="btn-primary shiny-cta"
             target="_blank"
             rel="noopener"
           >
-            <i class="fab fa-whatsapp"></i> Quiero anunciarme
+            <span><i class="fab fa-whatsapp"></i> Quiero anunciarme</span>
           </a>
-          <a href="#que-es" class="btn-secondary">
-            <i class="fas fa-play"></i> Conoce más
+          <a href="#que-es" class="btn-secondary shiny-cta">
+            <span><i class="fas fa-play"></i> Conoce más</span>
           </a>
         </div>
       </div>
@@ -2060,7 +2231,10 @@
       </section>
 
       <!-- CLIENTES GRID PIXEL -->
-      <section class="clientes-section" aria-label="Marcas que confían en 1PIXEL">
+      <section
+        class="clientes-section"
+        aria-label="Marcas que confían en 1PIXEL"
+      >
         <div class="clientes-label">Marcas que confían en nosotros</div>
         <div class="clientes-grid" id="clientesGrid"></div>
       </section>
@@ -2551,8 +2725,11 @@
                       Debes completar el captcha.
                     </div>
                   </div>
-                  <button type="submit" class="btn-submit">
-                    <i class="fas fa-paper-plane"></i> Quiero más información
+                  <button type="submit" class="btn-submit shiny-cta">
+                    <span
+                      ><i class="fas fa-paper-plane"></i> Quiero más
+                      información</span
+                    >
                   </button>
                 </form>
               </div>
@@ -3355,36 +3532,52 @@
           { src: "clientes/javitour.png", name: "Javitour" },
           { src: "clientes/carorena.png", name: "Sangría Carorena" },
           { src: "clientes/bnc.png", name: "BNC" },
-          { src: "clientes/palmira.png", name: "Palmira" }
+          { src: "clientes/palmira.png", name: "Palmira" },
         ];
-        var COLORS = ["#8b00ff", "#ff00ff", "#00ff88"];
-        var TOTAL_CELLS = 24; // 5 cols x 6 rows - 6 center text cells = 24 (incl text uses reserved area)
+        var COLORS = ["#8b00ff", "#5a1fe0", "#e0102f", "#b30f2a"];
         var grid = document.getElementById("clientesGrid");
         if (!grid) return;
-        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
 
         var tb = document.createElement("div");
         tb.className = "clientes-textblock";
         tb.innerHTML =
           '<span class="pill">Nuestros clientes</span>' +
-          '<h2>Marcas líderes que confían en nuestras pantallas LED</h2>';
+          "<h2>Marcas líderes que confían en nuestras pantallas LED</h2>";
         grid.appendChild(tb);
 
-        function rand(min, max) { return Math.random() * (max - min) + min; }
+        function rand(min, max) {
+          return Math.random() * (max - min) + min;
+        }
 
         function attachPixels(cell) {
           var canvas = document.createElement("canvas");
           cell.appendChild(canvas);
           var ctx = canvas.getContext("2d");
-          var pixels = [], raf = 0, last = performance.now();
+          var pixels = [],
+            raf = 0,
+            last = performance.now();
 
           function mkPixel(x, y, color, spd, delay) {
             var p = {
-              x: x, y: y, color: color, speed: spd, size: 0,
-              sizeStep: Math.random() * 0.4, minSize: 0.5, maxSizeInt: 2,
-              maxSize: rand(0.5, 2), delay: delay, counter: 0,
-              counterStep: Math.random() * 4 + (canvas.width + canvas.height) * 0.01,
-              isIdle: false, isReverse: false, isShimmer: false
+              x: x,
+              y: y,
+              color: color,
+              speed: spd,
+              size: 0,
+              sizeStep: Math.random() * 0.4,
+              minSize: 0.5,
+              maxSizeInt: 2,
+              maxSize: rand(0.5, 2),
+              delay: delay,
+              counter: 0,
+              counterStep:
+                Math.random() * 4 + (canvas.width + canvas.height) * 0.01,
+              isIdle: false,
+              isReverse: false,
+              isShimmer: false,
             };
             p.draw = function () {
               var off = p.maxSizeInt * 0.5 - p.size * 0.5;
@@ -3394,19 +3587,27 @@
             p.shimmer = function () {
               if (p.size >= p.maxSize) p.isReverse = true;
               else if (p.size <= p.minSize) p.isReverse = false;
-              if (p.isReverse) p.size -= p.speed; else p.size += p.speed;
+              if (p.isReverse) p.size -= p.speed;
+              else p.size += p.speed;
             };
             p.appear = function () {
               p.isIdle = false;
-              if (p.counter <= p.delay) { p.counter += p.counterStep; return; }
+              if (p.counter <= p.delay) {
+                p.counter += p.counterStep;
+                return;
+              }
               if (p.size >= p.maxSize) p.isShimmer = true;
-              if (p.isShimmer) p.shimmer(); else p.size += p.sizeStep;
+              if (p.isShimmer) p.shimmer();
+              else p.size += p.sizeStep;
               p.draw();
             };
             p.disappear = function () {
               p.isShimmer = false;
               p.counter = 0;
-              if (p.size <= 0) { p.isIdle = true; return; }
+              if (p.size <= 0) {
+                p.isIdle = true;
+                return;
+              }
               p.size -= 0.1;
               p.draw();
             };
@@ -3415,18 +3616,25 @@
 
           function init() {
             var r = cell.getBoundingClientRect();
-            var w = Math.floor(r.width), h = Math.floor(r.height);
+            var w = Math.floor(r.width),
+              h = Math.floor(r.height);
             if (!w || !h) return;
-            canvas.width = w; canvas.height = h;
-            canvas.style.width = w + "px"; canvas.style.height = h + "px";
-            var gap = 5, speed = reduce ? 0 : 0.03;
+            canvas.width = w;
+            canvas.height = h;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+            var gap = 5,
+              speed = reduce ? 0 : 0.03;
             pixels = [];
             for (var x = 0; x < w; x += gap) {
               for (var y = 0; y < h; y += gap) {
                 var color = COLORS[Math.floor(Math.random() * COLORS.length)];
-                var dx = x - w / 2, dy = y - h / 2;
+                var dx = x - w / 2,
+                  dy = y - h / 2;
                 var delay = reduce ? 0 : Math.sqrt(dx * dx + dy * dy);
-                pixels.push(mkPixel(x, y, color, rand(0.1, 0.9) * speed, delay));
+                pixels.push(
+                  mkPixel(x, y, color, rand(0.1, 0.9) * speed, delay),
+                );
               }
             }
           }
@@ -3436,22 +3644,34 @@
             var fi = 1000 / 60;
             function loop() {
               raf = requestAnimationFrame(loop);
-              var now = performance.now(), el = now - last;
+              var now = performance.now(),
+                el = now - last;
               if (el < fi) return;
               last = now - (el % fi);
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               for (var i = 0; i < pixels.length; i++) pixels[i][mode]();
-              if (pixels.every(function (p) { return p.isIdle; })) cancelAnimationFrame(raf);
+              if (
+                pixels.every(function (p) {
+                  return p.isIdle;
+                })
+              )
+                cancelAnimationFrame(raf);
             }
             raf = requestAnimationFrame(loop);
           }
 
           init();
           if (typeof ResizeObserver !== "undefined") {
-            new ResizeObserver(function () { init(); }).observe(cell);
+            new ResizeObserver(function () {
+              init();
+            }).observe(cell);
           }
-          cell.addEventListener("mouseenter", function () { animate("appear"); });
-          cell.addEventListener("mouseleave", function () { animate("disappear"); });
+          cell.addEventListener("mouseenter", function () {
+            animate("appear");
+          });
+          cell.addEventListener("mouseleave", function () {
+            animate("disappear");
+          });
         }
 
         function makeCell(client) {
@@ -3468,9 +3688,9 @@
           attachPixels(cell);
         }
 
-        CLIENTES.forEach(function (c) { makeCell(c); });
-        var decor = TOTAL_CELLS - CLIENTES.length;
-        for (var d = 0; d < decor; d++) makeCell(null);
+        CLIENTES.forEach(function (c) {
+          makeCell(c);
+        });
       })();
     </script>
   </body>
