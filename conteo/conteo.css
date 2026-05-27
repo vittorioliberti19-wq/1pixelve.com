@@ -17,6 +17,38 @@
     rgba(139, 92, 255, 0.15),
     transparent 60%
   );
+  --chart-grid: rgba(255, 255, 255, 0.04);
+  --chart-tick: #5e5e6e;
+  --chart-legend: #9b9bab;
+}
+
+:root[data-theme="light"] {
+  --bg-0: #f3f3f6;
+  --bg-1: #ffffff;
+  --bg-2: #f7f7fa;
+  --bg-3: #ececf1;
+  --line: rgba(0, 0, 0, 0.09);
+  --text: #16161c;
+  --text-dim: #5a5a68;
+  --text-faint: #8a8a98;
+  --grid-glow: radial-gradient(
+    circle at 50% 0%,
+    rgba(139, 92, 255, 0.1),
+    transparent 60%
+  );
+  --chart-grid: rgba(0, 0, 0, 0.07);
+  --chart-tick: #8a8a98;
+  --chart-legend: #5a5a68;
+}
+
+.theme-btn .ico-sun {
+  display: none;
+}
+:root[data-theme="light"] .theme-btn .ico-sun {
+  display: block;
+}
+:root[data-theme="light"] .theme-btn .ico-moon {
+  display: none;
 }
 
 [hidden] {

@@ -21,6 +21,31 @@
         --ok: #00ffa3;
         --warn: #ffb547;
         --danger: #ff5470;
+        --chart-grid: rgba(255, 255, 255, 0.05);
+        --chart-tick: #9b9bab;
+        --chart-legend: #f4f4f6;
+      }
+      :root[data-theme="light"] {
+        --bg-0: #f3f3f6;
+        --bg-1: #ffffff;
+        --bg-2: #f7f7fa;
+        --bg-3: #ececf1;
+        --line: rgba(0, 0, 0, 0.09);
+        --text: #16161c;
+        --text-dim: #5a5a68;
+        --text-faint: #8a8a98;
+        --chart-grid: rgba(0, 0, 0, 0.07);
+        --chart-tick: #8a8a98;
+        --chart-legend: #16161c;
+      }
+      .theme-btn .ico-sun {
+        display: none;
+      }
+      :root[data-theme="light"] .theme-btn .ico-sun {
+        display: inline;
+      }
+      :root[data-theme="light"] .theme-btn .ico-moon {
+        display: none;
       }
       * {
         box-sizing: border-box;
@@ -523,7 +548,12 @@
     <div id="app">
       <header>
         <h1><span>Estado Galerías</span> · 1PIXEL</h1>
-        <button class="refresh" id="refresh">↻ Actualizar</button>
+        <div style="display: flex; gap: 8px">
+          <button class="refresh theme-btn" id="theme" title="Cambiar tema">
+            <span class="ico-moon">🌙</span><span class="ico-sun">☀️</span>
+          </button>
+          <button class="refresh" id="refresh">↻ Actualizar</button>
+        </div>
       </header>
       <div class="sub" id="sub"></div>
       <div class="stale" id="stale"></div>
@@ -689,7 +719,35 @@
       const PWD = "Direccion2026",
         AUTH_KEY = "estado_auth_v1",
         SLA_TARGET = 95;
+      const THEME_KEY = "1pixel_theme";
       let availChart = null;
+      let lastGals = null;
+
+      (function initTheme() {
+        try {
+          if (localStorage.getItem(THEME_KEY) === "light")
+            document.documentElement.setAttribute("data-theme", "light");
+        } catch (e) {}
+      })();
+      function cssVar(n) {
+        return getComputedStyle(document.documentElement)
+          .getPropertyValue(n)
+          .trim();
+      }
+      function toggleTheme() {
+        const next =
+          document.documentElement.getAttribute("data-theme") === "light"
+            ? "dark"
+            : "light";
+        if (next === "light")
+          document.documentElement.setAttribute("data-theme", "light");
+        else document.documentElement.removeAttribute("data-theme");
+        try {
+          localStorage.setItem(THEME_KEY, next);
+        } catch (e) {}
+        if (lastGals) renderAvailChart(lastGals);
+      }
+      document.getElementById("theme").onclick = toggleTheme;
 
       function unlocked() {
         return localStorage.getItem(AUTH_KEY) === "1";
@@ -774,6 +832,7 @@
           const r = await fetch(API, { cache: "no-store" });
           const d = await r.json();
           const gals = d.galleries || [];
+          lastGals = gals;
           const recv = d.received_at ? new Date(d.received_at) : null;
           const ageMin = recv ? Math.round((Date.now() - recv) / 60000) : null;
           const staleEl = document.getElementById("stale");
@@ -1142,13 +1201,21 @@
               y: {
                 min: 0,
                 max: 100,
-                ticks: { color: "#9b9bab", callback: (v) => v + "%" },
-                grid: { color: "rgba(255,255,255,.05)" },
+                ticks: {
+                  color: cssVar("--chart-tick"),
+                  callback: (v) => v + "%",
+                },
+                grid: { color: cssVar("--chart-grid") },
               },
-              x: { ticks: { color: "#9b9bab" }, grid: { display: false } },
+              x: {
+                ticks: { color: cssVar("--chart-tick") },
+                grid: { display: false },
+              },
             },
             plugins: {
-              legend: { labels: { color: "#f4f4f6", font: { size: 11 } } },
+              legend: {
+                labels: { color: cssVar("--chart-legend"), font: { size: 11 } },
+              },
             },
           },
         });

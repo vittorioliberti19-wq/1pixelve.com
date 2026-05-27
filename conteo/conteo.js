@@ -1,5 +1,33 @@
 // 1PIXEL Conteo dashboard
 
+const THEME_KEY = "1pixel_theme";
+(function initTheme() {
+  try {
+    if (localStorage.getItem(THEME_KEY) === "light")
+      document.documentElement.setAttribute("data-theme", "light");
+  } catch {}
+})();
+
+function cssVar(name) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
+}
+
+function toggleTheme() {
+  const next =
+    document.documentElement.getAttribute("data-theme") === "light"
+      ? "dark"
+      : "light";
+  if (next === "light")
+    document.documentElement.setAttribute("data-theme", "light");
+  else document.documentElement.removeAttribute("data-theme");
+  try {
+    localStorage.setItem(THEME_KEY, next);
+  } catch {}
+  if (lastData) renderData(lastData);
+}
+
 const API_BASE = "https://1pixel-conteo-api.ai-ffd.workers.dev";
 const TOKEN_KEY = "1pixel_conteo_token";
 const GALLERY_KEY = "1pixel_conteo_gallery";
@@ -117,6 +145,7 @@ let chart = null;
 let contextChart = null;
 let donutChart = null;
 let refreshTimer = null;
+let lastData = null;
 
 function todayKey() {
   const now = new Date();
@@ -133,6 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
   bindControls();
   renderTabs();
   renderMethodology();
+  const themeBtn = document.getElementById("theme-btn");
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
   if (getToken()) enterDashboard();
   else showLogin();
 });
@@ -410,6 +441,7 @@ async function loadData({ force = false } = {}) {
 }
 
 function renderData(data) {
+  lastData = data;
   const fmt = (n) => (n == null ? "—" : Number(n).toLocaleString("es-VE"));
   const meta = PERIOD_LABEL[data.period] || PERIOD_LABEL.day;
 
@@ -576,9 +608,9 @@ function chartOptions(isHourly) {
     },
     scales: {
       x: {
-        grid: { color: "rgba(255,255,255,0.04)" },
+        grid: { color: cssVar("--chart-grid") },
         ticks: {
-          color: "#5e5e6e",
+          color: cssVar("--chart-tick"),
           font: { size: 10 },
           maxRotation: 0,
           autoSkip: true,
@@ -587,8 +619,8 @@ function chartOptions(isHourly) {
       },
       y: {
         beginAtZero: true,
-        grid: { color: "rgba(255,255,255,0.04)" },
-        ticks: { color: "#5e5e6e", font: { size: 10 }, precision: 0 },
+        grid: { color: cssVar("--chart-grid") },
+        ticks: { color: cssVar("--chart-tick"), font: { size: 10 }, precision: 0 },
       },
     },
   };
@@ -642,7 +674,7 @@ function renderDonut(byType, unknown) {
         {
           data,
           backgroundColor: colors.slice(0, entries.length),
-          borderColor: "#0c0c10",
+          borderColor: cssVar("--bg-1"),
           borderWidth: 2,
           hoverOffset: 8,
         },
@@ -655,7 +687,7 @@ function renderDonut(byType, unknown) {
       plugins: {
         legend: {
           position: "bottom",
-          labels: { color: "#9b9bab", font: { size: 11 }, boxWidth: 12 },
+          labels: { color: cssVar("--chart-legend"), font: { size: 11 }, boxWidth: 12 },
         },
         tooltip: {
           backgroundColor: "#1c1c25",
@@ -783,9 +815,9 @@ function renderChart(series, period) {
       },
       scales: {
         x: {
-          grid: { color: "rgba(255,255,255,0.04)" },
+          grid: { color: cssVar("--chart-grid") },
           ticks: {
-            color: "#5e5e6e",
+            color: cssVar("--chart-tick"),
             font: { size: 10 },
             maxRotation: 0,
             autoSkip: true,
@@ -794,8 +826,8 @@ function renderChart(series, period) {
         },
         y: {
           beginAtZero: true,
-          grid: { color: "rgba(255,255,255,0.04)" },
-          ticks: { color: "#5e5e6e", font: { size: 10 }, precision: 0 },
+          grid: { color: cssVar("--chart-grid") },
+          ticks: { color: cssVar("--chart-tick"), font: { size: 10 }, precision: 0 },
         },
       },
     },
