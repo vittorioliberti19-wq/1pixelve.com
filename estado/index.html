@@ -138,18 +138,79 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 6px;
+        gap: 16px;
+        padding: 1.1rem 1.25rem;
+        margin-bottom: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 16px;
+        background: rgba(5, 5, 5, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
       }
-      header h1 {
-        font-size: 1.25rem;
-        font-weight: 600;
+      .hdr-titles h1,
+      .hdr-titles p {
+        color: #f4f4f6;
       }
-      header h1 span {
+      .hdr-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .hdr-logo {
+        height: 32px;
+        width: auto;
+      }
+      .hdr-titles h1 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .hdr-titles h1 span {
         background: linear-gradient(90deg, var(--accent), var(--accent-2));
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+      .hdr-titles p {
+        color: var(--text-faint);
+        font-size: 0.78rem;
+        margin-top: 2px;
+      }
+      .hdr-right {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--bg-3);
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition:
+          color 0.15s,
+          border 0.15s,
+          background 0.15s;
+      }
+      .icon-btn:hover {
+        color: var(--text);
+        border-color: rgba(139, 92, 255, 0.4);
+        background: var(--bg-2);
+      }
+      .icon-btn.is-spinning svg {
+        animation: spin 1s linear infinite;
+      }
+      .icon-btn.is-spinning {
+        color: var(--accent);
+        border-color: rgba(139, 92, 255, 0.5);
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
       .sub {
         color: var(--text-faint);
@@ -547,12 +608,67 @@
 
     <div id="app">
       <header>
-        <h1><span>Estado Galerías</span> · 1PIXEL</h1>
-        <div style="display: flex; gap: 8px">
-          <button class="refresh theme-btn" id="theme" title="Cambiar tema">
-            <span class="ico-moon">🌙</span><span class="ico-sun">☀️</span>
+        <div class="hdr-left">
+          <img src="/logo.png" alt="1PIXEL" class="hdr-logo" />
+          <div class="hdr-titles">
+            <h1><span>Estado</span> Galerías</h1>
+            <p>Monitoreo interno · datos cada 5 min</p>
+          </div>
+        </div>
+        <div class="hdr-right">
+          <button id="theme" class="icon-btn theme-btn" title="Cambiar tema">
+            <svg
+              class="ico-moon"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg
+              class="ico-sun"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
           </button>
-          <button class="refresh" id="refresh">↻ Actualizar</button>
+          <button id="refresh" class="icon-btn" title="Actualizar ahora">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"></path>
+              <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"></path>
+            </svg>
+          </button>
         </div>
       </header>
       <div class="sub" id="sub"></div>
@@ -762,7 +878,15 @@
       document.getElementById("pwd").addEventListener("keydown", (e) => {
         if (e.key === "Enter") tryLogin();
       });
-      document.getElementById("refresh").onclick = load;
+      document.getElementById("refresh").onclick = async () => {
+        const b = document.getElementById("refresh");
+        b.classList.add("is-spinning");
+        try {
+          await load();
+        } finally {
+          b.classList.remove("is-spinning");
+        }
+      };
       function tryLogin() {
         if (document.getElementById("pwd").value === PWD) {
           localStorage.setItem(AUTH_KEY, "1");
