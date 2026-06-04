@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /conteo/
+Disallow: /estado/
+Disallow: /jd/
+Disallow: /brief/
 
 # AI Search Crawlers - Allowed
 User-agent: GPTBot
