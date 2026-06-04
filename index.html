@@ -2264,11 +2264,11 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-calle77.mp4"
-                  autoplay
+                  poster="galeria-calle77-poster.webp"
+                  preload="none"
                   loop
                   muted
                   playsinline
-                  loading="lazy"
                 ></video>
               </div>
               <div class="galeria-card-body">
@@ -2290,11 +2290,11 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-cecilio.mp4"
-                  autoplay
+                  poster="galeria-cecilio-poster.webp"
+                  preload="none"
                   loop
                   muted
                   playsinline
-                  loading="lazy"
                 ></video>
               </div>
               <div class="galeria-card-body">
@@ -2316,11 +2316,11 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-corredor.mp4"
-                  autoplay
+                  poster="galeria-corredor-poster.webp"
+                  preload="none"
                   loop
                   muted
                   playsinline
-                  loading="lazy"
                 ></video>
               </div>
               <div class="galeria-card-body">
@@ -2342,11 +2342,11 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-bellavista.mp4"
-                  autoplay
+                  poster="galeria-bellavista-poster.webp"
+                  preload="none"
                   loop
                   muted
                   playsinline
-                  loading="lazy"
                 ></video>
               </div>
               <div class="galeria-card-body">
@@ -2368,11 +2368,11 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-5dejulio.mp4"
-                  autoplay
+                  poster="galeria-5dejulio-poster.webp"
+                  preload="none"
                   loop
                   muted
                   playsinline
-                  loading="lazy"
                 ></video>
               </div>
               <div class="galeria-card-body">
@@ -3003,12 +3003,36 @@
           window.innerWidth > 768 ? "hero-desktop.mp4" : "hero-mobile.mp4";
         vid.load();
         if (window.innerWidth > 768) vid.playbackRate = 1;
-        document.querySelectorAll(".galeria-photo video").forEach(function (v) {
+        // Galería: carga diferida — solo descarga/reproduce el video visible (preload="none").
+        var galVids = document.querySelectorAll(".galeria-photo video");
+        galVids.forEach(function (v) {
           v.addEventListener("loadeddata", function () {
             v.playbackRate = 2;
           });
-          if (v.readyState >= 2) v.playbackRate = 2;
         });
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                var v = e.target;
+                if (e.isIntersecting) {
+                  var p = v.play();
+                  if (p && p.catch) p.catch(function () {});
+                } else {
+                  v.pause();
+                }
+              });
+            },
+            { threshold: 0.25 },
+          );
+          galVids.forEach(function (v) {
+            io.observe(v);
+          });
+        } else {
+          galVids.forEach(function (v) {
+            v.play();
+          });
+        }
       })();
     </script>
     <script>
