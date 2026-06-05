@@ -71,8 +71,8 @@ const GALLERIES = [
   },
   {
     id: "calle77",
-    short: "Calle 77",
-    label: "Calle 77 con Av. Bella Vista",
+    short: "C77-AV15",
+    label: "C77-AV15",
     active: false,
   },
   {
@@ -89,8 +89,8 @@ const GALLERIES = [
   },
   {
     id: "5dejulio",
-    short: "5 de Julio",
-    label: "5 de Julio con Delicias",
+    short: "C77-AV5",
+    label: "C77-AV5",
     active: true,
   },
   { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
