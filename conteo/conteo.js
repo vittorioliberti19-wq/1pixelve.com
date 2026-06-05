@@ -515,10 +515,14 @@ function renderDelta(delta) {
 function renderImpacts(data) {
   const el = document.getElementById("kpi-impacts");
   const foot = document.getElementById("kpi-impacts-foot");
-  const raw = data?.totals?.raw || 0;
+  // Base = UNIQUE vehicles (deduped), not raw RegionJoin pings. Each vehicle
+  // fires several region-join events while crossing, so `raw` overcounts reach
+  // ~6x. Day view has totals.unique; week/month fall back to raw (approx).
+  const base =
+    data?.totals?.unique != null ? data.totals.unique : data?.totals?.raw || 0;
   const byType = data?.byType || {};
   const period = data?.period || "day";
-  if (!raw) {
+  if (!base) {
     el.textContent = "—";
     foot.textContent = "sin datos";
     return;
@@ -531,7 +535,7 @@ function renderImpacts(data) {
     vehicles += count;
   }
   const pplPerVehicle = vehicles > 0 ? people / vehicles : 1;
-  const impacts = Math.round(raw * pplPerVehicle * ATTENTION_FACTOR);
+  const impacts = Math.round(base * pplPerVehicle * ATTENTION_FACTOR);
   el.textContent = impacts.toLocaleString("es-VE");
   const periodTxt =
     period === "day"
