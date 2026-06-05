@@ -91,7 +91,7 @@ const GALLERIES = [
     id: "5dejulio",
     short: "5 de Julio",
     label: "5 de Julio con Delicias",
-    active: false,
+    active: true,
   },
   { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
 ];
@@ -620,7 +620,11 @@ function chartOptions(isHourly) {
       y: {
         beginAtZero: true,
         grid: { color: cssVar("--chart-grid") },
-        ticks: { color: cssVar("--chart-tick"), font: { size: 10 }, precision: 0 },
+        ticks: {
+          color: cssVar("--chart-tick"),
+          font: { size: 10 },
+          precision: 0,
+        },
       },
     },
   };
@@ -687,7 +691,11 @@ function renderDonut(byType, unknown) {
       plugins: {
         legend: {
           position: "bottom",
-          labels: { color: cssVar("--chart-legend"), font: { size: 11 }, boxWidth: 12 },
+          labels: {
+            color: cssVar("--chart-legend"),
+            font: { size: 11 },
+            boxWidth: 12,
+          },
         },
         tooltip: {
           backgroundColor: "#1c1c25",
@@ -827,7 +835,11 @@ function renderChart(series, period) {
         y: {
           beginAtZero: true,
           grid: { color: cssVar("--chart-grid") },
-          ticks: { color: cssVar("--chart-tick"), font: { size: 10 }, precision: 0 },
+          ticks: {
+            color: cssVar("--chart-tick"),
+            font: { size: 10 },
+            precision: 0,
+          },
         },
       },
     },
