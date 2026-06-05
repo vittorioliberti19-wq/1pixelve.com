@@ -8,13 +8,14 @@
 set -euo pipefail
 
 API="https://1pixel-conteo-api.ai-ffd.workers.dev"
-SECRET="${CONTEO_SECRET:-Direccion2026}"
+SECRET="${CONTEO_SECRET:?exporta CONTEO_SECRET con la clave admin del Worker antes de correr}"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 GALLERIES=(3h cecilio calle77 bellavista 5dejulio vereda)
 
 for G in "${GALLERIES[@]}"; do
   out="$DIR/$G.json"
-  code=$(curl -s -o "$out.tmp" -w "%{http_code}" "$API/admin/export?gallery=$G&secret=$SECRET")
+  # Secret va en header, NUNCA en la URL (no se loguea ni queda en el history).
+  code=$(curl -s -o "$out.tmp" -w "%{http_code}" -H "X-Admin-Secret: $SECRET" "$API/admin/export?gallery=$G")
   if [ "$code" = "200" ] && python3 -c "import json;d=json.load(open('$out.tmp'));exit(0 if d.get('day_count',0)>0 else 1)" 2>/dev/null; then
     mv "$out.tmp" "$out"
     echo "$G: $(python3 -c "import json;d=json.load(open('$out'));print(d['day_count'],'días', d['first_day'],'->',d['last_day'])")"
