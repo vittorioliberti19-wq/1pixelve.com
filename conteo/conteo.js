@@ -62,18 +62,14 @@ function formatHourLabels(arr) {
   return (arr || []).map(formatHourLabel);
 }
 
+// Orden de tabs: Todas (auto) → 3 activas → 3 pendientes.
 const GALLERIES = [
+  // --- activas ---
   {
     id: "3h",
     short: "Av 3H",
     label: "AV 3H Corredor Gastronómico",
     active: true,
-  },
-  {
-    id: "calle77",
-    short: "C77-AV15",
-    label: "C77-AV15",
-    active: false,
   },
   {
     id: "cecilio",
@@ -82,16 +78,23 @@ const GALLERIES = [
     active: true,
   },
   {
-    id: "bellavista",
-    short: "Bella Vista 72",
-    label: "Bella Vista con Calle 72",
-    active: false,
-  },
-  {
     id: "5dejulio",
     short: "C77-AV5",
     label: "C77-AV5",
     active: true,
+  },
+  // --- pendientes por activar ---
+  {
+    id: "calle77",
+    short: "C77-AV15",
+    label: "C77-AV15",
+    active: false,
+  },
+  {
+    id: "bellavista",
+    short: "Bella Vista 72",
+    label: "Bella Vista con Calle 72",
+    active: false,
   },
   { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
 ];
