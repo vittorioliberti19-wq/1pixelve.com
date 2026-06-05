@@ -490,7 +490,9 @@ function renderData(data) {
   renderTypes(
     data.byType || {},
     data.unknown_types || {},
-    data.sample_events || 0,
+    // Day: events actually sampled. Multi-day: total RegionJoin events of the
+    // period (the breakdown sums every day's snapshot, so this stays coherent).
+    data.period === "day" ? data.sample_events || 0 : data.totals?.raw || 0,
   );
   renderDonut(data.byType || {}, data.unknown_types || {});
   renderRankings(data.top_hours || [], data.top_weekdays || []);
@@ -775,9 +777,11 @@ function renderRankings(topHours, topWeekdays) {
   }
 }
 
-function formatScopeLabel(yyyymmdd) {
-  if (!yyyymmdd) return "último día";
-  const [y, m, d] = yyyymmdd.split("-").map(Number);
+function formatScopeLabel(scope) {
+  if (!scope) return "último día";
+  // Multi-day scopes arrive as a human label ("últimos 30 días") — pass through.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(scope)) return scope;
+  const [y, m, d] = scope.split("-").map(Number);
   return `${String(d).padStart(2, "0")}/${String(m).padStart(2, "0")}/${y}`;
 }
 
