@@ -609,6 +609,21 @@
         color: var(--white);
       }
 
+      .check-card .ck-soon {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--purple);
+        border: 1px solid rgba(139, 0, 255, 0.5);
+        background: rgba(139, 0, 255, 0.08);
+        vertical-align: middle;
+      }
+
       /* === RADIO === */
       .radio-row {
         display: flex;
@@ -1072,6 +1087,31 @@
                   <label class="check-card">
                     <input type="checkbox" name="galerias" value="av3h" />
                     <span class="ck-label">AV 3H — Corredor Gastronómico</span>
+                  </label>
+                  <label class="check-card">
+                    <input type="checkbox" name="galerias" value="5dejulio" />
+                    <span class="ck-label"
+                      >5 de Julio con Delicias
+                      <span class="ck-soon">próximamente</span></span
+                    >
+                  </label>
+                  <label class="check-card">
+                    <input
+                      type="checkbox"
+                      name="galerias"
+                      value="bellavista72"
+                    />
+                    <span class="ck-label"
+                      >Bella Vista con Calle 72
+                      <span class="ck-soon">próximamente</span></span
+                    >
+                  </label>
+                  <label class="check-card">
+                    <input type="checkbox" name="galerias" value="vereda" />
+                    <span class="ck-label"
+                      >Vereda del Lago
+                      <span class="ck-soon">próximamente</span></span
+                    >
                   </label>
                 </div>
                 <p class="field-error" id="err-galerias">
