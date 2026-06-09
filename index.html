@@ -2778,10 +2778,11 @@
                     ></textarea>
                   </div>
                   <div class="form-group captcha-group">
-                    <!-- Reemplaza TU_SITE_KEY con tu Site Key de https://www.google.com/recaptcha/admin -->
+                    <!-- hCaptcha: Web3Forms lo verifica server-side (sitekey compartida del plan free) -->
                     <div
-                      class="g-recaptcha"
-                      data-sitekey="6LeKVaIsAAAAAMX7r940nTnf08QLuH5ZrDWuSgUW"
+                      class="h-captcha"
+                      data-captcha="true"
+                      data-sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
                       data-theme="dark"
                     ></div>
                     <div class="captcha-error" id="captchaError">
@@ -3338,21 +3339,21 @@
 
           if (!valid) return;
 
-          // Verificar reCAPTCHA
+          // Verificar hCaptcha
           const captchaError = document.getElementById("captchaError");
-          const recaptchaResponse = grecaptcha.getResponse();
+          const captchaResponse =
+            typeof hcaptcha !== "undefined" ? hcaptcha.getResponse() : "";
 
-          if (!recaptchaResponse) {
+          if (!captchaResponse) {
             captchaError.classList.add("show");
             setTimeout(() => captchaError.classList.remove("show"), 3000);
             return;
           }
 
-          // Enviar via Web3Forms — incluye botcheck (honeypot) y el token
-          // reCAPTCHA para verificación anti-spam del lado servidor
+          // Enviar via Web3Forms — botcheck (honeypot) y h-captcha-response
+          // van en el FormData; Web3Forms verifica el token server-side
           const formData = new FormData(form);
           const jsonData = Object.fromEntries(formData);
-          jsonData["recaptcha_response"] = recaptchaResponse;
 
           const submitBtn = form.querySelector(".btn-submit");
           submitBtn.disabled = true;
@@ -3463,7 +3464,7 @@
       });
     </script>
 
-    <!-- Lazy load reCAPTCHA when contact section visible -->
+    <!-- Lazy load hCaptcha when contact section visible -->
     <script>
       (function () {
         var loaded = false;
@@ -3472,7 +3473,7 @@
             if (entries[0].isIntersecting && !loaded) {
               loaded = true;
               var s = document.createElement("script");
-              s.src = "https://www.google.com/recaptcha/api.js";
+              s.src = "https://js.hcaptcha.com/1/api.js";
               s.async = true;
               s.defer = true;
               document.head.appendChild(s);
