@@ -4,6 +4,7 @@ Disallow: /conteo/
 Disallow: /estado/
 Disallow: /jd/
 Disallow: /brief/
+Disallow: /onboarding.html
 
 # AI Search Crawlers - Allowed
 User-agent: GPTBot
