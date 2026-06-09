@@ -964,7 +964,9 @@
           <i class="fas fa-lock" aria-hidden="true"></i>
         </div>
         <h1>Acceso interno</h1>
-        <p>Calculadora comercial de 1PIXEL. Introduce la clave para continuar.</p>
+        <p>
+          Calculadora comercial de 1PIXEL. Introduce la clave para continuar.
+        </p>
         <form id="gateForm">
           <input
             type="password"
@@ -1047,6 +1049,10 @@
                 aria-labelledby="durLabel"
               >
                 <label class="radio-pill">
+                  <input type="radio" name="duracion" value="1" />
+                  1 mes
+                </label>
+                <label class="radio-pill">
                   <input type="radio" name="duracion" value="3" />
                   3 meses
                 </label>
@@ -1059,6 +1065,19 @@
                   12 meses
                 </label>
               </div>
+              <p
+                class="dur-nota"
+                id="durNota"
+                style="
+                  display: none;
+                  font-size: 0.78rem;
+                  color: var(--gray);
+                  margin-top: 12px;
+                "
+              >
+                Contratos de 1 mes: sin descuento de contratación ni prepago
+                (pago en divisas sí aplica).
+              </p>
             </div>
 
             <!-- Opciones -->
@@ -1080,13 +1099,25 @@
               </div>
 
               <div class="form-group">
-                <label class="toggle-card">
+                <label class="toggle-card" id="prepagoCard">
                   <input type="checkbox" id="prepago" />
                   <span class="tg-body">
                     <span class="tg-label">Pago prepago</span>
                     <span class="tg-sub"
                       >Paga la totalidad del contrato por adelantado y aplica
                       descuento extra.</span
+                    >
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="toggle-card">
+                  <input type="checkbox" id="divisas" />
+                  <span class="tg-body">
+                    <span class="tg-label">Pago en divisas (−20%)</span>
+                    <span class="tg-sub"
+                      >Descuento adicional por pagar en dólares.</span
                     >
                   </span>
                 </label>
@@ -1147,58 +1178,84 @@
                 id="resultBody"
                 aria-live="polite"
               >
-                <div class="line muted">
-                  <span class="lbl">Precio lista mensual</span>
-                  <span class="val" id="rListaMensual"></span>
-                </div>
-                <div
-                  class="line discount"
-                  id="rowDescPlan"
-                  style="display: none"
-                >
-                  <span class="lbl" id="rDescPlanLbl">Descuento de plan</span>
-                  <span class="val" id="rDescPlan"></span>
-                </div>
-                <div
-                  class="line muted"
-                  id="rowMensualPlan"
-                  style="display: none"
-                >
-                  <span class="lbl">Mensual del plan</span>
-                  <span class="val" id="rMensualPlan"></span>
+                <div class="line muted" id="rowMensualLista">
+                  <span class="lbl" id="rMensualListaLbl">Mensual lista</span>
+                  <span class="val" id="rMensualLista"></span>
                 </div>
                 <div class="line discount" id="rowBoost" style="display: none">
                   <span class="lbl" id="rBoostLbl">Boost</span>
                   <span class="val" id="rBoost"></span>
                 </div>
 
-                <div class="line-feature">
-                  <span class="lbl">Mensual final</span>
-                  <span class="val" id="rMensualFinal"></span>
+                <div class="line">
+                  <span class="lbl" id="rSubtotalLbl">Subtotal contrato</span>
+                  <span class="val" id="rSubtotal"></span>
                 </div>
 
-                <div class="total-row">
-                  <span class="lbl" id="rTotalLbl">Total contrato</span>
+                <div
+                  class="line discount"
+                  id="rowDescContrat"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescContratLbl"
+                    >Descuento por contratación</span
+                  >
+                  <span class="val" id="rDescContrat"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescPrepago"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescPrepagoLbl"
+                    >Descuento prepago</span
+                  >
+                  <span class="val" id="rDescPrepago"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescDivisas"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescDivisasLbl"
+                    >Descuento pago en divisas (20%)</span
+                  >
+                  <span class="val" id="rDescDivisas"></span>
+                </div>
+
+                <div class="line-feature">
+                  <span class="lbl"
+                    >Total contrato <small>(sin IVA)</small></span
+                  >
                   <span class="val" id="rTotal"></span>
                 </div>
 
-                <div class="prepago-box" id="prepagoBox">
-                  <div class="pp-top">
-                    <span class="pp-lbl">Total prepago</span>
-                    <span class="pp-val" id="rPrepago"></span>
-                  </div>
-                  <div class="pp-save" id="rAhorro"></div>
-                </div>
+                <p
+                  style="
+                    text-align: right;
+                    font-size: 0.82rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                  id="rEquivalente"
+                ></p>
 
                 <p class="result-note">
-                  Precios no incluyen IVA ni impuestos de publicidad. Descuento
-                  prepago aplica pagando la totalidad del contrato.
+                  Precios en USD, sin IVA ni impuestos de publicidad. Prepago =
+                  pago total del contrato al inicio. Descuento divisas aplica
+                  pagando en dólares.
                 </p>
 
                 <button type="button" class="shiny-cta copy-btn" id="copyBtn">
                   <span
                     ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
                     propuesta</span
+                  >
+                </button>
+                <button type="button" class="shiny-cta copy-btn" id="pdfBtn">
+                  <span
+                    ><i class="fas fa-file-pdf" aria-hidden="true"></i>
+                    Descargar PDF</span
                   >
                 </button>
                 <p
@@ -1215,7 +1272,8 @@
 
       <footer>
         <div class="container">
-          &copy; 2026 1PIXEL · Herramienta interna · Lista de Precios 2026/04 ·
+          &copy; 2026 1PIXEL · Herramienta interna · Simulador Lista de Precios
+          2026/04 ·
           <a href="/">1pixelve.com</a>
         </div>
       </footer>
@@ -1225,10 +1283,10 @@
       /* ============================================================
          GATE — comparación de hash SHA-256 client-side.
          Protección ligera deliberada (no son secretos, es una lista
-         de precios interna). El hash corresponde a "Direccion2026".
+         de precios interna). El hash corresponde a "Negocios 2026".
          ============================================================ */
       const CLAVE_HASH =
-        "ae9f067442ee31e2605be711455f1e0ba0240de098cc8876214053e54175c9f9";
+        "741437a4a2456307de4f5c5ec24e03595b3f1653c4570b306e10a655914da113";
       const SS_KEY = "1px_calculadora";
 
       const gate = document.getElementById("gate");
@@ -1267,53 +1325,58 @@
       });
 
       /* ============================================================
-         DATOS — Lista de Precios 2026/04 (fuente de verdad).
+         DATOS — Simulador Lista de Precios 2026/04 (fuente de verdad).
          ============================================================ */
       const GALERIAS = {
         c77: {
           nombre: "Calle 77 (Av. 5 de Julio)",
           pantallas: 24,
-          precio: { 3: 1850, 6: 1700, 12: 1580 },
+          precio: { 1: 2200, 3: 1850, 6: 1700, 12: 1580 },
+        },
+        a15: {
+          nombre: "Av. 15 (Delicias / 5 de Julio)",
+          pantallas: 24,
+          precio: { 1: 2200, 3: 1850, 6: 1700, 12: 1580 },
         },
         c67: {
           nombre: "Calle 67 (Cecilio Acosta)",
           pantallas: 12,
-          precio: { 3: 1200, 6: 1100, 12: 950 },
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
+        },
+        a04: {
+          nombre: "Av. 4 (Bella Vista)",
+          pantallas: 12,
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
+        },
+        vereda: {
+          nombre: "Vereda del Lago (1ra Etapa)",
+          pantallas: 6,
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
         },
         av3h: {
           nombre: "Av. 3H (Corredor La Chinita)",
           pantallas: 8,
-          precio: { 3: 820, 6: 750, 12: 670 },
+          precio: { 1: 1000, 3: 820, 6: 750, 12: 670 },
         },
       };
 
-      // combos: clave = set de galerías ordenado. descPlan sobre la SUMA de mensuales.
-      const COMBOS = {
-        "c67+c77": {
-          nombre: "Plan 1 (36 Pantallas)",
-          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
-        },
-        "av3h+c77": {
-          nombre: "Plan 2 (32 Pantallas)",
-          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
-        },
-        "av3h+c67": {
-          nombre: "Plan 3 (20 Pantallas)",
-          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
-        },
-        "av3h+c67+c77": {
-          nombre: "Plan Total (44 Pantallas)",
-          descPlan: { 3: 0.1, 6: 0.12, 12: 0.15 },
-        },
-      };
+      // Orden canónico de las galerías (filas del simulador).
+      const ORDEN = ["c77", "a15", "c67", "a04", "vereda", "av3h"];
 
-      const PREPAGO_INDIVIDUAL = { 3: 0.08, 6: 0.15, 12: 0.2 };
-      const PREPAGO_COMBO = { 3: 0.1, 6: 0.15, 12: 0.2 };
+      // Descuento por contratación: filas = nº de galerías marcadas, cols = duración.
+      // 1 mes NUNCA tiene descuentos (ni contratación ni prepago).
+      const DESC_CONTRATACION = {
+        1: { 3: 0, 6: 0, 12: 0 },
+        2: { 3: 0.06, 6: 0.08, 12: 0.1 },
+        3: { 3: 0.08, 6: 0.1, 12: 0.12 },
+        4: { 3: 0.1, 6: 0.12, 12: 0.15 },
+        5: { 3: 0.12, 6: 0.15, 12: 0.18 },
+        6: { 3: 0.15, 6: 0.18, 12: 0.2 },
+      };
+      const DESC_PREPAGO = { 3: 0.1, 6: 0.15, 12: 0.2 }; // 1 mes: 0
+      const DESC_DIVISAS = 0.2; // checkbox "Pago en divisas"
       const BOOST = { no: 0, "2x": 0.3, "3x": 0.6 };
       const BOOST_LABEL = { no: "Sin boost", "2x": "2X", "3x": "3X" };
-
-      // Orden canónico de las galerías para construir la clave de combo.
-      const ORDEN = ["av3h", "c67", "c77"];
 
       /* ============================================================
          FORMATO — siempre venezolano: $1.850,00
@@ -1341,82 +1404,91 @@
         );
         const boostKey = document.getElementById("boost").value;
         const prepagoOn = document.getElementById("prepago").checked;
+        const divisasOn = document.getElementById("divisas").checked;
 
-        // Suma de mensuales individuales para esta duración.
         const claves = ORDEN.filter((k) => seleccion.includes(k));
+        const nGalerias = claves.length;
+
+        // 1. Mensual lista (suma) + boost, luego subtotal del contrato.
         const mensualBase = claves.reduce(
           (acc, k) => acc + GALERIAS[k].precio[dur],
           0,
         );
-
-        const esCombo = claves.length >= 2;
-        let combo = null;
-        let descPlan = 0;
-        if (esCombo) {
-          combo = COMBOS[claves.join("+")];
-          descPlan = combo.descPlan[dur];
-        }
-
-        const mensualPlan = mensualBase * (1 - descPlan);
-
         const boostPct = BOOST[boostKey];
-        const mensualFinal = mensualPlan * (1 + boostPct);
+        const mensualBoosted = mensualBase * (1 + boostPct);
+        const subtotal = mensualBoosted * dur;
 
-        const totalContrato = mensualFinal * dur;
+        // 2. Descuento por contratación (0 si dur=1).
+        const descContratacionPct =
+          dur === 1 ? 0 : DESC_CONTRATACION[nGalerias][dur];
+        const descContratacion = subtotal * descContratacionPct;
 
-        const tablaPrepago = esCombo ? PREPAGO_COMBO : PREPAGO_INDIVIDUAL;
-        const descPrepago = tablaPrepago[dur];
-        const totalPrepago = totalContrato * (1 - descPrepago);
-        const ahorro = totalContrato - totalPrepago;
+        // 3. Descuento prepago sobre base2 (0 si dur=1 o prepago off).
+        const base2 = subtotal - descContratacion;
+        const descPrepagoPct = prepagoOn && dur > 1 ? DESC_PREPAGO[dur] : 0;
+        const descPrepago = base2 * descPrepagoPct;
 
-        // Nombre del plan + total pantallas.
+        // 4. Descuento divisas sobre base3. En el sheet aplica en CUALQUIER
+        // duración (incluye 1 mes); contratación y prepago no.
+        const base3 = base2 - descPrepago;
+        const descDivisasPct = divisasOn ? DESC_DIVISAS : 0;
+        const descDivisas = base3 * descDivisasPct;
+
+        // 5. Total + mensual equivalente.
+        const total = base3 - descDivisas;
+        const mensualEquivalente = total / dur;
+
         const pantallas = claves.reduce(
           (acc, k) => acc + GALERIAS[k].pantallas,
           0,
         );
-        let nombrePlan;
-        if (esCombo) {
-          nombrePlan = combo.nombre;
-        } else {
-          nombrePlan = GALERIAS[claves[0]].nombre;
-        }
 
         return {
           claves,
+          nGalerias,
           dur,
           boostKey,
           boostPct,
           prepagoOn,
-          esCombo,
+          divisasOn,
           mensualBase,
-          descPlan,
-          mensualPlan,
-          mensualFinal,
-          totalContrato,
+          mensualBoosted,
+          subtotal,
+          descContratacionPct,
+          descContratacion,
+          descPrepagoPct,
           descPrepago,
-          totalPrepago,
-          ahorro,
+          descDivisasPct,
+          descDivisas,
+          total,
+          mensualEquivalente,
           pantallas,
-          nombrePlan,
         };
       }
 
       /* ============================================================
          TEST (verificación interna — NO se ejecuta en runtime)
          ------------------------------------------------------------
-         Caso A — C77 + C67 + AV3H, 6 meses, sin boost, prepago:
-           mensualBase = 1700 + 1100 + 750 = 3550
-           descPlan(6) = 0.12 -> mensualPlan = 3550 * 0.88 = 3124,00
-           mensualFinal = 3124,00 (sin boost)
-           total = 3124 * 6 = 18.744,00
-           descPrepago combo(6) = 0.15 -> prepago = 18744 * 0.85 = 15.932,40
-           => mensual $3.124,00 · total $18.744,00 · prepago $15.932,40 ✓
+         Caso 1 — C77 12m + C67 12m, divisas ON, prepago OFF:
+           subtotal = (1580 + 950) * 12 = 30.360
+           contratación 2gal/12m = 10% -> 3.036 ; base2 = 27.324
+           divisas 20% de 27.324 = 5.464,80
+           => TOTAL $21.859,20 ✓
 
-         Caso B — solo C77, 12 meses, sin boost, prepago:
-           mensualBase = mensualFinal = 1580
-           total = 1580 * 12 = 18.960,00
-           descPrepago individual(12) = 0.20 -> prepago = 18960 * 0.80 = 15.168,00
-           => mensual $1.580,00 · total $18.960,00 · prepago $15.168,00 ✓
+         Caso 2 — C77 + C67 + AV3H, 6m, prepago ON, divisas OFF:
+           subtotal = (1700 + 1100 + 750) * 6 = 21.300
+           contratación 3gal/6m = 10% -> 2.130 ; base2 = 19.170
+           prepago 15% de 19.170 = 2.875,50
+           => TOTAL $16.294,50 ✓
+
+         Caso 3 — Vereda sola, 3m, prepago ON:
+           subtotal = 1200 * 3 = 3.600
+           contratación 1gal = 0% ; prepago 10% = 360
+           => TOTAL $3.240,00 ✓
+
+         Caso 4 — C77 sola, 1 mes (prepago/divisas ON, sin efecto):
+           subtotal = 2200 ; sin descuentos
+           => TOTAL $2.200,00 ✓
          ============================================================ */
 
       /* ============================================================
@@ -1443,34 +1515,24 @@
 
         resultPlan.innerHTML =
           "<strong>" +
-          r.nombrePlan +
+          r.nGalerias +
+          (r.nGalerias === 1 ? " galería" : " galerías") +
           "</strong> · " +
           r.pantallas +
           " pantallas · " +
           r.dur +
-          " meses";
+          (r.dur === 1 ? " mes" : " meses");
 
-        $("rListaMensual").textContent = money(r.mensualBase);
-
-        const rowDescPlan = $("rowDescPlan");
-        const rowMensualPlan = $("rowMensualPlan");
-        if (r.esCombo) {
-          rowDescPlan.style.display = "";
-          rowMensualPlan.style.display = "";
-          const descMonto = r.mensualBase - r.mensualPlan;
-          $("rDescPlanLbl").textContent =
-            "Descuento de plan (" + Math.round(r.descPlan * 100) + "%)";
-          $("rDescPlan").textContent = "− " + money(descMonto);
-          $("rMensualPlan").textContent = money(r.mensualPlan);
-        } else {
-          rowDescPlan.style.display = "none";
-          rowMensualPlan.style.display = "none";
-        }
+        // Mensual lista (con boost desglosado si aplica).
+        $("rMensualListaLbl").textContent = r.boostPct
+          ? "Mensual lista (base)"
+          : "Mensual lista";
+        $("rMensualLista").textContent = money(r.mensualBase);
 
         const rowBoost = $("rowBoost");
         if (r.boostPct > 0) {
           rowBoost.style.display = "";
-          const boostMonto = r.mensualFinal - r.mensualPlan;
+          const boostMonto = r.mensualBoosted - r.mensualBase;
           $("rBoostLbl").textContent =
             "Boost " +
             BOOST_LABEL[r.boostKey] +
@@ -1482,23 +1544,43 @@
           rowBoost.style.display = "none";
         }
 
-        $("rMensualFinal").textContent = money(r.mensualFinal);
-        $("rTotalLbl").textContent = "Total contrato (" + r.dur + " meses)";
-        $("rTotal").textContent = money(r.totalContrato);
+        $("rSubtotalLbl").textContent =
+          "Subtotal contrato (" + r.dur + (r.dur === 1 ? " mes)" : " meses)");
+        $("rSubtotal").textContent = money(r.subtotal);
 
-        const prepagoBox = $("prepagoBox");
-        if (r.prepagoOn) {
-          prepagoBox.classList.add("show");
-          $("rPrepago").textContent = money(r.totalPrepago);
-          $("rAhorro").textContent =
-            "Ahorras " +
-            money(r.ahorro) +
-            " (" +
-            Math.round(r.descPrepago * 100) +
+        const rowDescContrat = $("rowDescContrat");
+        if (r.descContratacion > 0) {
+          rowDescContrat.style.display = "";
+          $("rDescContratLbl").textContent =
+            "Descuento por contratación (" +
+            Math.round(r.descContratacionPct * 100) +
             "%)";
+          $("rDescContrat").textContent = "− " + money(r.descContratacion);
         } else {
-          prepagoBox.classList.remove("show");
+          rowDescContrat.style.display = "none";
         }
+
+        const rowDescPrepago = $("rowDescPrepago");
+        if (r.descPrepago > 0) {
+          rowDescPrepago.style.display = "";
+          $("rDescPrepagoLbl").textContent =
+            "Descuento prepago (" + Math.round(r.descPrepagoPct * 100) + "%)";
+          $("rDescPrepago").textContent = "− " + money(r.descPrepago);
+        } else {
+          rowDescPrepago.style.display = "none";
+        }
+
+        const rowDescDivisas = $("rowDescDivisas");
+        if (r.descDivisas > 0) {
+          rowDescDivisas.style.display = "";
+          $("rDescDivisas").textContent = "− " + money(r.descDivisas);
+        } else {
+          rowDescDivisas.style.display = "none";
+        }
+
+        $("rTotal").textContent = money(r.total);
+        $("rEquivalente").textContent =
+          "Equivale a " + money(r.mensualEquivalente) + "/mes";
       }
 
       /* ============================================================
@@ -1506,34 +1588,56 @@
          ============================================================ */
       function propuestaTexto(r) {
         const cliente = $("cliente").value.trim() || "—";
+        const meses = r.dur === 1 ? " mes" : " meses";
         const lineas = [];
         lineas.push("*PROPUESTA COMERCIAL — 1PIXEL*");
         lineas.push("Cliente: " + cliente);
         lineas.push("");
         lineas.push(
-          "📍 " + r.nombrePlan + " — " + r.pantallas + " pantallas LED",
+          "📍 " +
+            r.nGalerias +
+            (r.nGalerias === 1 ? " galería" : " galerías") +
+            " — " +
+            r.pantallas +
+            " pantallas LED",
         );
         r.claves.forEach((k) => {
           lineas.push("• " + GALERIAS[k].nombre);
         });
-        lineas.push("⏱ Duración: " + r.dur + " meses");
+        lineas.push("⏱ Duración: " + r.dur + meses);
         if (r.boostPct > 0) {
           lineas.push("🚀 Boost de frecuencia " + BOOST_LABEL[r.boostKey]);
         }
         lineas.push("");
-        lineas.push("💵 Inversión mensual: " + money(r.mensualFinal));
-        lineas.push("💰 Total contrato: " + money(r.totalContrato));
-        if (r.prepagoOn) {
+        lineas.push("Subtotal contrato: " + money(r.subtotal));
+        if (r.descContratacion > 0) {
           lineas.push(
-            "✅ Pagando prepago: " +
-              money(r.totalPrepago) +
-              " (ahorras " +
-              money(r.ahorro) +
-              ")",
+            "Descuento por contratación (" +
+              Math.round(r.descContratacionPct * 100) +
+              "%): − " +
+              money(r.descContratacion),
+          );
+        }
+        if (r.descPrepago > 0) {
+          lineas.push(
+            "Descuento prepago (" +
+              Math.round(r.descPrepagoPct * 100) +
+              "%): − " +
+              money(r.descPrepago),
+          );
+        }
+        if (r.descDivisas > 0) {
+          lineas.push(
+            "Descuento pago en divisas (20%): − " + money(r.descDivisas),
           );
         }
         lineas.push("");
-        lineas.push("_Precios no incluyen IVA ni impuestos de publicidad._");
+        lineas.push("*💰 TOTAL contrato (sin IVA): " + money(r.total) + "*");
+        lineas.push("Equivale a " + money(r.mensualEquivalente) + "/mes");
+        lineas.push("");
+        lineas.push(
+          "_Precios en USD, sin IVA ni impuestos de publicidad. Prepago = pago total del contrato al inicio. Descuento divisas aplica pagando en dólares._",
+        );
         lineas.push("1pixelve.com");
         return lineas.join("\n");
       }
@@ -1584,6 +1688,263 @@
       });
 
       /* ============================================================
+         PDF — propuesta con logo, generada client-side con jsPDF
+         (cargado lazy al primer click, versión pinneada + SRI)
+         ============================================================ */
+      let jspdfReady = null;
+      function cargarJsPDF() {
+        if (jspdfReady) return jspdfReady;
+        jspdfReady = new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src =
+            "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js";
+          s.integrity =
+            "sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/";
+          s.crossOrigin = "anonymous";
+          s.onload = () => resolve(window.jspdf.jsPDF);
+          s.onerror = () => {
+            jspdfReady = null;
+            reject(new Error("jspdf load"));
+          };
+          document.head.appendChild(s);
+        });
+        return jspdfReady;
+      }
+
+      let logoDataUrl = null;
+      async function cargarLogo() {
+        if (logoDataUrl) return logoDataUrl;
+        // Downscale a 720px: el PNG original (3357px) infla el PDF a ~15MB
+        const img = new Image();
+        img.src = "../logo.png";
+        await img.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 720;
+        canvas.height = Math.round(
+          720 * (img.naturalHeight / img.naturalWidth),
+        );
+        canvas
+          .getContext("2d")
+          .drawImage(img, 0, 0, canvas.width, canvas.height);
+        logoDataUrl = canvas.toDataURL("image/png");
+        return logoDataUrl;
+      }
+
+      function generarPDF(JsPDF, logo, r, cliente) {
+        const doc = new JsPDF({ unit: "mm", format: "a4" });
+        const W = 210;
+        const M = 18; // margen
+        const fecha = new Date().toLocaleDateString("es-VE", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        // Header oscuro con logo (logo blanco 3357x1125)
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 0, W, 38, "F");
+        doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.text("PROPUESTA COMERCIAL", W - M, 19, { align: "right" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(170, 170, 170);
+        doc.text("Maracaibo, " + fecha, W - M, 26, { align: "right" });
+        doc.setFillColor(139, 0, 255);
+        doc.rect(0, 38, W, 1.6, "F");
+
+        // Cliente
+        let y = 54;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("PREPARADA PARA", M, y);
+        y += 7;
+        doc.setTextColor(20, 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.text(cliente, M, y);
+
+        // Plan
+        y += 14;
+        doc.setFillColor(139, 0, 255);
+        doc.rect(M, y - 5, 1.4, 24 + r.claves.length * 6, "F");
+        doc.setFontSize(12);
+        doc.text(
+          r.nGalerias +
+            (r.nGalerias === 1 ? " galeria" : " galerias") +
+            "  ·  " +
+            r.pantallas +
+            " pantallas LED",
+          M + 6,
+          y,
+        );
+        y += 7;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(70, 70, 70);
+        r.claves.forEach((k) => {
+          doc.text("•  Galeria " + GALERIAS[k].nombre, M + 6, y);
+          y += 6;
+        });
+        doc.text(
+          "•  Duracion: " + r.dur + (r.dur === 1 ? " mes" : " meses"),
+          M + 6,
+          y,
+        );
+        y += 6;
+        if (r.boostPct > 0) {
+          doc.text(
+            "•  Boost de frecuencia " +
+              BOOST_LABEL[r.boostKey] +
+              " (+" +
+              Math.round(r.boostPct * 100) +
+              "%)",
+            M + 6,
+            y,
+          );
+          y += 6;
+        }
+
+        // Inversion
+        y += 10;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("INVERSION (USD, sin IVA)", M, y);
+        y += 4;
+        doc.setDrawColor(225, 225, 225);
+
+        const meses = r.dur === 1 ? " mes" : " meses";
+
+        function fila(lbl, val, opts) {
+          opts = opts || {};
+          y += 9;
+          doc.setFont("helvetica", opts.bold ? "bold" : "normal");
+          doc.setFontSize(opts.big ? 13 : 10.5);
+          if (opts.color) doc.setTextColor(...opts.color);
+          else doc.setTextColor(40, 40, 40);
+          doc.text(lbl, M, y);
+          doc.text(val, W - M, y, { align: "right" });
+          doc.setDrawColor(235, 235, 235);
+          doc.line(M, y + 3, W - M, y + 3);
+        }
+
+        fila("Mensual lista", money(r.mensualBase));
+        if (r.boostPct > 0) {
+          fila(
+            "Boost " +
+              BOOST_LABEL[r.boostKey] +
+              " (+" +
+              Math.round(r.boostPct * 100) +
+              "%)",
+            "+ " + money(r.mensualBoosted - r.mensualBase),
+          );
+        }
+        fila("Subtotal contrato (" + r.dur + meses + ")", money(r.subtotal), {
+          bold: true,
+        });
+        if (r.descContratacion > 0) {
+          fila(
+            "Descuento por contratacion (" +
+              Math.round(r.descContratacionPct * 100) +
+              "%)",
+            "- " + money(r.descContratacion),
+            { color: [0, 150, 90] },
+          );
+        }
+        if (r.descPrepago > 0) {
+          fila(
+            "Descuento prepago (" + Math.round(r.descPrepagoPct * 100) + "%)",
+            "- " + money(r.descPrepago),
+            { color: [0, 150, 90] },
+          );
+        }
+        if (r.descDivisas > 0) {
+          fila("Descuento pago en divisas (20%)", "- " + money(r.descDivisas), {
+            color: [0, 150, 90],
+          });
+        }
+        fila("TOTAL contrato (sin IVA)", money(r.total), {
+          bold: true,
+          big: true,
+          color: [139, 0, 255],
+        });
+        fila("Equivale a", money(r.mensualEquivalente) + " / mes");
+
+        // Notas
+        y += 14;
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 120, 120);
+        doc.text(
+          "Precios en USD, sin IVA ni impuestos de publicidad del anunciante.",
+          M,
+          y,
+        );
+        y += 5;
+        doc.text(
+          "Prepago = pago total del contrato al inicio. Descuento divisas aplica pagando en dolares. Propuesta valida por 15 dias.",
+          M,
+          y,
+        );
+
+        // Footer oscuro
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 281, W, 16, "F");
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(220, 220, 220);
+        doc.text(
+          "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+          W / 2,
+          290,
+          { align: "center" },
+        );
+
+        const slug = cliente
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        doc.save("Propuesta-1PIXEL-" + slug + ".pdf");
+      }
+
+      $("pdfBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) {
+          mostrarCopyFeedback("Marca al menos una galería.", false);
+          return;
+        }
+        const cliente = $("cliente").value.trim();
+        if (!cliente) {
+          mostrarCopyFeedback(
+            "Escribe el nombre del cliente para generar el PDF.",
+            false,
+          );
+          $("cliente").focus();
+          return;
+        }
+        const btn = $("pdfBtn");
+        btn.disabled = true;
+        try {
+          const [JsPDF, logo] = await Promise.all([
+            cargarJsPDF(),
+            cargarLogo(),
+          ]);
+          generarPDF(JsPDF, logo, r, cliente);
+          mostrarCopyFeedback("PDF descargado ✓", true);
+        } catch (err) {
+          mostrarCopyFeedback(
+            "No se pudo generar el PDF. Revisa tu conexión e intenta de nuevo.",
+            false,
+          );
+        }
+        btn.disabled = false;
+      });
+
+      /* ============================================================
          GALERÍAS — render + listeners
          ============================================================ */
       const galeriasList = $("galeriasList");
@@ -1606,8 +1967,24 @@
         galeriasList.appendChild(label);
       });
 
+      // 1 mes: sin descuento de contratación ni prepago (divisas SÍ aplica,
+      // igual que en el sheet). Atenúa solo prepago y muestra nota.
+      function sincUIDuracion() {
+        const durSel = document.querySelector('input[name="duracion"]:checked');
+        const esUnMes = durSel && Number(durSel.value) === 1;
+        $("durNota").style.display = esUnMes ? "" : "none";
+        $("prepago").disabled = esUnMes;
+        $("prepago").closest(".toggle-card").style.opacity = esUnMes
+          ? "0.5"
+          : "";
+      }
+
       // Recálculo en vivo ante cualquier cambio de entrada.
-      app.addEventListener("change", recalcular);
+      app.addEventListener("change", () => {
+        sincUIDuracion();
+        recalcular();
+      });
+      sincUIDuracion();
 
       // Sesión previa: entrar directo. Va al FINAL del script porque
       // entrar() → recalcular() necesita los const y el render de galerías
