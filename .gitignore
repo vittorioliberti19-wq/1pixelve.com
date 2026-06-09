@@ -1,2 +1,11 @@
 *.mp4
+!hero-desktop.mp4
+!hero-mobile.mp4
+!galeria-calle77.mp4
+!galeria-cecilio.mp4
+!galeria-corredor.mp4
+!galeria-bellavista.mp4
+!galeria-5dejulio.mp4
 .DS_Store
+test-results/
+*.bak*
