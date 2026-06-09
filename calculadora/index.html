@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Calculadora comercial | 1PIXEL</title>
+    <link rel="icon" type="image/png" href="../favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* === RESET & BASE === */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0a0a;
+        --bg-light: #111;
+        --bg-card: #161616;
+        --cyan: #8b00ff;
+        --magenta: #ff00ff;
+        --green: #00ff88;
+        --white: #f0f0f0;
+        --gray: #888;
+        --purple: #8b00ff;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--white);
+        font-family: var(--font-body);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* === SCROLLBAR === */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--cyan);
+        border-radius: 3px;
+      }
+
+      @keyframes scale-in {
+        from {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* === SHINY CTA === */
+      @property --gradient-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-angle-offset {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-percent {
+        syntax: "<percentage>";
+        initial-value: 5%;
+        inherits: false;
+      }
+      @property --gradient-shine {
+        syntax: "<color>";
+        initial-value: #f0f0f0;
+        inherits: false;
+      }
+
+      .shiny-cta {
+        --shiny-cta-bg: #0a0a0a;
+        --shiny-cta-bg-subtle: #1a1622;
+        --shiny-cta-fg: #f0f0f0;
+        --shiny-cta-highlight: #8b00ff;
+        --shiny-cta-highlight-subtle: #b366ff;
+        --animation: gradient-angle linear infinite;
+        --duration: 3s;
+        --shadow-size: 2px;
+        --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
+        isolation: isolate;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        outline-offset: 4px;
+        padding: 1rem 2.2rem;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.2;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 1px solid transparent;
+        border-radius: 360px;
+        color: var(--shiny-cta-fg);
+        background:
+          linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+          conic-gradient(
+              from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+              transparent,
+              var(--shiny-cta-highlight) var(--gradient-percent),
+              var(--gradient-shine) calc(var(--gradient-percent) * 2),
+              var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+              transparent calc(var(--gradient-percent) * 4)
+            )
+            border-box;
+        box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+        transition: var(--transition);
+        transition-property:
+          --gradient-angle-offset, --gradient-percent, --gradient-shine;
+      }
+      .shiny-cta::before,
+      .shiny-cta::after,
+      .shiny-cta span::before {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        translate: -50% -50%;
+        z-index: -1;
+      }
+      .shiny-cta:active {
+        translate: 0 1px;
+      }
+      .shiny-cta::before {
+        --size: calc(100% - var(--shadow-size) * 3);
+        --position: 2px;
+        --space: calc(var(--position) * 2);
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(
+            circle at var(--position) var(--position),
+            #fff calc(var(--position) / 4),
+            transparent 0
+          )
+          padding-box;
+        background-size: var(--space) var(--space);
+        background-repeat: space;
+        mask-image: conic-gradient(
+          from calc(var(--gradient-angle) + 45deg),
+          black,
+          transparent 10% 90%,
+          black
+        );
+        border-radius: inherit;
+        opacity: 0.4;
+        z-index: -1;
+      }
+      .shiny-cta::after {
+        --animation: shimmer linear infinite;
+        width: 100%;
+        aspect-ratio: 1;
+        background: linear-gradient(
+          -50deg,
+          transparent,
+          var(--shiny-cta-highlight),
+          transparent
+        );
+        mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+        opacity: 0.6;
+      }
+      .shiny-cta span {
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--shiny-cta-fg);
+      }
+      .shiny-cta span::before {
+        --size: calc(100% + 1rem);
+        width: var(--size);
+        height: var(--size);
+        box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+        opacity: 0;
+        transition: opacity var(--transition);
+        animation: calc(var(--duration) * 1.5) breathe linear infinite;
+      }
+      .shiny-cta,
+      .shiny-cta::before,
+      .shiny-cta::after {
+        animation:
+          var(--animation) var(--duration),
+          var(--animation) calc(var(--duration) / 0.4) reverse paused;
+        animation-composition: add;
+      }
+      .shiny-cta:is(:hover, :focus-visible) {
+        --gradient-percent: 20%;
+        --gradient-angle-offset: 95deg;
+        --gradient-shine: var(--shiny-cta-highlight-subtle);
+      }
+      .shiny-cta:is(:hover, :focus-visible),
+      .shiny-cta:is(:hover, :focus-visible)::before,
+      .shiny-cta:is(:hover, :focus-visible)::after {
+        animation-play-state: running;
+      }
+      .shiny-cta:is(:hover, :focus-visible) span::before {
+        opacity: 1;
+      }
+      .shiny-cta:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .shiny-cta,
+        .shiny-cta::before,
+        .shiny-cta::after {
+          animation: none;
+        }
+      }
+      @keyframes gradient-angle {
+        to {
+          --gradient-angle: 360deg;
+        }
+      }
+      @keyframes shimmer {
+        to {
+          rotate: 360deg;
+        }
+      }
+      @keyframes breathe {
+        from,
+        to {
+          scale: 1;
+        }
+        50% {
+          scale: 1.2;
+        }
+      }
+
+      /* === NAV === */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 16px 0;
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(139, 0, 255, 0.1);
+      }
+
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 32px;
+        width: auto;
+        transition: opacity 0.3s;
+      }
+
+      .logo:hover img {
+        opacity: 0.8;
+      }
+
+      .nav-tag {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #c89bff;
+        border: 1px solid rgba(139, 0, 255, 0.5);
+        background: rgba(139, 0, 255, 0.08);
+        padding: 6px 14px;
+        border-radius: 999px;
+      }
+
+      /* === GATE === */
+      .gate {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .gate.hidden {
+        display: none;
+      }
+
+      .gate-card {
+        width: 100%;
+        max-width: 380px;
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 36px 28px;
+        text-align: center;
+      }
+
+      .gate-lock {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .gate-card h1 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+
+      .gate-card p {
+        color: var(--gray);
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+      }
+
+      .gate-card input {
+        width: 100%;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        outline: none;
+        min-height: 50px;
+        transition: all 0.3s;
+        margin-bottom: 14px;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+
+      .gate-card input:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.15);
+      }
+
+      .gate-card .shiny-cta {
+        width: 100%;
+      }
+
+      .gate-error {
+        display: none;
+        color: #ff5577;
+        font-size: 0.85rem;
+        margin-top: 14px;
+      }
+
+      .gate-error.show {
+        display: block;
+      }
+
+      /* === APP === */
+      .app {
+        display: none;
+      }
+
+      .app.visible {
+        display: block;
+      }
+
+      .ct-hero {
+        padding: 48px 0 12px;
+      }
+
+      .ct-hero h2 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 5vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+      }
+
+      .ct-hero h2 .highlight {
+        background: linear-gradient(135deg, var(--cyan), var(--magenta));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .ct-hero p {
+        color: var(--gray);
+        font-size: 1rem;
+        max-width: 540px;
+      }
+
+      /* === LAYOUT === */
+      .ct-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 28px 0 80px;
+        align-items: start;
+      }
+
+      @media (min-width: 920px) {
+        .ct-grid {
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 36px;
+        }
+        .result-col {
+          position: sticky;
+          top: 88px;
+        }
+      }
+
+      /* === FORM CARD === */
+      .panel {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 32px;
+      }
+
+      @media (max-width: 640px) {
+        .panel {
+          padding: 22px 18px;
+        }
+      }
+
+      .block + .block {
+        margin-top: 30px;
+        padding-top: 26px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .block-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      .block-title .ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .field-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: var(--gray);
+      }
+
+      /* === CHECK CARDS === */
+      .check-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .check-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .check-card:hover {
+        border-color: rgba(139, 0, 255, 0.4);
+      }
+
+      .check-card:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+      }
+
+      .check-card:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .check-card input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--cyan);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .check-card .ck-body {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .check-card .ck-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--white);
+        display: block;
+      }
+
+      .check-card .ck-sub {
+        font-size: 0.78rem;
+        color: var(--gray);
+        margin-top: 2px;
+      }
+
+      /* === RADIO PILLS === */
+      .radio-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .radio-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 22px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .radio-pill:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+        color: var(--white);
+      }
+
+      .radio-pill:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .radio-pill input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--cyan);
+        cursor: pointer;
+      }
+
+      /* === INPUT / SELECT === */
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      .form-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--gray);
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        outline: none;
+        min-height: 50px;
+      }
+
+      .form-group select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        padding-right: 44px;
+        cursor: pointer;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.15);
+      }
+
+      .form-group input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      /* === TOGGLE === */
+      .toggle-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .toggle-card:hover {
+        border-color: rgba(139, 0, 255, 0.4);
+      }
+
+      .toggle-card:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+      }
+
+      .toggle-card:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .toggle-card input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--cyan);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .toggle-card .tg-body {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .toggle-card .tg-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--white);
+        display: block;
+      }
+
+      .toggle-card .tg-sub {
+        font-size: 0.78rem;
+        color: var(--gray);
+        margin-top: 2px;
+      }
+
+      /* === RESULT CARD === */
+      .result {
+        background: var(--bg-card);
+        border: 1px solid rgba(139, 0, 255, 0.25);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 0 0 1px rgba(139, 0, 255, 0.05);
+      }
+
+      .result-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+
+      .result-head .ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .result-head h3 {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+
+      .result-plan {
+        font-size: 0.88rem;
+        color: var(--gray);
+        margin: 0 0 22px 46px;
+      }
+
+      .result-plan strong {
+        color: #c89bff;
+        font-weight: 600;
+      }
+
+      /* Empty / error state */
+      .result-empty {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: rgba(255, 184, 107, 0.08);
+        border: 1px solid rgba(255, 184, 107, 0.25);
+        color: #ffb86b;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .result-body.hidden,
+      .result-empty.hidden {
+        display: none;
+      }
+
+      .line {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        padding: 9px 0;
+        font-size: 0.92rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .line:last-of-type {
+        border-bottom: none;
+      }
+
+      .line .lbl {
+        color: var(--gray);
+      }
+
+      .line .val {
+        font-weight: 600;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      .line.discount .val {
+        color: var(--green);
+      }
+
+      .line.muted .val {
+        color: var(--gray);
+        font-weight: 500;
+      }
+
+      .line-feature {
+        margin-top: 14px;
+        padding: 16px 18px;
+        background: rgba(139, 0, 255, 0.1);
+        border: 1px solid rgba(139, 0, 255, 0.3);
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .line-feature .lbl {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #c89bff;
+        font-weight: 600;
+      }
+
+      .line-feature .val {
+        font-family: var(--font-display);
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .total-row {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .total-row .lbl {
+        color: var(--gray);
+        font-size: 0.92rem;
+      }
+
+      .total-row .val {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .prepago-box {
+        display: none;
+        margin-top: 16px;
+        padding: 16px 18px;
+        background: rgba(0, 255, 136, 0.07);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        border-radius: 14px;
+      }
+
+      .prepago-box.show {
+        display: block;
+      }
+
+      .prepago-box .pp-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+
+      .prepago-box .pp-lbl {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .prepago-box .pp-val {
+        font-family: var(--font-display);
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .prepago-box .pp-save {
+        font-size: 0.85rem;
+        color: var(--green);
+      }
+
+      .result-note {
+        font-size: 0.75rem;
+        color: var(--gray);
+        line-height: 1.55;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .copy-btn {
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .copy-feedback {
+        text-align: center;
+        font-size: 0.82rem;
+        color: var(--green);
+        margin-top: 12px;
+        min-height: 18px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .copy-feedback.show {
+        opacity: 1;
+      }
+
+      /* === FOOTER === */
+      footer {
+        padding: 28px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+        color: var(--gray);
+        font-size: 0.82rem;
+      }
+
+      footer a {
+        color: var(--gray);
+        transition: color 0.3s;
+      }
+
+      footer a:hover {
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         GATE DE CLAVE — protección ligera DELIBERADA.
+         Esto NO es seguridad real: es una lista de precios interna,
+         no secretos. El hash y la lógica viven en el cliente, así que
+         cualquiera con devtools podría saltarlo. Solo evita que la URL
+         quede expuesta a curiosos casuales.
+         ============================================================ -->
+    <div class="gate" id="gate">
+      <div class="gate-card">
+        <div class="gate-lock">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+        </div>
+        <h1>Acceso interno</h1>
+        <p>Calculadora comercial de 1PIXEL. Introduce la clave para continuar.</p>
+        <form id="gateForm">
+          <input
+            type="password"
+            id="gateInput"
+            placeholder="Clave"
+            autocomplete="off"
+            aria-label="Clave de acceso"
+          />
+          <button type="submit" class="shiny-cta">
+            <span>Entrar</span>
+          </button>
+          <p
+            class="gate-error"
+            id="gateError"
+            role="alert"
+            aria-live="assertive"
+          >
+            Clave incorrecta.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================ APP -->
+    <div class="app" id="app" aria-hidden="true">
+      <nav>
+        <div class="container">
+          <a href="/" class="logo" aria-label="1PIXEL — inicio">
+            <img src="../logo.webp" width="3357" height="1125" alt="1PIXEL" />
+          </a>
+          <span class="nav-tag">Calculadora interna</span>
+        </div>
+      </nav>
+
+      <header class="ct-hero">
+        <div class="container">
+          <h2>Calculadora <span class="highlight">comercial</span></h2>
+          <p>
+            Arma la propuesta en segundos. Elige galerías, duración y opciones;
+            los números se recalculan al instante y los copias en formato
+            WhatsApp.
+          </p>
+        </div>
+      </header>
+
+      <main>
+        <div class="container ct-grid">
+          <!-- ===== COLUMNA FORMULARIO ===== -->
+          <section class="panel" aria-label="Opciones de la cotización">
+            <!-- Galerías -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-tv" aria-hidden="true"></i
+                ></span>
+                Galerías
+              </div>
+              <div
+                class="check-list"
+                id="galeriasList"
+                role="group"
+                aria-label="Galerías"
+              >
+                <!-- generadas por JS -->
+              </div>
+            </div>
+
+            <!-- Duración -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-clock" aria-hidden="true"></i
+                ></span>
+                Duración del contrato
+              </div>
+              <span class="field-label" id="durLabel">Meses</span>
+              <div
+                class="radio-row"
+                role="radiogroup"
+                aria-labelledby="durLabel"
+              >
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="3" />
+                  3 meses
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="6" checked />
+                  6 meses
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="12" />
+                  12 meses
+                </label>
+              </div>
+            </div>
+
+            <!-- Opciones -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-sliders" aria-hidden="true"></i
+                ></span>
+                Opciones
+              </div>
+
+              <div class="form-group">
+                <label for="boost">Boost de frecuencia</label>
+                <select id="boost">
+                  <option value="no">Sin boost</option>
+                  <option value="2x">2X (+30%)</option>
+                  <option value="3x">3X (+60%)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="toggle-card">
+                  <input type="checkbox" id="prepago" />
+                  <span class="tg-body">
+                    <span class="tg-label">Pago prepago</span>
+                    <span class="tg-sub"
+                      >Paga la totalidad del contrato por adelantado y aplica
+                      descuento extra.</span
+                    >
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Cliente -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-user" aria-hidden="true"></i
+                ></span>
+                Cliente
+                <span
+                  style="
+                    font-weight: 400;
+                    color: var(--gray);
+                    font-size: 0.8rem;
+                  "
+                  >(opcional)</span
+                >
+              </div>
+              <div class="form-group">
+                <label for="cliente">Nombre del cliente</label>
+                <input
+                  type="text"
+                  id="cliente"
+                  placeholder="Ej: Farmacia La Económica"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== COLUMNA RESULTADOS ===== -->
+          <aside class="result-col" aria-label="Resultado de la cotización">
+            <div class="result">
+              <div class="result-head">
+                <span class="ico"
+                  ><i class="fas fa-calculator" aria-hidden="true"></i
+                ></span>
+                <h3>Propuesta</h3>
+              </div>
+              <p class="result-plan" id="resultPlan"></p>
+
+              <div
+                class="result-empty"
+                id="resultEmpty"
+                role="status"
+                aria-live="polite"
+              >
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                <span>Marca al menos una galería para ver la cotización.</span>
+              </div>
+
+              <div
+                class="result-body hidden"
+                id="resultBody"
+                aria-live="polite"
+              >
+                <div class="line muted">
+                  <span class="lbl">Precio lista mensual</span>
+                  <span class="val" id="rListaMensual"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescPlan"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescPlanLbl">Descuento de plan</span>
+                  <span class="val" id="rDescPlan"></span>
+                </div>
+                <div
+                  class="line muted"
+                  id="rowMensualPlan"
+                  style="display: none"
+                >
+                  <span class="lbl">Mensual del plan</span>
+                  <span class="val" id="rMensualPlan"></span>
+                </div>
+                <div class="line discount" id="rowBoost" style="display: none">
+                  <span class="lbl" id="rBoostLbl">Boost</span>
+                  <span class="val" id="rBoost"></span>
+                </div>
+
+                <div class="line-feature">
+                  <span class="lbl">Mensual final</span>
+                  <span class="val" id="rMensualFinal"></span>
+                </div>
+
+                <div class="total-row">
+                  <span class="lbl" id="rTotalLbl">Total contrato</span>
+                  <span class="val" id="rTotal"></span>
+                </div>
+
+                <div class="prepago-box" id="prepagoBox">
+                  <div class="pp-top">
+                    <span class="pp-lbl">Total prepago</span>
+                    <span class="pp-val" id="rPrepago"></span>
+                  </div>
+                  <div class="pp-save" id="rAhorro"></div>
+                </div>
+
+                <p class="result-note">
+                  Precios no incluyen IVA ni impuestos de publicidad. Descuento
+                  prepago aplica pagando la totalidad del contrato.
+                </p>
+
+                <button type="button" class="shiny-cta copy-btn" id="copyBtn">
+                  <span
+                    ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
+                    propuesta</span
+                  >
+                </button>
+                <p
+                  class="copy-feedback"
+                  id="copyFeedback"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer>
+        <div class="container">
+          &copy; 2026 1PIXEL · Herramienta interna · Lista de Precios 2026/04 ·
+          <a href="/">1pixelve.com</a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      /* ============================================================
+         GATE — comparación de hash SHA-256 client-side.
+         Protección ligera deliberada (no son secretos, es una lista
+         de precios interna). El hash corresponde a "Direccion2026".
+         ============================================================ */
+      const CLAVE_HASH =
+        "ae9f067442ee31e2605be711455f1e0ba0240de098cc8876214053e54175c9f9";
+      const SS_KEY = "1px_calculadora";
+
+      const gate = document.getElementById("gate");
+      const app = document.getElementById("app");
+      const gateForm = document.getElementById("gateForm");
+      const gateInput = document.getElementById("gateInput");
+      const gateError = document.getElementById("gateError");
+
+      function entrar() {
+        gate.classList.add("hidden");
+        app.classList.add("visible");
+        app.setAttribute("aria-hidden", "false");
+        recalcular();
+      }
+
+      async function sha256(text) {
+        const data = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      gateForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        gateError.classList.remove("show");
+        const hash = await sha256(gateInput.value);
+        if (hash === CLAVE_HASH) {
+          sessionStorage.setItem(SS_KEY, "ok");
+          entrar();
+        } else {
+          gateError.classList.add("show");
+          gateInput.value = "";
+          gateInput.focus();
+        }
+      });
+
+      /* ============================================================
+         DATOS — Lista de Precios 2026/04 (fuente de verdad).
+         ============================================================ */
+      const GALERIAS = {
+        c77: {
+          nombre: "Calle 77 (Av. 5 de Julio)",
+          pantallas: 24,
+          precio: { 3: 1850, 6: 1700, 12: 1580 },
+        },
+        c67: {
+          nombre: "Calle 67 (Cecilio Acosta)",
+          pantallas: 12,
+          precio: { 3: 1200, 6: 1100, 12: 950 },
+        },
+        av3h: {
+          nombre: "Av. 3H (Corredor La Chinita)",
+          pantallas: 8,
+          precio: { 3: 820, 6: 750, 12: 670 },
+        },
+      };
+
+      // combos: clave = set de galerías ordenado. descPlan sobre la SUMA de mensuales.
+      const COMBOS = {
+        "c67+c77": {
+          nombre: "Plan 1 (36 Pantallas)",
+          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
+        },
+        "av3h+c77": {
+          nombre: "Plan 2 (32 Pantallas)",
+          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
+        },
+        "av3h+c67": {
+          nombre: "Plan 3 (20 Pantallas)",
+          descPlan: { 3: 0.06, 6: 0.08, 12: 0.1 },
+        },
+        "av3h+c67+c77": {
+          nombre: "Plan Total (44 Pantallas)",
+          descPlan: { 3: 0.1, 6: 0.12, 12: 0.15 },
+        },
+      };
+
+      const PREPAGO_INDIVIDUAL = { 3: 0.08, 6: 0.15, 12: 0.2 };
+      const PREPAGO_COMBO = { 3: 0.1, 6: 0.15, 12: 0.2 };
+      const BOOST = { no: 0, "2x": 0.3, "3x": 0.6 };
+      const BOOST_LABEL = { no: "Sin boost", "2x": "2X", "3x": "3X" };
+
+      // Orden canónico de las galerías para construir la clave de combo.
+      const ORDEN = ["av3h", "c67", "c77"];
+
+      /* ============================================================
+         FORMATO — siempre venezolano: $1.850,00
+         ============================================================ */
+      const fmt = new Intl.NumberFormat("es-VE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      function money(n) {
+        return "$" + fmt.format(n);
+      }
+
+      /* ============================================================
+         CÁLCULO
+         ============================================================ */
+      function calcular() {
+        const seleccion = Array.from(
+          document.querySelectorAll('input[name="galeria"]:checked'),
+        ).map((c) => c.value);
+
+        if (seleccion.length === 0) return null;
+
+        const dur = Number(
+          document.querySelector('input[name="duracion"]:checked').value,
+        );
+        const boostKey = document.getElementById("boost").value;
+        const prepagoOn = document.getElementById("prepago").checked;
+
+        // Suma de mensuales individuales para esta duración.
+        const claves = ORDEN.filter((k) => seleccion.includes(k));
+        const mensualBase = claves.reduce(
+          (acc, k) => acc + GALERIAS[k].precio[dur],
+          0,
+        );
+
+        const esCombo = claves.length >= 2;
+        let combo = null;
+        let descPlan = 0;
+        if (esCombo) {
+          combo = COMBOS[claves.join("+")];
+          descPlan = combo.descPlan[dur];
+        }
+
+        const mensualPlan = mensualBase * (1 - descPlan);
+
+        const boostPct = BOOST[boostKey];
+        const mensualFinal = mensualPlan * (1 + boostPct);
+
+        const totalContrato = mensualFinal * dur;
+
+        const tablaPrepago = esCombo ? PREPAGO_COMBO : PREPAGO_INDIVIDUAL;
+        const descPrepago = tablaPrepago[dur];
+        const totalPrepago = totalContrato * (1 - descPrepago);
+        const ahorro = totalContrato - totalPrepago;
+
+        // Nombre del plan + total pantallas.
+        const pantallas = claves.reduce(
+          (acc, k) => acc + GALERIAS[k].pantallas,
+          0,
+        );
+        let nombrePlan;
+        if (esCombo) {
+          nombrePlan = combo.nombre;
+        } else {
+          nombrePlan = GALERIAS[claves[0]].nombre;
+        }
+
+        return {
+          claves,
+          dur,
+          boostKey,
+          boostPct,
+          prepagoOn,
+          esCombo,
+          mensualBase,
+          descPlan,
+          mensualPlan,
+          mensualFinal,
+          totalContrato,
+          descPrepago,
+          totalPrepago,
+          ahorro,
+          pantallas,
+          nombrePlan,
+        };
+      }
+
+      /* ============================================================
+         TEST (verificación interna — NO se ejecuta en runtime)
+         ------------------------------------------------------------
+         Caso A — C77 + C67 + AV3H, 6 meses, sin boost, prepago:
+           mensualBase = 1700 + 1100 + 750 = 3550
+           descPlan(6) = 0.12 -> mensualPlan = 3550 * 0.88 = 3124,00
+           mensualFinal = 3124,00 (sin boost)
+           total = 3124 * 6 = 18.744,00
+           descPrepago combo(6) = 0.15 -> prepago = 18744 * 0.85 = 15.932,40
+           => mensual $3.124,00 · total $18.744,00 · prepago $15.932,40 ✓
+
+         Caso B — solo C77, 12 meses, sin boost, prepago:
+           mensualBase = mensualFinal = 1580
+           total = 1580 * 12 = 18.960,00
+           descPrepago individual(12) = 0.20 -> prepago = 18960 * 0.80 = 15.168,00
+           => mensual $1.580,00 · total $18.960,00 · prepago $15.168,00 ✓
+         ============================================================ */
+
+      /* ============================================================
+         RENDER
+         ============================================================ */
+      const $ = (id) => document.getElementById(id);
+
+      const resultEmpty = $("resultEmpty");
+      const resultBody = $("resultBody");
+      const resultPlan = $("resultPlan");
+
+      function recalcular() {
+        const r = calcular();
+
+        if (!r) {
+          resultEmpty.classList.remove("hidden");
+          resultBody.classList.add("hidden");
+          resultPlan.textContent = "";
+          return;
+        }
+
+        resultEmpty.classList.add("hidden");
+        resultBody.classList.remove("hidden");
+
+        resultPlan.innerHTML =
+          "<strong>" +
+          r.nombrePlan +
+          "</strong> · " +
+          r.pantallas +
+          " pantallas · " +
+          r.dur +
+          " meses";
+
+        $("rListaMensual").textContent = money(r.mensualBase);
+
+        const rowDescPlan = $("rowDescPlan");
+        const rowMensualPlan = $("rowMensualPlan");
+        if (r.esCombo) {
+          rowDescPlan.style.display = "";
+          rowMensualPlan.style.display = "";
+          const descMonto = r.mensualBase - r.mensualPlan;
+          $("rDescPlanLbl").textContent =
+            "Descuento de plan (" + Math.round(r.descPlan * 100) + "%)";
+          $("rDescPlan").textContent = "− " + money(descMonto);
+          $("rMensualPlan").textContent = money(r.mensualPlan);
+        } else {
+          rowDescPlan.style.display = "none";
+          rowMensualPlan.style.display = "none";
+        }
+
+        const rowBoost = $("rowBoost");
+        if (r.boostPct > 0) {
+          rowBoost.style.display = "";
+          const boostMonto = r.mensualFinal - r.mensualPlan;
+          $("rBoostLbl").textContent =
+            "Boost " +
+            BOOST_LABEL[r.boostKey] +
+            " (+" +
+            Math.round(r.boostPct * 100) +
+            "%)";
+          $("rBoost").textContent = "+ " + money(boostMonto);
+        } else {
+          rowBoost.style.display = "none";
+        }
+
+        $("rMensualFinal").textContent = money(r.mensualFinal);
+        $("rTotalLbl").textContent = "Total contrato (" + r.dur + " meses)";
+        $("rTotal").textContent = money(r.totalContrato);
+
+        const prepagoBox = $("prepagoBox");
+        if (r.prepagoOn) {
+          prepagoBox.classList.add("show");
+          $("rPrepago").textContent = money(r.totalPrepago);
+          $("rAhorro").textContent =
+            "Ahorras " +
+            money(r.ahorro) +
+            " (" +
+            Math.round(r.descPrepago * 100) +
+            "%)";
+        } else {
+          prepagoBox.classList.remove("show");
+        }
+      }
+
+      /* ============================================================
+         TEXTO WHATSAPP
+         ============================================================ */
+      function propuestaTexto(r) {
+        const cliente = $("cliente").value.trim() || "—";
+        const lineas = [];
+        lineas.push("*PROPUESTA COMERCIAL — 1PIXEL*");
+        lineas.push("Cliente: " + cliente);
+        lineas.push("");
+        lineas.push(
+          "📍 " + r.nombrePlan + " — " + r.pantallas + " pantallas LED",
+        );
+        r.claves.forEach((k) => {
+          lineas.push("• " + GALERIAS[k].nombre);
+        });
+        lineas.push("⏱ Duración: " + r.dur + " meses");
+        if (r.boostPct > 0) {
+          lineas.push("🚀 Boost de frecuencia " + BOOST_LABEL[r.boostKey]);
+        }
+        lineas.push("");
+        lineas.push("💵 Inversión mensual: " + money(r.mensualFinal));
+        lineas.push("💰 Total contrato: " + money(r.totalContrato));
+        if (r.prepagoOn) {
+          lineas.push(
+            "✅ Pagando prepago: " +
+              money(r.totalPrepago) +
+              " (ahorras " +
+              money(r.ahorro) +
+              ")",
+          );
+        }
+        lineas.push("");
+        lineas.push("_Precios no incluyen IVA ni impuestos de publicidad._");
+        lineas.push("1pixelve.com");
+        return lineas.join("\n");
+      }
+
+      const copyFeedback = $("copyFeedback");
+      let copyTimer = null;
+
+      function mostrarCopyFeedback(msg, ok) {
+        copyFeedback.textContent = msg;
+        copyFeedback.style.color = ok ? "var(--green)" : "#ff5577";
+        copyFeedback.classList.add("show");
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(
+          () => copyFeedback.classList.remove("show"),
+          2600,
+        );
+      }
+
+      $("copyBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) {
+          mostrarCopyFeedback("Marca al menos una galería.", false);
+          return;
+        }
+        const texto = propuestaTexto(r);
+        try {
+          await navigator.clipboard.writeText(texto);
+          mostrarCopyFeedback("Copiada ✓", true);
+        } catch (err) {
+          // Fallback para contextos sin clipboard API (http, permisos).
+          const ta = document.createElement("textarea");
+          ta.value = texto;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            mostrarCopyFeedback("Copiada ✓", true);
+          } catch (e2) {
+            mostrarCopyFeedback(
+              "No se pudo copiar. Cópiala manualmente.",
+              false,
+            );
+          }
+          document.body.removeChild(ta);
+        }
+      });
+
+      /* ============================================================
+         GALERÍAS — render + listeners
+         ============================================================ */
+      const galeriasList = $("galeriasList");
+      ORDEN.forEach((k) => {
+        const g = GALERIAS[k];
+        const label = document.createElement("label");
+        label.className = "check-card";
+        label.innerHTML =
+          '<input type="checkbox" name="galeria" value="' +
+          k +
+          '" />' +
+          '<span class="ck-body">' +
+          '<span class="ck-label">' +
+          g.nombre +
+          "</span>" +
+          '<span class="ck-sub">' +
+          g.pantallas +
+          " pantallas</span>" +
+          "</span>";
+        galeriasList.appendChild(label);
+      });
+
+      // Recálculo en vivo ante cualquier cambio de entrada.
+      app.addEventListener("change", recalcular);
+
+      // Sesión previa: entrar directo. Va al FINAL del script porque
+      // entrar() → recalcular() necesita los const y el render de galerías
+      // ya inicializados (si corre antes, TDZ revienta y mata la app).
+      if (sessionStorage.getItem(SS_KEY) === "ok") {
+        entrar();
+      } else {
+        gateInput.focus();
+      }
+    </script>
+  </body>
+</html>
