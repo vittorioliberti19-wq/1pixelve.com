@@ -1122,6 +1122,30 @@
                   </span>
                 </label>
               </div>
+
+              <div class="form-group">
+                <label for="descCustom">Descuento personalizado (%)</label>
+                <input
+                  type="number"
+                  id="descCustom"
+                  min="0"
+                  max="100"
+                  step="1"
+                  inputmode="decimal"
+                  placeholder="0"
+                  autocomplete="off"
+                />
+                <p
+                  style="
+                    font-size: 0.78rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                >
+                  Otros descuentos. Se aplica de último, sobre el monto ya
+                  rebajado.
+                </p>
+              </div>
             </div>
 
             <!-- Cliente -->
@@ -1221,6 +1245,16 @@
                     >Descuento pago en divisas (20%)</span
                   >
                   <span class="val" id="rDescDivisas"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescCustom"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescCustomLbl"
+                    >Descuento personalizado</span
+                  >
+                  <span class="val" id="rDescCustom"></span>
                 </div>
 
                 <div class="line-feature">
@@ -1405,6 +1439,15 @@
         const boostKey = document.getElementById("boost").value;
         const prepagoOn = document.getElementById("prepago").checked;
         const divisasOn = document.getElementById("divisas").checked;
+        // Descuento personalizado (%): clamp 0-100, NaN -> 0.
+        const descCustomPct =
+          Math.min(
+            Math.max(
+              parseFloat(document.getElementById("descCustom").value) || 0,
+              0,
+            ),
+            100,
+          ) / 100;
 
         const claves = ORDEN.filter((k) => seleccion.includes(k));
         const nGalerias = claves.length;
@@ -1434,8 +1477,13 @@
         const descDivisasPct = divisasOn ? DESC_DIVISAS : 0;
         const descDivisas = base3 * descDivisasPct;
 
-        // 5. Total + mensual equivalente.
-        const total = base3 - descDivisas;
+        // 5. Descuento personalizado ("otros descuentos") sobre base4.
+        // Se aplica de último, sobre el monto ya rebajado.
+        const base4 = base3 - descDivisas;
+        const descCustom = base4 * descCustomPct;
+
+        // 6. Total + mensual equivalente.
+        const total = base4 - descCustom;
         const mensualEquivalente = total / dur;
 
         const pantallas = claves.reduce(
@@ -1460,6 +1508,8 @@
           descPrepago,
           descDivisasPct,
           descDivisas,
+          descCustomPct,
+          descCustom,
           total,
           mensualEquivalente,
           pantallas,
@@ -1578,6 +1628,18 @@
           rowDescDivisas.style.display = "none";
         }
 
+        const rowDescCustom = $("rowDescCustom");
+        if (r.descCustom > 0) {
+          rowDescCustom.style.display = "";
+          $("rDescCustomLbl").textContent =
+            "Descuento personalizado (" +
+            Math.round(r.descCustomPct * 100) +
+            "%)";
+          $("rDescCustom").textContent = "− " + money(r.descCustom);
+        } else {
+          rowDescCustom.style.display = "none";
+        }
+
         $("rTotal").textContent = money(r.total);
         $("rEquivalente").textContent =
           "Equivale a " + money(r.mensualEquivalente) + "/mes";
@@ -1629,6 +1691,14 @@
         if (r.descDivisas > 0) {
           lineas.push(
             "Descuento pago en divisas (20%): − " + money(r.descDivisas),
+          );
+        }
+        if (r.descCustom > 0) {
+          lineas.push(
+            "Descuento personalizado (" +
+              Math.round(r.descCustomPct * 100) +
+              "%): − " +
+              money(r.descCustom),
           );
         }
         lineas.push("");
@@ -1865,6 +1935,15 @@
             color: [0, 150, 90],
           });
         }
+        if (r.descCustom > 0) {
+          fila(
+            "Descuento personalizado (" +
+              Math.round(r.descCustomPct * 100) +
+              "%)",
+            "- " + money(r.descCustom),
+            { color: [0, 150, 90] },
+          );
+        }
         fila("TOTAL contrato (sin IVA)", money(r.total), {
           bold: true,
           big: true,
@@ -1901,6 +1980,90 @@
           290,
           { align: "center" },
         );
+
+        // ============================================================
+        // PAGINA 2 — Terminos & Condiciones (de la propuesta de servicio).
+        // ASCII deliberado: jsPDF/Helvetica WinAnsi no maneja U+2212 y se
+        // evitan acentos para no depender de la codificacion de la fuente.
+        // ============================================================
+        function pieDePagina() {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 281, W, 16, "F");
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(220, 220, 220);
+          doc.text(
+            "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+            W / 2,
+            290,
+            { align: "center" },
+          );
+        }
+
+        const TERMINOS = [
+          "El Cliente sera el unico responsable por el contenido, diseno, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilizacion del material publicitario, incluyendo imagenes, marcas, logotipos, textos, musica o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la Republica Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 dias antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 dias de cada mes. De no recibir el pago del mes en curso se suspendera la visual de las galerias; de no recibir respuesta antes del 15 de cada mes se activara la clausula de terminacion anticipada con la emision de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro especifico del producto o servicio anunciado, no por categoria general ni por grupo empresarial.",
+          "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
+          "El cliente debera notificar con 30 dias de anticipacion la no renovacion del contrato; pasado este lapso debera cancelar una penalidad de un mes de arrendamiento.",
+          "La terminacion anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensacion razonable por la reserva de inventario.",
+        ];
+
+        doc.addPage();
+        // Header oscuro
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 0, W, 38, "F");
+        doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.text("TERMINOS & CONDICIONES", W - M, 19, { align: "right" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(170, 170, 170);
+        doc.text(cliente, W - M, 26, { align: "right" });
+        doc.setFillColor(139, 0, 255);
+        doc.rect(0, 38, W, 1.6, "F");
+
+        let ty = 54;
+        const indent = 6;
+        const maxW = W - M * 2 - indent;
+        doc.setFontSize(9.5);
+        TERMINOS.forEach((t) => {
+          const lines = doc.splitTextToSize(t, maxW);
+          const blockH = lines.length * 5 + 4;
+          if (ty + blockH > 274) {
+            pieDePagina();
+            doc.addPage();
+            ty = 24;
+            doc.setFontSize(9.5);
+          }
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(139, 0, 255);
+          doc.text("•", M, ty);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(55, 55, 55);
+          doc.text(lines, M + indent, ty);
+          ty += blockH;
+        });
+
+        // Cierre
+        ty += 6;
+        if (ty < 268) {
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(8.5);
+          doc.setTextColor(120, 120, 120);
+          doc.text(
+            "Devolver aceptacion firmada y sellada para validez de la propuesta economica y sus condiciones.",
+            M,
+            ty,
+            { maxWidth: W - M * 2 },
+          );
+        }
+
+        pieDePagina();
 
         const slug = cliente
           .toLowerCase()
@@ -1984,6 +2147,8 @@
         sincUIDuracion();
         recalcular();
       });
+      // El descuento personalizado es número: recalcular en cada tecla.
+      $("descCustom").addEventListener("input", recalcular);
       sincUIDuracion();
 
       // Sesión previa: entrar directo. Va al FINAL del script porque
