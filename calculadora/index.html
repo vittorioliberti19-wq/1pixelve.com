@@ -1497,6 +1497,86 @@
                   />
                 </div>
 
+                <!-- Firma por el cliente / grupo (representante único) -->
+                <div class="form-group">
+                  <label for="multiFirmanteNombre"
+                    >Firma por el cliente — Nombre</label
+                  >
+                  <input
+                    type="text"
+                    id="multiFirmanteNombre"
+                    placeholder="Nombre de quien firma"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCedula">Cédula del firmante</label>
+                  <input
+                    type="text"
+                    id="multiFirmanteCedula"
+                    placeholder="Ej: V-12.345.678"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCargo">Cargo del firmante</label>
+                  <input
+                    type="text"
+                    id="multiFirmanteCargo"
+                    placeholder="Ej: Gerente de Mercadeo"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCorreo">Correo del firmante</label>
+                  <input
+                    type="email"
+                    id="multiFirmanteCorreo"
+                    placeholder="cliente@correo.com"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <!-- Firma por 1PIXEL -->
+                <div class="form-group">
+                  <label for="multiFirmaNombre"
+                    >Firma por 1PIXEL — Nombre</label
+                  >
+                  <input
+                    type="text"
+                    id="multiFirmaNombre"
+                    value="Daniel Velásquez"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCedula">Cédula (1PIXEL)</label>
+                  <input
+                    type="text"
+                    id="multiFirmaCedula"
+                    placeholder="Ej: V-12.345.678"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCargo">Cargo (1PIXEL)</label>
+                  <input
+                    type="text"
+                    id="multiFirmaCargo"
+                    value="VP de Mercadeo"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCorreo">Correo (1PIXEL)</label>
+                  <input
+                    type="email"
+                    id="multiFirmaCorreo"
+                    value="ventas@1pixelve.com"
+                    autocomplete="off"
+                  />
+                </div>
+
                 <button
                   type="button"
                   class="shiny-cta copy-btn"
@@ -3041,20 +3121,21 @@
           M,
           colW,
           "Por: 1PIXEL S.A.",
-          $("firmaNombre").value.trim(),
-          $("firmaCargo").value.trim(),
-          $("firmaCedula").value.trim(),
-          $("firmaCorreo").value.trim(),
+          $("multiFirmaNombre").value.trim(),
+          $("multiFirmaCargo").value.trim(),
+          $("multiFirmaCedula").value.trim(),
+          $("multiFirmaCorreo").value.trim(),
           sigBaseY,
         );
+        // Firma única del representante del grupo (aplica a todas las marcas).
         bloqueFirma(
           M + colW + 12,
           colW,
           "Por: " + titular,
-          "",
-          "",
-          "",
-          "",
+          $("multiFirmanteNombre").value.trim(),
+          $("multiFirmanteCargo").value.trim(),
+          $("multiFirmanteCedula").value.trim(),
+          $("multiFirmanteCorreo").value.trim(),
           sigBaseY,
         );
 
