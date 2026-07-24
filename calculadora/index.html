@@ -1486,6 +1486,43 @@
                   15% · 6m 20% · 12m 25%) sustituye los descuentos estándar por
                   galerías; se aplica por marca según su plan.
                 </p>
+
+                <div class="form-group" style="margin-top: 12px">
+                  <label for="multiCliente">Cliente / grupo (opcional)</label>
+                  <input
+                    type="text"
+                    id="multiCliente"
+                    placeholder="Ej: Grupo Empresarial XYZ"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  class="shiny-cta copy-btn"
+                  id="multiCopyBtn"
+                >
+                  <span
+                    ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
+                    propuesta</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="shiny-cta copy-btn"
+                  id="multiPdfBtn"
+                >
+                  <span
+                    ><i class="fas fa-file-pdf" aria-hidden="true"></i> Generar
+                    propuesta (PDF)</span
+                  >
+                </button>
+                <p
+                  class="copy-feedback"
+                  id="multiCopyFeedback"
+                  role="status"
+                  aria-live="polite"
+                ></p>
               </div>
             </div>
           </aside>
@@ -2632,6 +2669,428 @@
           plan: 12,
         });
         renderMulti();
+      });
+
+      /* ============================================================
+         MULTIMARCA — copiar propuesta + PDF (paridad con mono-marca)
+         ============================================================ */
+      /* MULTI_TEXTO_START (pura: r + cliente; extraíble para verificación) */
+      function multiPropuestaTexto(r, cliente, GAL) {
+        const lineas = [];
+        lineas.push("*PROPUESTA CORPORATIVA MULTIMARCA — 1PIXEL*");
+        if (cliente) lineas.push("Cliente: " + cliente);
+        lineas.push(
+          r.nMarcas +
+            (r.nMarcas === 1 ? " marca" : " marcas") +
+            (r.multimarca
+              ? " — beneficio corporativo 15/20/25% según plan (3/6/12 meses)"
+              : " — sin beneficio corporativo (requiere 3+ marcas)"),
+        );
+        r.marcas.forEach((m) => {
+          lineas.push("");
+          lineas.push("*" + m.nombre + "* — plan " + m.plan + " meses");
+          m.galerias.forEach((k) => {
+            lineas.push("• " + GAL[k].nombre);
+          });
+          const e = m.elegido;
+          lineas.push("Tarifa mensual lista: " + money(e.tarifaMensual));
+          lineas.push(
+            "Subtotal lista (" + m.plan + "m): " + money(e.subtotalLista),
+          );
+          if (e.beneficio > 0) {
+            lineas.push(
+              "Beneficio corporativo (" +
+                Math.round(e.beneficioPct * 100) +
+                "%): − " +
+                money(e.beneficio),
+            );
+          }
+          lineas.push("Inversión neta: " + money(e.inversionNeta));
+          lineas.push("Mensualidad: " + money(e.mensualidad));
+        });
+        lineas.push("");
+        lineas.push("*CONSOLIDADO*");
+        lineas.push("Subtotal lista total: " + money(r.subtotalLista));
+        if (r.beneficio > 0) {
+          lineas.push("Beneficio total: − " + money(r.beneficio));
+        }
+        lineas.push(
+          "*💰 INVERSIÓN TOTAL NETA (sin IVA): " + money(r.inversionNeta) + "*",
+        );
+        lineas.push("Mensualidad total: " + money(r.mensualidad));
+        lineas.push("");
+        lineas.push(
+          "_Precios en USD, sin IVA ni impuestos de publicidad. Beneficio corporativo multimarca (3m 15% · 6m 20% · 12m 25%) sustituye los descuentos estándar por galerías; se aplica por marca según su plan._",
+        );
+        lineas.push("1pixelve.com");
+        return lineas.join("\n");
+      }
+      /* MULTI_TEXTO_END */
+
+      const multiCopyFeedback = $("multiCopyFeedback");
+      let multiCopyTimer = null;
+      function mostrarMultiFeedback(msg, ok) {
+        multiCopyFeedback.textContent = msg;
+        multiCopyFeedback.style.color = ok ? "var(--green)" : "#ff5577";
+        multiCopyFeedback.classList.add("show");
+        clearTimeout(multiCopyTimer);
+        multiCopyTimer = setTimeout(
+          () => multiCopyFeedback.classList.remove("show"),
+          2600,
+        );
+      }
+
+      async function copiarTexto(texto) {
+        try {
+          await navigator.clipboard.writeText(texto);
+          return true;
+        } catch (err) {
+          // Fallback para contextos sin clipboard API (http, permisos).
+          const ta = document.createElement("textarea");
+          ta.value = texto;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          let ok = false;
+          try {
+            ok = document.execCommand("copy");
+          } catch (e2) {
+            ok = false;
+          }
+          document.body.removeChild(ta);
+          return ok;
+        }
+      }
+
+      $("multiCopyBtn").addEventListener("click", async () => {
+        const r = multiCalcular(marcasState, GALERIAS);
+        if (r.nMarcas === 0) {
+          mostrarMultiFeedback("Marca galerías en al menos una marca.", false);
+          return;
+        }
+        const texto = multiPropuestaTexto(
+          r,
+          $("multiCliente").value.trim(),
+          GALERIAS,
+        );
+        const ok = await copiarTexto(texto);
+        mostrarMultiFeedback(
+          ok ? "Copiada ✓" : "No se pudo copiar. Cópiala manualmente.",
+          ok,
+        );
+      });
+
+      // PDF multimarca — mismo diseño del mono-marca (header/footer oscuros,
+      // barra violeta, página de Términos & Condiciones y firmas).
+      // ASCII deliberado en el contenido (jsPDF/Helvetica WinAnsi).
+      function generarPDFMulti(JsPDF, logo, r, cliente) {
+        const doc = new JsPDF({ unit: "mm", format: "a4" });
+        const W = 210;
+        const M = 18;
+        const fecha = new Date().toLocaleDateString("es-VE", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        const titular = cliente || "Propuesta corporativa multimarca";
+
+        function pieDePagina() {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 281, W, 16, "F");
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(220, 220, 220);
+          doc.text(
+            "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+            W / 2,
+            290,
+            { align: "center" },
+          );
+        }
+
+        function headerPagina(titulo, sub) {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 0, W, 38, "F");
+          doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+          doc.setTextColor(255, 255, 255);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.text(titulo, W - M, 19, { align: "right" });
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(170, 170, 170);
+          doc.text(sub, W - M, 26, { align: "right" });
+          doc.setFillColor(139, 0, 255);
+          doc.rect(0, 38, W, 1.6, "F");
+        }
+
+        headerPagina("PROPUESTA CORPORATIVA", "Maracaibo, " + fecha);
+
+        let y = 54;
+        function ensureSpace(h) {
+          if (y + h > 272) {
+            pieDePagina();
+            doc.addPage();
+            headerPagina("PROPUESTA CORPORATIVA", titular);
+            y = 52;
+          }
+        }
+
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("PREPARADA PARA", M, y);
+        y += 7;
+        doc.setTextColor(20, 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.text(titular, M, y);
+        y += 6;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.5);
+        doc.setTextColor(110, 110, 110);
+        doc.text(
+          r.nMarcas +
+            (r.nMarcas === 1 ? " marca" : " marcas") +
+            (r.multimarca
+              ? "  ·  beneficio corporativo multimarca 15/20/25% segun plan"
+              : "  ·  sin beneficio corporativo (requiere 3+ marcas)"),
+          M,
+          y,
+        );
+
+        function fila(lbl, val, opts) {
+          opts = opts || {};
+          ensureSpace(12);
+          y += 8;
+          doc.setFont("helvetica", opts.bold ? "bold" : "normal");
+          doc.setFontSize(opts.big ? 13 : 10);
+          if (opts.color) doc.setTextColor(...opts.color);
+          else doc.setTextColor(40, 40, 40);
+          doc.text(lbl, M, y);
+          doc.text(val, W - M, y, { align: "right" });
+          doc.setDrawColor(235, 235, 235);
+          doc.line(M, y + 3, W - M, y + 3);
+        }
+
+        r.marcas.forEach((m) => {
+          const e = m.elegido;
+          ensureSpace(24 + m.galerias.length * 5.5);
+          y += 12;
+          doc.setFillColor(139, 0, 255);
+          doc.rect(M, y - 4.5, 1.4, 12 + m.galerias.length * 5.5, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(12);
+          doc.setTextColor(20, 20, 20);
+          doc.text(m.nombre + "  ·  plan " + m.plan + " meses", M + 6, y);
+          y += 6.5;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(70, 70, 70);
+          m.galerias.forEach((k) => {
+            doc.text("•  Galeria " + GALERIAS[k].nombre, M + 6, y);
+            y += 5.5;
+          });
+          fila("Tarifa mensual lista", money(e.tarifaMensual));
+          fila("Subtotal lista (" + m.plan + " meses)", money(e.subtotalLista));
+          if (e.beneficio > 0) {
+            fila(
+              "Beneficio corporativo (" +
+                Math.round(e.beneficioPct * 100) +
+                "%)",
+              "- " + money(e.beneficio),
+              { color: [0, 150, 90] },
+            );
+          }
+          fila("Inversion neta", money(e.inversionNeta), { bold: true });
+          fila("Mensualidad", money(e.mensualidad));
+        });
+
+        // Consolidado
+        ensureSpace(60);
+        y += 14;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("CONSOLIDADO (USD, sin IVA)", M, y);
+        y += 2;
+        fila("Subtotal lista total", money(r.subtotalLista), { bold: true });
+        if (r.beneficio > 0) {
+          fila("Beneficio total", "- " + money(r.beneficio), {
+            color: [0, 150, 90],
+          });
+        }
+        fila("INVERSION TOTAL NETA (sin IVA)", money(r.inversionNeta), {
+          bold: true,
+          big: true,
+          color: [139, 0, 255],
+        });
+        fila("Mensualidad total", money(r.mensualidad));
+
+        ensureSpace(20);
+        y += 12;
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 120, 120);
+        doc.text(
+          "Precios en USD, sin IVA ni impuestos de publicidad del anunciante.",
+          M,
+          y,
+        );
+        y += 5;
+        doc.text(
+          "Beneficio corporativo multimarca (3m 15% / 6m 20% / 12m 25%): sustituye los descuentos estandar por galerias. Propuesta valida por 15 dias.",
+          M,
+          y,
+          { maxWidth: W - M * 2 },
+        );
+
+        pieDePagina();
+
+        // ===== Pagina de Terminos & Condiciones (mismos del mono-marca) =====
+        const TERMINOS = [
+          "El Cliente sera el unico responsable por el contenido, diseno, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilizacion del material publicitario, incluyendo imagenes, marcas, logotipos, textos, musica o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la Republica Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 dias antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 dias de cada mes. De no recibir el pago del mes en curso se suspendera la visual de las galerias; de no recibir respuesta antes del 15 de cada mes se activara la clausula de terminacion anticipada con la emision de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro especifico del producto o servicio anunciado, no por categoria general ni por grupo empresarial.",
+          "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
+          "El beneficio corporativo multimarca aplica mientras el ejercicio mantenga 3 o mas marcas activas; la salida de marcas que reduzca el grupo por debajo de 3 reajusta las condiciones a la politica estandar.",
+          "El cliente debera notificar con 30 dias de anticipacion la no renovacion del contrato; pasado este lapso debera cancelar una penalidad de un mes de arrendamiento.",
+          "La terminacion anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensacion razonable por la reserva de inventario.",
+        ];
+
+        doc.addPage();
+        headerPagina("TERMINOS & CONDICIONES", titular);
+
+        let ty = 54;
+        const indent = 6;
+        const maxW = W - M * 2 - indent;
+        doc.setFontSize(9.5);
+        TERMINOS.forEach((t) => {
+          const lines = doc.splitTextToSize(t, maxW);
+          const blockH = lines.length * 5 + 4;
+          if (ty + blockH > 274) {
+            pieDePagina();
+            doc.addPage();
+            ty = 24;
+            doc.setFontSize(9.5);
+          }
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(139, 0, 255);
+          doc.text("•", M, ty);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(55, 55, 55);
+          doc.text(lines, M + indent, ty);
+          ty += blockH;
+        });
+
+        ty += 6;
+        if (ty < 268) {
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(8.5);
+          doc.setTextColor(120, 120, 120);
+          doc.text(
+            "Devolver aceptacion firmada y sellada para validez de la propuesta economica y sus condiciones.",
+            M,
+            ty,
+            { maxWidth: W - M * 2 },
+          );
+          ty += 10;
+        }
+
+        function bloqueFirma(x, w, titulo, nombre, cargo, cedula, correo, by) {
+          doc.setDrawColor(120, 120, 120);
+          doc.line(x, by, x + w, by);
+          let yy = by + 6;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9);
+          doc.setTextColor(40, 40, 40);
+          doc.text(titulo, x, yy);
+          yy += 6;
+          doc.setFontSize(9);
+          doc.setTextColor(70, 70, 70);
+          if (nombre) {
+            doc.setFont("helvetica", "bold");
+            doc.text(nombre, x, yy);
+            doc.setFont("helvetica", "normal");
+            yy += 5;
+          }
+          doc.setFont("helvetica", "normal");
+          if (cargo) {
+            doc.text(cargo, x, yy);
+            yy += 5;
+          }
+          if (cedula) {
+            doc.text("C.I.: " + cedula, x, yy);
+            yy += 5;
+          }
+          if (correo) {
+            doc.text(correo, x, yy);
+            yy += 5;
+          }
+        }
+
+        let sigBaseY = Math.max(ty + 16, 246);
+        if (sigBaseY + 32 > 278) {
+          pieDePagina();
+          doc.addPage();
+          sigBaseY = 60;
+        }
+        const colW = (W - M * 2 - 12) / 2;
+        bloqueFirma(
+          M,
+          colW,
+          "Por: 1PIXEL S.A.",
+          $("firmaNombre").value.trim(),
+          $("firmaCargo").value.trim(),
+          $("firmaCedula").value.trim(),
+          $("firmaCorreo").value.trim(),
+          sigBaseY,
+        );
+        bloqueFirma(
+          M + colW + 12,
+          colW,
+          "Por: " + titular,
+          "",
+          "",
+          "",
+          "",
+          sigBaseY,
+        );
+
+        pieDePagina();
+
+        const slug = titular
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        doc.save("Propuesta-Multimarca-1PIXEL-" + slug + ".pdf");
+      }
+
+      $("multiPdfBtn").addEventListener("click", async () => {
+        const r = multiCalcular(marcasState, GALERIAS);
+        if (r.nMarcas === 0) {
+          mostrarMultiFeedback("Marca galerías en al menos una marca.", false);
+          return;
+        }
+        const btn = $("multiPdfBtn");
+        btn.disabled = true;
+        try {
+          const [JsPDF, logo] = await Promise.all([
+            cargarJsPDF(),
+            cargarLogo(),
+          ]);
+          generarPDFMulti(JsPDF, logo, r, $("multiCliente").value.trim());
+          mostrarMultiFeedback("PDF descargado ✓", true);
+        } catch (err) {
+          mostrarMultiFeedback(
+            "No se pudo generar el PDF. Revisa tu conexión e intenta de nuevo.",
+            false,
+          );
+        }
+        btn.disabled = false;
       });
 
       // Tabs de modo mono/multi.
