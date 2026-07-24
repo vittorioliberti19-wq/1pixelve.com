@@ -68,26 +68,26 @@ const GALLERIES = [
   {
     id: "3h",
     short: "Av 3H",
-    label: "AV 3H Corredor Gastronómico",
+    label: "Corredor Gastronómico 3H",
     active: true,
   },
   {
     id: "cecilio",
     short: "Cecilio Acosta",
-    label: "Calle 67 Cecilio Acosta",
+    label: "Cecilio Acosta",
     active: true,
   },
   {
     id: "5dejulio",
-    short: "C77-AV5",
-    label: "C77-AV5",
+    short: "C77 Bella Vista",
+    label: "Calle 77 con Bella Vista",
     active: true,
   },
   // --- pendientes por activar ---
   {
     id: "calle77",
-    short: "C77-AV15",
-    label: "C77-AV15",
+    short: "C77 Delicias",
+    label: "Calle 77 con Delicias",
     active: false,
   },
   {
