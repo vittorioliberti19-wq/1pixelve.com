@@ -1012,7 +1012,21 @@
         </div>
       </header>
 
-      <main>
+      <!-- ===== TABS DE MODO ===== -->
+      <div class="container" style="margin-top: 18px">
+        <div class="radio-row" role="tablist" aria-label="Modo de cálculo">
+          <label class="radio-pill">
+            <input type="radio" name="modo" value="mono" checked />
+            Mono-marca
+          </label>
+          <label class="radio-pill">
+            <input type="radio" name="modo" value="multi" />
+            Multimarca (3+ marcas)
+          </label>
+        </div>
+      </div>
+
+      <main id="monoMain">
         <div class="container ct-grid">
           <!-- ===== COLUMNA FORMULARIO ===== -->
           <section class="panel" aria-label="Opciones de la cotización">
@@ -1398,6 +1412,86 @@
         </div>
       </main>
 
+      <!-- ===== MODO MULTIMARCA (excel "Simulador 1PIXEL" 2026-07) ===== -->
+      <main id="multiMain" style="display: none">
+        <div class="container ct-grid">
+          <section class="panel" aria-label="Marcas del ejercicio multimarca">
+            <p
+              class="dur-nota"
+              id="multiAviso"
+              style="
+                display: none;
+                font-size: 0.82rem;
+                color: #e0a13a;
+                margin-bottom: 14px;
+              "
+            >
+              El beneficio corporativo multimarca aplica con 3+ marcas. Con 1-2
+              marcas rige la política estándar (descuentos por Nº de galerías →
+              prepago → divisas): usa el modo Mono-marca.
+            </p>
+            <div id="marcasList"></div>
+            <button type="button" class="shiny-cta copy-btn" id="addMarcaBtn">
+              <span
+                ><i class="fas fa-plus" aria-hidden="true"></i> Agregar
+                marca</span
+              >
+            </button>
+          </section>
+
+          <aside class="result-col" aria-label="Consolidado multimarca">
+            <div class="result">
+              <div class="result-head">
+                <span class="ico"
+                  ><i class="fas fa-layer-group" aria-hidden="true"></i
+                ></span>
+                <h3>Consolidado</h3>
+              </div>
+              <p class="result-plan" id="multiPlan"></p>
+              <div
+                class="result-empty"
+                id="multiEmpty"
+                role="status"
+                aria-live="polite"
+              >
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                <span>Marca galerías en al menos una marca.</span>
+              </div>
+              <div class="result-body hidden" id="multiBody" aria-live="polite">
+                <div class="line">
+                  <span class="lbl">Subtotal lista total</span>
+                  <span class="val" id="mSubtotal"></span>
+                </div>
+                <div class="line discount" id="mRowBeneficio">
+                  <span class="lbl" id="mBeneficioLbl">Beneficio total</span>
+                  <span class="val" id="mBeneficio"></span>
+                </div>
+                <div class="line-feature">
+                  <span class="lbl"
+                    >Inversión total neta <small>(sin IVA)</small></span
+                  >
+                  <span class="val" id="mNeta"></span>
+                </div>
+                <p
+                  style="
+                    text-align: right;
+                    font-size: 0.82rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                  id="mMensualidad"
+                ></p>
+                <p class="result-note">
+                  Precios en USD, sin IVA. Beneficio corporativo multimarca (3m
+                  15% · 6m 20% · 12m 25%) sustituye los descuentos estándar por
+                  galerías; se aplica por marca según su plan.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+
       <footer>
         <div class="container">
           &copy; 2026 1PIXEL · Herramienta interna · Simulador Lista de Precios
@@ -1478,7 +1572,7 @@
         },
         vereda: {
           nombre: "Vereda del Lago (1ra Etapa)",
-          pantallas: 6,
+          pantallas: 12,
           precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
         },
         av3h: {
@@ -2329,6 +2423,229 @@
       // El descuento personalizado es número: recalcular en cada tecla.
       $("descCustom").addEventListener("input", recalcular);
       sincUIDuracion();
+
+      /* ============================================================
+         MULTIMARCA — excel "Simulador 1PIXEL" 2026-07.
+         Beneficio corporativo (3+ marcas): 15/20/25% por plan de
+         3/6/12 meses. SUSTITUYE los descuentos estándar por galerías.
+         ============================================================ */
+      const PLANES_MULTI = [3, 6, 12];
+      const BENEFICIO_MULTI = { 3: 0.15, 6: 0.2, 12: 0.25 };
+      const MIN_MARCAS_MULTI = 3;
+
+      /* MULTI_CALC_START (extraíble para verificación por script) */
+      function multiCalcular(marcas, GAL) {
+        const activas = marcas.filter((m) => m.galerias.length > 0);
+        const multimarca = activas.length >= 3;
+        const BEN = { 3: 0.15, 6: 0.2, 12: 0.25 };
+        const detalle = activas.map((m) => {
+          const planes = [3, 6, 12].map((plan) => {
+            const tarifaMensual = m.galerias.reduce(
+              (acc, k) => acc + GAL[k].precio[plan],
+              0,
+            );
+            const subtotalLista = tarifaMensual * plan;
+            const beneficioPct = multimarca ? BEN[plan] : 0;
+            const beneficio = subtotalLista * beneficioPct;
+            const inversionNeta = subtotalLista - beneficio;
+            return {
+              plan,
+              tarifaMensual,
+              subtotalLista,
+              beneficioPct,
+              beneficio,
+              inversionNeta,
+              mensualidad: inversionNeta / plan,
+            };
+          });
+          return {
+            nombre: m.nombre,
+            plan: m.plan,
+            galerias: m.galerias,
+            planes,
+            elegido: planes.find((p) => p.plan === m.plan),
+          };
+        });
+        const sum = (f) => detalle.reduce((acc, m) => acc + f(m.elegido), 0);
+        return {
+          multimarca,
+          nMarcas: detalle.length,
+          marcas: detalle,
+          subtotalLista: sum((e) => e.subtotalLista),
+          beneficio: sum((e) => e.beneficio),
+          inversionNeta: sum((e) => e.inversionNeta),
+          mensualidad: sum((e) => e.mensualidad),
+        };
+      }
+      /* MULTI_CALC_END */
+
+      let marcasState = [
+        { nombre: "Marca 1", galerias: [], plan: 12 },
+        { nombre: "Marca 2", galerias: [], plan: 12 },
+        { nombre: "Marca 3", galerias: [], plan: 12 },
+      ];
+
+      function escapeHtml(s) {
+        return s.replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+
+      function marcaCardHTML(m, i, multimarca, det) {
+        const gals = ORDEN.map((k) => {
+          const on = m.galerias.includes(k);
+          return `<label class="radio-pill" style="display:block;margin-bottom:6px">
+            <input type="checkbox" data-mm-gal="${k}" data-mm-idx="${i}" ${on ? "checked" : ""} />
+            ${GALERIAS[k].nombre} · $${fmt.format(GALERIAS[k].precio[m.plan])}/mes a ${m.plan}m
+          </label>`;
+        }).join("");
+        const planBtns = PLANES_MULTI.map(
+          (p) => `<label class="radio-pill">
+            <input type="radio" name="mmplan${i}" value="${p}" data-mm-plan data-mm-idx="${i}" ${m.plan === p ? "checked" : ""} />
+            ${p}m${multimarca ? ` (−${Math.round(BENEFICIO_MULTI[p] * 100)}%)` : ""}
+          </label>`,
+        ).join("");
+        const tabla = det
+          ? `<div style="overflow-x:auto;margin-top:12px"><table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+              <tr style="color:var(--gray);text-align:right">
+                <th style="text-align:left;padding:4px 6px">Plan</th>
+                <th style="padding:4px 6px">Tarifa/mes</th>
+                <th style="padding:4px 6px">Subtotal lista</th>
+                <th style="padding:4px 6px">Beneficio</th>
+                <th style="padding:4px 6px">Inversión neta</th>
+                <th style="padding:4px 6px">Mensualidad</th>
+              </tr>
+              ${det.planes
+                .map(
+                  (
+                    p,
+                  ) => `<tr style="text-align:right;${p.plan === m.plan ? "font-weight:700" : "color:var(--gray)"}">
+                    <td style="text-align:left;padding:4px 6px">${p.plan}m${p.plan === m.plan ? " ✓" : ""}</td>
+                    <td style="padding:4px 6px">${money(p.tarifaMensual)}</td>
+                    <td style="padding:4px 6px">${money(p.subtotalLista)}</td>
+                    <td style="padding:4px 6px">${p.beneficioPct > 0 ? Math.round(p.beneficioPct * 100) + "% · −" + money(p.beneficio) : "—"}</td>
+                    <td style="padding:4px 6px">${money(p.inversionNeta)}</td>
+                    <td style="padding:4px 6px">${money(p.mensualidad)}</td>
+                  </tr>`,
+                )
+                .join("")}
+            </table></div>`
+          : "";
+        return `<div class="block" data-mm-card="${i}">
+          <div class="block-title" style="display:flex;align-items:center;gap:10px">
+            <input type="text" value="${escapeHtml(m.nombre)}" data-mm-nombre data-mm-idx="${i}"
+              style="flex:1;max-width:240px" aria-label="Nombre de la marca" />
+            <button type="button" data-mm-remove="${i}" aria-label="Eliminar marca"
+              style="background:none;border:none;color:var(--gray);cursor:pointer">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div>${gals}</div>
+          <div class="radio-row" style="margin-top:10px">${planBtns}</div>
+          ${m.galerias.length > 0 ? tabla : ""}
+        </div>`;
+      }
+
+      const marcasList = $("marcasList");
+
+      function renderMulti() {
+        const r = multiCalcular(marcasState, GALERIAS);
+        // r.marcas preserva el orden de las marcas con galerías seleccionadas.
+        let activeIdx = -1;
+        marcasList.innerHTML = marcasState
+          .map((m, i) => {
+            const det = m.galerias.length > 0 ? r.marcas[++activeIdx] : null;
+            return marcaCardHTML(m, i, r.multimarca, det);
+          })
+          .join("");
+        renderMultiConsolidado(r);
+      }
+
+      function renderMultiConsolidado(r) {
+        const activas = marcasState.filter((m) => m.galerias.length > 0);
+        $("multiAviso").style.display =
+          activas.length > 0 && activas.length < MIN_MARCAS_MULTI
+            ? "block"
+            : "none";
+        if (r.nMarcas === 0) {
+          $("multiEmpty").classList.remove("hidden");
+          $("multiBody").classList.add("hidden");
+          $("multiPlan").textContent = "";
+          return;
+        }
+        $("multiEmpty").classList.add("hidden");
+        $("multiBody").classList.remove("hidden");
+        $("multiPlan").textContent =
+          r.marcas.map((m) => `${m.nombre} (${m.plan}m)`).join(" · ") +
+          (r.multimarca
+            ? " — beneficio corporativo activo"
+            : " — sin beneficio (requiere 3+ marcas)");
+        $("mSubtotal").textContent = money(r.subtotalLista);
+        $("mRowBeneficio").style.display = r.beneficio > 0 ? "" : "none";
+        $("mBeneficio").textContent = "− " + money(r.beneficio);
+        $("mNeta").textContent = money(r.inversionNeta);
+        $("mMensualidad").textContent =
+          "Mensualidad total: " + money(r.mensualidad);
+      }
+
+      marcasList.addEventListener("change", (e) => {
+        const t = e.target;
+        const i = Number(t.dataset.mmIdx);
+        if (t.dataset.mmGal !== undefined) {
+          const k = t.dataset.mmGal;
+          const g = marcasState[i].galerias;
+          marcasState[i].galerias = t.checked
+            ? [...g, k]
+            : g.filter((x) => x !== k);
+          renderMulti();
+        } else if (t.dataset.mmPlan !== undefined) {
+          marcasState[i].plan = Number(t.value);
+          renderMulti();
+        }
+      });
+      marcasList.addEventListener("input", (e) => {
+        const t = e.target;
+        if (t.dataset.mmNombre !== undefined) {
+          marcasState[Number(t.dataset.mmIdx)].nombre = t.value;
+          renderMultiConsolidado(multiCalcular(marcasState, GALERIAS));
+        }
+      });
+      marcasList.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-mm-remove]");
+        if (btn) {
+          marcasState.splice(Number(btn.dataset.mmRemove), 1);
+          renderMulti();
+        }
+      });
+      $("addMarcaBtn").addEventListener("click", () => {
+        marcasState.push({
+          nombre: `Marca ${marcasState.length + 1}`,
+          galerias: [],
+          plan: 12,
+        });
+        renderMulti();
+      });
+
+      // Tabs de modo mono/multi.
+      document.querySelectorAll('input[name="modo"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const multi =
+            document.querySelector('input[name="modo"]:checked').value ===
+            "multi";
+          $("monoMain").style.display = multi ? "none" : "";
+          $("multiMain").style.display = multi ? "" : "none";
+        });
+      });
+
+      renderMulti();
 
       // Sesión previa: entrar directo. Va al FINAL del script porque
       // entrar() → recalcular() necesita los const y el render de galerías
