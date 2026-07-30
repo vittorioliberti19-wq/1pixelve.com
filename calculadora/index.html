@@ -2243,7 +2243,7 @@
         });
         if (r.descContratacion > 0) {
           fila(
-            "Descuento por contratacion (" +
+            "Descuento por contratación (" +
               Math.round(r.descContratacionPct * 100) +
               "%)",
             "- " + money(r.descContratacion),
@@ -2309,7 +2309,7 @@
         );
 
         // ============================================================
-        // PAGINA 2 — Terminos & Condiciones (de la propuesta de servicio).
+        // PAGINA 2 — Términos & Condiciones (de la propuesta de servicio).
         // ASCII deliberado: jsPDF/Helvetica WinAnsi no maneja U+2212 y se
         // evitan acentos para no depender de la codificacion de la fuente.
         // ============================================================
@@ -2328,14 +2328,14 @@
         }
 
         const TERMINOS = [
-          "El Cliente sera el unico responsable por el contenido, diseno, veracidad y legalidad del material publicitario suministrado.",
-          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilizacion del material publicitario, incluyendo imagenes, marcas, logotipos, textos, musica o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la Republica Bolivariana de Venezuela.",
-          "El contenido digital a publicar se debe entregar 7 dias antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
-          "La fecha de pago son los primeros 5 dias de cada mes. De no recibir el pago del mes en curso se suspendera la visual de las galerias; de no recibir respuesta antes del 15 de cada mes se activara la clausula de terminacion anticipada con la emision de la factura de penalidad que aplique.",
-          "La exclusividad se otorga por sub-rubro especifico del producto o servicio anunciado, no por categoria general ni por grupo empresarial.",
+          "El Cliente será el único responsable por el contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilización del material publicitario, incluyendo imágenes, marcas, logotipos, textos, música o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la República Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 días antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 días de cada mes. De no recibir el pago del mes en curso, se suspenderá la visual de las galerías; de no recibir respuesta antes del 15 de cada mes, se activará la cláusula de terminación anticipada con la emisión de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro específico del producto o servicio anunciado, no por categoría general ni por grupo empresarial.",
           "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
-          "El cliente debera notificar con 30 dias de anticipacion la no renovacion del contrato; pasado este lapso debera cancelar una penalidad de un mes de arrendamiento.",
-          "La terminacion anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensacion razonable por la reserva de inventario.",
+          "El cliente deberá notificar con 30 días de anticipación la no renovación del contrato; pasado este lapso, deberá cancelar una penalidad de un mes de arrendamiento.",
+          "La terminación anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensación razonable por la reserva de inventario.",
         ];
 
         doc.addPage();
@@ -2346,7 +2346,7 @@
         doc.setTextColor(255, 255, 255);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(13);
-        doc.text("TERMINOS & CONDICIONES", W - M, 19, { align: "right" });
+        doc.text("TÉRMINOS & CONDICIONES", W - M, 19, { align: "right" });
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9);
         doc.setTextColor(170, 170, 170);
@@ -2383,7 +2383,7 @@
           doc.setFontSize(8.5);
           doc.setTextColor(120, 120, 120);
           doc.text(
-            "Devolver aceptacion firmada y sellada para validez de la propuesta economica y sus condiciones.",
+            "Devolver la aceptación firmada y sellada para la validez de la propuesta económica y sus condiciones.",
             M,
             ty,
             { maxWidth: W - M * 2 },
@@ -2933,7 +2933,7 @@
           r.nMarcas +
             (r.nMarcas === 1 ? " marca" : " marcas") +
             (r.multimarca
-              ? "  ·  beneficio corporativo multimarca 15/20/25% segun plan"
+              ? "  ·  beneficio corporativo multimarca 15/20/25% según plan"
               : "  ·  sin beneficio corporativo (requiere 3+ marcas)"),
           M,
           y,
@@ -2982,7 +2982,7 @@
               { color: [0, 150, 90] },
             );
           }
-          fila("Inversion neta", money(e.inversionNeta), { bold: true });
+          fila("Inversión neta", money(e.inversionNeta), { bold: true });
           fila("Mensualidad", money(e.mensualidad));
         });
 
@@ -2999,7 +2999,7 @@
             color: [0, 150, 90],
           });
         }
-        fila("INVERSION TOTAL NETA (sin IVA)", money(r.inversionNeta), {
+        fila("INVERSIÓN TOTAL NETA (sin IVA)", money(r.inversionNeta), {
           bold: true,
           big: true,
           color: [139, 0, 255],
@@ -3018,7 +3018,7 @@
         );
         y += 5;
         doc.text(
-          "Beneficio corporativo multimarca (3m 15% / 6m 20% / 12m 25%): sustituye los descuentos estandar por galerias. Propuesta valida por 15 dias.",
+          "Beneficio corporativo multimarca (3 m 15% / 6 m 20% / 12 m 25%): sustituye los descuentos estándar por galerías. Propuesta válida por 15 días.",
           M,
           y,
           { maxWidth: W - M * 2 },
@@ -3026,21 +3026,21 @@
 
         pieDePagina();
 
-        // ===== Pagina de Terminos & Condiciones (mismos del mono-marca) =====
+        // ===== Pagina de Términos & Condiciones (mismos del mono-marca) =====
         const TERMINOS = [
-          "El Cliente sera el unico responsable por el contenido, diseno, veracidad y legalidad del material publicitario suministrado.",
-          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilizacion del material publicitario, incluyendo imagenes, marcas, logotipos, textos, musica o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la Republica Bolivariana de Venezuela.",
-          "El contenido digital a publicar se debe entregar 7 dias antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
-          "La fecha de pago son los primeros 5 dias de cada mes. De no recibir el pago del mes en curso se suspendera la visual de las galerias; de no recibir respuesta antes del 15 de cada mes se activara la clausula de terminacion anticipada con la emision de la factura de penalidad que aplique.",
-          "La exclusividad se otorga por sub-rubro especifico del producto o servicio anunciado, no por categoria general ni por grupo empresarial.",
+          "El Cliente será el único responsable por el contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilización del material publicitario, incluyendo imágenes, marcas, logotipos, textos, música o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la República Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 días antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 días de cada mes. De no recibir el pago del mes en curso, se suspenderá la visual de las galerías; de no recibir respuesta antes del 15 de cada mes, se activará la cláusula de terminación anticipada con la emisión de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro específico del producto o servicio anunciado, no por categoría general ni por grupo empresarial.",
           "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
-          "El beneficio corporativo multimarca aplica mientras el ejercicio mantenga 3 o mas marcas activas; la salida de marcas que reduzca el grupo por debajo de 3 reajusta las condiciones a la politica estandar.",
-          "El cliente debera notificar con 30 dias de anticipacion la no renovacion del contrato; pasado este lapso debera cancelar una penalidad de un mes de arrendamiento.",
-          "La terminacion anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensacion razonable por la reserva de inventario.",
+          "El beneficio corporativo multimarca aplica mientras el ejercicio mantenga 3 o más marcas activas; la salida de marcas que reduzca el grupo por debajo de 3 reajusta las condiciones a la política estándar.",
+          "El cliente deberá notificar con 30 días de anticipación la no renovación del contrato; pasado este lapso, deberá cancelar una penalidad de un mes de arrendamiento.",
+          "La terminación anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensación razonable por la reserva de inventario.",
         ];
 
         doc.addPage();
-        headerPagina("TERMINOS & CONDICIONES", titular);
+        headerPagina("TÉRMINOS & CONDICIONES", titular);
 
         let ty = 54;
         const indent = 6;
@@ -3070,7 +3070,7 @@
           doc.setFontSize(8.5);
           doc.setTextColor(120, 120, 120);
           doc.text(
-            "Devolver aceptacion firmada y sellada para validez de la propuesta economica y sus condiciones.",
+            "Devolver la aceptación firmada y sellada para la validez de la propuesta económica y sus condiciones.",
             M,
             ty,
             { maxWidth: W - M * 2 },
