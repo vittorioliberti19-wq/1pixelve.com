@@ -238,7 +238,10 @@
       }
 
       /* === NAV === */
-      nav {
+      /* Selector por id, no por elemento: las paginas interiores tienen
+         tambien <nav> de breadcrumb y de enlaces relacionados, y con el
+         selector de elemento quedaban fijos arriba tapando el header. */
+      #navbar {
         position: fixed;
         top: 0;
         left: 0;
@@ -248,7 +251,8 @@
         transition: all 0.4s ease;
       }
 
-      nav.scrolled {
+      #navbar.scrolled,
+      #navbar.navbar-solido {
         background: rgba(10, 10, 10, 0.9);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
@@ -256,7 +260,7 @@
         border-bottom: 1px solid rgba(0, 245, 255, 0.1);
       }
 
-      nav .container {
+      #navbar .container {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -1187,6 +1191,29 @@
         text-transform: uppercase;
       }
 
+      .galeria-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #c58bff;
+      }
+
+      .galeria-link i {
+        font-size: 0.75rem;
+        transition: transform 0.25s ease;
+      }
+
+      .galeria-link:hover {
+        color: var(--white);
+      }
+
+      .galeria-link:hover i {
+        transform: translateX(4px);
+      }
+
       .galeria-card-body {
         padding: 24px;
       }
@@ -1709,8 +1736,8 @@
 
       .footer-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
-        gap: 60px;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr;
+        gap: 44px;
         margin-bottom: 40px;
       }
 
@@ -2154,10 +2181,10 @@
             fetchpriority="high"
         /></a>
         <ul class="nav-links" id="navLinks">
-          <li><a href="#que-es">Nosotros</a></li>
+          <li><a href="/pantallas-led-maracaibo/">Pantallas LED</a></li>
           <li><a href="#galerias">Galerías</a></li>
-          <li><a href="#ventajas">Ventajas</a></li>
-          <li><a href="#roadmap">Expansión</a></li>
+          <li><a href="/publicidad-dooh-venezuela/">DOOH</a></li>
+          <li><a href="/nosotros/">Nosotros</a></li>
           <li>
             <a href="#contacto" class="nav-cta shiny-cta shiny-sm"
               ><span>Contacto</span></a
@@ -2442,6 +2469,7 @@
                   la zona de mayor tráfico peatonal y vehicular de Maracaibo.
                   Publicidad exterior digital de alto impacto.
                 </p>
+                <a class="galeria-link" href="/galerias/calle-77-bella-vista/">Ver detalle de esta galería <i class="fas fa-arrow-right"></i></a>
               </div>
             </div>
             <div class="galeria-card reveal reveal-delay-2">
@@ -2469,6 +2497,7 @@
                   de espacios publicitarios en zona de vida comercial diurna y
                   gastronomía nocturna.
                 </p>
+                <a class="galeria-link" href="/galerias/cecilio-acosta/">Ver detalle de esta galería <i class="fas fa-arrow-right"></i></a>
               </div>
             </div>
             <div class="galeria-card reveal reveal-delay-3">
@@ -2496,6 +2525,7 @@
                   publicitarias en el principal punto de encuentro gastronómico
                   y entretenimiento de Maracaibo.
                 </p>
+                <a class="galeria-link" href="/galerias/corredor-gastronomico-3h/">Ver detalle de esta galería <i class="fas fa-arrow-right"></i></a>
               </div>
             </div>
             <div class="galeria-card reveal reveal-delay-4">
@@ -3159,13 +3189,42 @@
             </div>
           </div>
           <div class="footer-col">
-            <h3>Navegación</h3>
+            <h3>Publicidad LED</h3>
             <ul>
-              <li><a href="#que-es">Sobre nosotros</a></li>
-              <li><a href="#galerias">Galerías</a></li>
-              <li><a href="#ventajas">Ventajas</a></li>
-              <li><a href="#roadmap">Expansión</a></li>
-              <li><a href="#contacto">Contacto</a></li>
+              <li>
+                <a href="/pantallas-led-maracaibo/">Pantallas LED Maracaibo</a>
+              </li>
+              <li>
+                <a href="/alquiler-pantallas-led-maracaibo/"
+                  >Alquiler de pantallas LED</a
+                >
+              </li>
+              <li>
+                <a href="/vallas-digitales-maracaibo/">Vallas digitales</a>
+              </li>
+              <li>
+                <a href="/publicidad-dooh-venezuela/">Publicidad DOOH</a>
+              </li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Galerías</h3>
+            <ul>
+              <li>
+                <a href="/galerias/calle-77-bella-vista/"
+                  >Calle 77 con Bella Vista</a
+                >
+              </li>
+              <li>
+                <a href="/galerias/cecilio-acosta/">Cecilio Acosta</a>
+              </li>
+              <li>
+                <a href="/galerias/corredor-gastronomico-3h/"
+                  >Corredor Gastronómico 3H</a
+                >
+              </li>
+              <li><a href="/nosotros/">Sobre 1PIXEL</a></li>
+              <li><a href="/blog/">Blog</a></li>
             </ul>
           </div>
           <div class="footer-col">

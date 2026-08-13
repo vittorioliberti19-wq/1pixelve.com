@@ -4,6 +4,14 @@
 
 ## Paginas principales
 - [Inicio](https://1pixelve.com/): Pagina principal con informacion de servicios, ubicaciones, ventajas y contacto
+- [Pantallas LED en Maracaibo](https://1pixelve.com/pantallas-led-maracaibo/): La red completa, ubicaciones, formatos y condiciones
+- [Alquiler de pantallas LED](https://1pixelve.com/alquiler-pantallas-led-maracaibo/): Que incluye el contrato, duracion, formatos aceptados y proceso de contratacion
+- [Vallas digitales en Maracaibo](https://1pixelve.com/vallas-digitales-maracaibo/): Comparativa entre valla digital LED y valla impresa tradicional
+- [Publicidad DOOH en Venezuela](https://1pixelve.com/publicidad-dooh-venezuela/): Guia sobre digital out of home: formatos, medicion, errores comunes y contexto venezolano
+- [Galeria Calle 77 con Bella Vista](https://1pixelve.com/galerias/calle-77-bella-vista/): 24 pantallas, la ubicacion de mayor volumen
+- [Galeria Cecilio Acosta](https://1pixelve.com/galerias/cecilio-acosta/): 12 pantallas, comercio de dia y gastronomia de noche
+- [Galeria Corredor Gastronomico 3H](https://1pixelve.com/galerias/corredor-gastronomico-3h/): 8 pantallas, publico de salida nocturna
+- [Nosotros](https://1pixelve.com/nosotros/): Quienes somos y en que nos comprometemos
 - [FAQ](https://1pixelve.com/#faq): Preguntas frecuentes sobre publicidad en pantallas LED
 
 ## Que es 1PIXEL
