@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="es-VE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Cómo diseñar un anuncio para pantalla LED que sí se lea | 1PIXEL</title>
+    <meta name="description" content="Reglas prácticas de diseño para publicidad DOOH: cuántos elementos usar, tamaños de tipografía, contraste, colores que se pierden en LED, formatos y errores que arruinan una pauta." />
+    <meta name="author" content="1PIXEL" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html" />
+    <link rel="alternate" hreflang="es-ve" href="https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html" />
+    <link rel="alternate" hreflang="es" href="https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html" />
+    <link rel="alternate" hreflang="x-default" href="https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="es_VE" />
+    <meta property="og:site_name" content="1PIXEL" />
+    <meta property="og:title" content="Cómo diseñar un anuncio para pantalla LED que sí se lea" />
+    <meta property="og:description" content="Reglas prácticas de diseño para publicidad DOOH: cuántos elementos usar, tamaños de tipografía, contraste, colores que se pierden en LED, formatos y errores que arruinan una pauta." />
+    <meta property="og:image" content="https://1pixelve.com/logo.png" />
+    <meta property="og:url" content="https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html" />
+    <meta property="article:published_time" content="2026-08-12T08:00:00-04:00" />
+    <meta property="article:section" content="Guía" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cómo diseñar un anuncio para pantalla LED que sí se lea" />
+    <meta name="twitter:description" content="Reglas prácticas de diseño para publicidad DOOH: cuántos elementos usar, tamaños de tipografía, contraste, colores que se pierden en LED, formatos y errores que arruinan una pauta." />
+    <meta name="twitter:image" content="https://1pixelve.com/logo.png" />
+    <link rel="icon" href="/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+    
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --bg2: #161616;
+        --fg: #f0f0f0;
+        --muted: rgba(240,240,240,.72);
+        --accent: #8b00ff;
+        --accent-soft: rgba(139,0,255,.14);
+        --border: rgba(255,255,255,.10);
+        --surface: rgba(255,255,255,.03);
+        --display: "Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+        --body: "Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+        --mono: ui-monospace,SFMono-Regular,Menlo,monospace;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+      a { color: inherit; }
+      img { max-width: 100%; height: auto; }
+      .invert { filter: invert(1); }
+      .shell { width: min(820px, 100% - 40px); margin: 0 auto; }
+      .micro {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        opacity: .85;
+      }
+      /* nav */
+      .topnav {
+        position: sticky; top: 0; z-index: 50;
+        background: color-mix(in srgb, var(--bg) 85%, transparent);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .topnav .row {
+        width: min(1280px, 100% - 40px); margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 20px; padding: 12px 0;
+      }
+      .topnav img { height: 34px; width: auto; display: block; }
+      .navlinks { display: flex; gap: 22px; flex-wrap: wrap; }
+      .navlinks a {
+        font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+        text-transform: uppercase; text-decoration: none; color: var(--muted);
+      }
+      .navlinks a:hover { color: var(--fg); }
+      /* article */
+      main { padding: 48px 0 80px; }
+      .crumbs { display: flex; gap: 8px; flex-wrap: wrap; list-style: none;
+                 padding: 0; margin: 0 0 32px; }
+      .crumbs a { text-decoration: none; }
+      .crumbs a:hover { color: var(--fg); }
+      h1 {
+        font-family: var(--display); font-weight: 800; letter-spacing: -.03em;
+        line-height: 1.06; font-size: clamp(2rem, 5.5vw, 3.4rem);
+        margin: 14px 0 20px;
+      }
+      .lede { font-size: 1.14rem; color: var(--muted); line-height: 1.7; margin: 0 0 8px; }
+      article h2 {
+        font-family: var(--display); font-weight: 700; letter-spacing: -.02em;
+        font-size: clamp(1.4rem, 3.4vw, 2rem); margin: 3rem 0 1rem;
+        scroll-margin-top: 90px;
+      }
+      article h3 { font-weight: 700; font-size: 1.15rem; margin: 2rem 0 .7rem; }
+      article p { color: var(--muted); margin: 0 0 1.2rem; }
+      article ul, article ol { color: var(--muted); padding-left: 1.4rem; margin: 0 0 1.3rem; }
+      article li { margin-bottom: .5rem; }
+      article strong { color: var(--fg); font-weight: 600; }
+      article a { color: var(--accent); text-decoration: none;
+                   border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+      article a:hover { border-bottom-color: var(--accent); }
+      article table { width: 100%; border-collapse: collapse; margin: 1.6rem 0;
+                       font-size: .93rem; display: block; overflow-x: auto; }
+      article th, article td { border: 1px solid var(--border); padding: .7rem .9rem;
+                                text-align: left; color: var(--muted); }
+      article th { background: var(--surface); color: var(--fg); font-weight: 600;
+                    font-family: var(--mono); font-size: .74rem;
+                    text-transform: uppercase; letter-spacing: .08em; }
+      blockquote { margin: 1.6rem 0; padding: 1rem 1.2rem; border-left: 3px solid var(--accent);
+                    background: var(--accent-soft); border-radius: 0 var(--radius) var(--radius) 0; }
+      blockquote p { margin: 0; color: var(--fg); }
+      .toc { border: 1px solid var(--border); background: var(--surface);
+              border-radius: var(--radius); padding: 22px; margin: 32px 0; box-shadow: none; }
+      .toc ol { list-style: none; padding: 0; margin: 10px 0 0; counter-reset: toc; }
+      .toc li { counter-increment: toc; padding: .38rem 0;
+                 border-bottom: 1px solid var(--border); }
+      .toc li:last-child { border-bottom: none; }
+      .toc li::before { content: counter(toc, decimal-leading-zero) "  ";
+                         font-family: var(--mono); font-size: .78rem; opacity: .5; }
+      .toc a { text-decoration: none; color: var(--muted); }
+      .toc a:hover { color: var(--fg); }
+      .faq { border-top: 1px solid var(--border); margin-top: 1.2rem; }
+      .faq details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+      .faq summary { cursor: pointer; font-weight: 600; list-style: none; }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: "+"; float: right; color: var(--accent); }
+      .faq details[open] summary::after { content: "−"; }
+      .faq p { margin: .8rem 0 0; }
+      .cta { margin: 56px 0 0; padding: 32px; border: 1px solid var(--border);
+              border-radius: var(--radius); background: var(--accent-soft); box-shadow: none; }
+      .cta h2 { margin: 0 0 .6rem; font-size: 1.5rem; }
+      .cta p { margin: 0 0 1.2rem; }
+      .btn { display: inline-block; background: var(--accent); color: #fff;
+              padding: 13px 26px; border-radius: 999px; text-decoration: none;
+              font-weight: 600; border: none; }
+      .btn:hover { opacity: .9; }
+      .related { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+      .related ul { list-style: none; padding: 0; margin: 14px 0 0; }
+      .related li { padding: .55rem 0; border-bottom: 1px solid var(--border); }
+      .related a { text-decoration: none; color: var(--fg); font-weight: 600; }
+      .related a:hover { color: var(--accent); }
+      footer.site { border-top: 1px solid var(--border); padding: 30px 0;
+                     text-align: center; }
+      /* index de blog */
+      .postlist { list-style: none; padding: 0; margin: 40px 0 0; }
+      .postcard { border: 1px solid var(--border); border-radius: var(--radius);
+                   background: var(--surface); padding: 26px; margin-bottom: 18px;
+                   box-shadow: none; }
+      .postcard h2 { font-family: var(--display); font-size: 1.4rem; margin: 10px 0 .6rem;
+                      letter-spacing: -.02em; }
+      .postcard a { text-decoration: none; }
+      .postcard a:hover h2 { color: var(--accent); }
+      .postcard p { color: var(--muted); margin: 0; }
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://1pixelve.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://1pixelve.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Diseñar un anuncio para LED",
+      "item": "https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Cómo diseñar un anuncio para pantalla LED que sí se lea",
+  "description": "Reglas prácticas de diseño para publicidad DOOH: cuántos elementos usar, tamaños de tipografía, contraste, colores que se pierden en LED, formatos y errores que arruinan una pauta.",
+  "image": "https://1pixelve.com/logo.png",
+  "datePublished": "2026-08-12T08:00:00-04:00",
+  "dateModified": "2026-08-12T08:00:00-04:00",
+  "author": {
+    "@type": "Organization",
+    "name": "1PIXEL",
+    "url": "https://1pixelve.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "1PIXEL",
+    "url": "https://1pixelve.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://1pixelve.com/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://1pixelve.com/blog/como-disenar-un-anuncio-para-pantalla-led.html"
+  },
+  "inLanguage": "es-VE",
+  "articleSection": "Guía",
+  "keywords": "diseñar anuncio pantalla LED, arte para valla digital, diseño DOOH, formato spot LED, tipografia publicidad exterior, contraste pantalla LED"
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cuánto texto puede llevar un anuncio en pantalla LED?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un mensaje de cinco a siete palabras como máximo, más la marca y un solo dato de contacto. Cualquier cosa por encima de tres elementos reduce la comprensión a la distancia y velocidad reales de lectura."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué tamaño de letra usar en una valla digital?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La regla es 2,5 cm de altura de letra por cada 3 metros de distancia. Sobre el arte, el mensaje principal debe ocupar entre 18 % y 25 % de la altura total y nunca usar pesos light o thin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sirve poner un código QR en una pantalla LED?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No en vías con tráfico en movimiento: nadie escanea desde un carro. Solo tiene sentido en pantallas interiores o en puntos donde la gente está detenida y a poca distancia."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué colores funcionan mejor en pantallas LED?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Combinaciones de alto contraste con colores planos y saturados. Amarillos y verdes tienden a quemarse, azules oscuros y morados pierden definición, y los degradados suaves muestran bandas visibles."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo usar video en la pantalla?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, en MP4 H.264 a la resolución nativa y sin audio. Lo importante es que el mensaje clave permanezca estático al menos tres segundos: ese es el frame que la gente realmente alcanza a leer."
+      }
+    }
+  ]
+}
+    </script>
+  </head>
+  <body>
+    <nav class="topnav">
+      <div class="row">
+        <a href="/" aria-label="1PIXEL — Inicio"><img src="/logo.png" alt="1PIXEL" width="200" height="68" /></a>
+        <div class="navlinks"><a href="/">← Inicio</a><a href="/blog/">Blog</a><a href="/#contacto">Contacto</a></div>
+      </div>
+    </nav>
+    <main>
+      <div class="shell">
+        <article>
+          <ol class="crumbs micro">
+            <li><a href="/">Inicio</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/blog/">Blog</a></li>
+            <li aria-hidden="true">/</li>
+            <li>Diseñar un anuncio para LED</li>
+          </ol>
+
+          <header>
+            <div class="micro">12 AGO 2026 · GUÍA · 4 MIN LECTURA</div>
+            <h1>Cómo diseñar un anuncio para pantalla LED que sí se lea</h1>
+            <p class="lede">El 80 % de las campañas LED que no funcionan fallan en el arte, no en la pantalla. Un conductor tiene entre dos y cuatro segundos de atención real, a veinte metros, en movimiento. Estas son las reglas que sobreviven a esa prueba.</p>
+          </header>
+
+          <nav class="toc" aria-label="Tabla de contenidos">
+            <div class="micro">En esta guía</div>
+            <ol><li><a href="#condiciones">Las condiciones reales de lectura</a></li><li><a href="#regla-tres">La regla de los tres elementos</a></li><li><a href="#tipografia">Tipografía: tamaño y peso</a></li><li><a href="#color">Color y contraste en LED</a></li><li><a href="#movimiento">Movimiento: úsalo poco y bien</a></li><li><a href="#formato">Formato y entrega del archivo</a></li><li><a href="#checklist">Checklist antes de enviar el arte</a></li></ol>
+          </nav>
+
+          <h2 id="condiciones">Las condiciones reales de lectura</h2>
+          <p>Antes de abrir el programa de diseño, ten claro el contexto:</p>
+          <ul>
+            <li><strong>Distancia:</strong> entre 15 y 60 metros según el punto.</li>
+            <li><strong>Tiempo de atención:</strong> 2 a 4 segundos si el vehículo está en
+            movimiento; hasta 15 si hay semáforo.</li>
+            <li><strong>Ángulo:</strong> casi nunca frontal, casi siempre en diagonal.</li>
+            <li><strong>Competencia visual:</strong> tráfico, señalización, otros comercios.</li>
+            <li><strong>Resolución:</strong> pitch de 6 a 10 mm en exteriores. Cada píxel es un
+            punto físico separado varios milímetros del siguiente.</li>
+          </ul>
+          <blockquote><p>Prueba definitiva: si el arte no se entiende viéndolo dos segundos en
+          la miniatura del teléfono, no funciona en la pantalla.</p></blockquote>
+          <h2 id="regla-tres">La regla de los tres elementos</h2>
+          <p>Un anuncio LED admite tres cosas. Solo tres:</p>
+          <ol>
+            <li><strong>Quién eres</strong> — logo o nombre de marca, legible.</li>
+            <li><strong>Qué ofreces</strong> — un mensaje, de cinco a siete palabras máximo.</li>
+            <li><strong>Qué hacer</strong> — teléfono, ubicación o @ de Instagram. Uno solo.</li>
+          </ol>
+          <p>Todo lo demás sobra: dirección completa, listado de servicios, código QR (nadie
+          escanea un QR desde un carro en movimiento), textos legales, tres números de
+          teléfono, redes sociales de cuatro plataformas.</p>
+          <p>Si tienes mucho que decir, la solución no es apretarlo: es dividirlo en dos o
+          tres piezas que roten. La pantalla no cobra por cambiar el arte.</p>
+          <h2 id="tipografia">Tipografía: tamaño y peso</h2>
+          <p>La regla base de la publicidad exterior: <strong>2,5 cm de altura de letra por
+          cada 3 metros de distancia de lectura</strong>. En proporciones de diseño, sobre un
+          arte de 1080 píxeles de alto:</p>
+          <table>
+            <thead><tr><th>Elemento</th><th>Altura mínima</th><th>Peso</th></tr></thead>
+            <tbody>
+              <tr><td>Mensaje principal</td><td>18 – 25 % del alto</td><td>Bold / Black</td></tr>
+              <tr><td>Marca / logo</td><td>12 – 18 % del alto</td><td>—</td></tr>
+              <tr><td>Dato de contacto</td><td>8 – 12 % del alto</td><td>Semibold</td></tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>Sans-serif siempre.</strong> Las serifas finas se comen en el pitch.</li>
+            <li><strong>Nada de light ni thin.</strong> Los trazos delgados desaparecen.</li>
+            <li><strong>Cursivas y scripts: no.</strong> Ilegibles a distancia.</li>
+            <li><strong>Interletrado ligeramente abierto</strong> — las letras muy juntas se
+            funden visualmente en LED.</li>
+            <li><strong>Evita MAYÚSCULAS en frases largas:</strong> se leen más lento porque el
+            ojo pierde la silueta de la palabra.</li>
+          </ul>
+          <h2 id="color">Color y contraste en LED</h2>
+          <p>Una pantalla LED emite luz; no la refleja como el papel. Eso cambia el
+          comportamiento del color:</p>
+          <ul>
+            <li><strong>Alto contraste o nada.</strong> Texto claro sobre fondo oscuro saturado
+            funciona mejor que lo contrario, porque reduce el halo del brillo.</li>
+            <li><strong>Los amarillos y verdes brillan de más</strong> y tienden a quemarse.
+            Bájales la saturación respecto a lo que ves en el monitor.</li>
+            <li><strong>Los azules oscuros y morados pierden definición</strong> y se ven más
+            planos de lo esperado.</li>
+            <li><strong>Los degradados suaves se bandean</strong> y muestran escalones visibles.
+            Prefiere colores planos.</li>
+            <li><strong>Nada de rojo sobre negro ni azul sobre negro:</strong> son las
+            combinaciones que peor se leen a distancia.</li>
+            <li><strong>Blanco puro a pantalla completa</strong> deslumbra de noche y molesta al
+            conductor. Úsalo por bloques, no de fondo total.</li>
+          </ul>
+          <h2 id="movimiento">Movimiento: úsalo poco y bien</h2>
+          <p>La animación es la ventaja del LED, pero mal usada destruye la legibilidad:</p>
+          <ul>
+            <li><strong>Una sola idea en movimiento por spot.</strong> Que aparezca la marca, o
+            que aparezca la oferta, no ambas peleándose.</li>
+            <li><strong>Transiciones de 0,3 a 0,5 segundos.</strong> Más lentas aburren; más
+            rápidas marean.</li>
+            <li><strong>Nada de texto en movimiento continuo.</strong> Un texto que se desplaza
+            obliga a seguirlo con la vista: imposible desde un carro.</li>
+            <li><strong>El mensaje clave estático mínimo 3 segundos.</strong> Ese es el frame que
+            la gente realmente lee.</li>
+            <li><strong>Sin parpadeos ni estroboscopio.</strong> Distrae al conductor y en muchos
+            casos está regulado.</li>
+          </ul>
+          <p>Un spot de 15 segundos bien construido: 2 segundos de entrada, 10 segundos con el
+          mensaje estático y legible, 3 segundos de cierre con marca y contacto.</p>
+          <h2 id="formato">Formato y entrega del archivo</h2>
+          <p>Cada galería tiene su resolución. Nunca diseñes "y después lo adaptamos": pide
+          las dimensiones exactas en píxeles antes de empezar.</p>
+          <ul>
+            <li><strong>Trabaja a la resolución nativa</strong> de la pantalla, 1:1. Escalar
+            introduce artefactos visibles en pitch grueso.</li>
+            <li><strong>Formatos de video:</strong> MP4 H.264, 25 o 30 fps, bitrate alto.</li>
+            <li><strong>Formatos estáticos:</strong> PNG o JPG de máxima calidad.</li>
+            <li><strong>Sin audio.</strong> Las pantallas exteriores no lo reproducen.</li>
+            <li><strong>Márgenes de seguridad</strong> del 5 % en cada borde: los soportes a veces
+            recortan.</li>
+            <li><strong>Revisa el arte al 25 % de zoom</strong> antes de enviarlo. Si a ese tamaño
+            no se entiende, tampoco a 30 metros.</li>
+          </ul>
+          <p>Las galerías de <a href="/">1PIXEL</a> usan formatos tipo banderín, más anchos que
+          altos, con proporciones como 1536 × 512 y 1024 × 512 píxeles. Un arte cuadrado
+          adaptado a esa proporción pierde la mitad del mensaje, así que conviene diseñarlo
+          desde cero en ese lienzo.</p>
+          <h2 id="checklist">Checklist antes de enviar el arte</h2>
+          <ol>
+            <li>¿Se entiende en dos segundos a 25 % de zoom?</li>
+            <li>¿Tiene tres elementos o menos?</li>
+            <li>¿El texto más pequeño supera el 8 % del alto del arte?</li>
+            <li>¿Toda la tipografía es sans-serif con peso semibold o superior?</li>
+            <li>¿El contraste entre texto y fondo es alto?</li>
+            <li>¿Está a la resolución nativa exacta de la pantalla?</li>
+            <li>¿El mensaje clave permanece estático al menos 3 segundos?</li>
+            <li>¿Hay un solo llamado a la acción?</li>
+            <li>¿Se ve bien de noche, sin blancos que deslumbren?</li>
+            <li>¿Se probó en un monitor a la distancia real, no a 40 cm?</li>
+          </ol>
+
+          <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+          <div class="faq"><details><summary>¿Cuánto texto puede llevar un anuncio en pantalla LED?</summary><p>Un mensaje de cinco a siete palabras como máximo, más la marca y un solo dato de contacto. Cualquier cosa por encima de tres elementos reduce la comprensión a la distancia y velocidad reales de lectura.</p></details><details><summary>¿Qué tamaño de letra usar en una valla digital?</summary><p>La regla es 2,5 cm de altura de letra por cada 3 metros de distancia. Sobre el arte, el mensaje principal debe ocupar entre 18 % y 25 % de la altura total y nunca usar pesos light o thin.</p></details><details><summary>¿Sirve poner un código QR en una pantalla LED?</summary><p>No en vías con tráfico en movimiento: nadie escanea desde un carro. Solo tiene sentido en pantallas interiores o en puntos donde la gente está detenida y a poca distancia.</p></details><details><summary>¿Qué colores funcionan mejor en pantallas LED?</summary><p>Combinaciones de alto contraste con colores planos y saturados. Amarillos y verdes tienden a quemarse, azules oscuros y morados pierden definición, y los degradados suaves muestran bandas visibles.</p></details><details><summary>¿Puedo usar video en la pantalla?</summary><p>Sí, en MP4 H.264 a la resolución nativa y sin audio. Lo importante es que el mensaje clave permanezca estático al menos tres segundos: ese es el frame que la gente realmente alcanza a leer.</p></details></div>
+
+          <section class="cta">
+            <h2>Pauta en las pantallas LED de Maracaibo</h2>
+            <p>Cotiza tu campaña en las galerías 1PIXEL. Te armamos el plan de medios y el arte.</p>
+            <a class="btn" href="/#contacto">Cotizar campaña</a>
+          </section>
+
+        <section class="related">
+          <div class="micro">Sigue leyendo</div>
+          <ul><li><a href="/blog/cuanto-cuesta-publicidad-en-pantallas-led-maracaibo.html">Cuánto cuesta la publicidad en pantallas LED en Maracaibo</a></li><li><a href="/blog/pantallas-led-vs-vallas-tradicionales.html">Pantallas LED vs vallas tradicionales: cuál conviene y cuándo</a></li><li><a href="/blog/metricas-de-publicidad-exterior-impactos-y-ots.html">Métricas de publicidad exterior: impactos, OTS y CPM explicados</a></li><li><a href="/blog/publicidad-exterior-para-negocios-locales.html">Publicidad exterior para negocios locales: guía para empezar</a></li></ul>
+        </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site">
+      <div class="shell micro">© 2026 1PIXEL · <a href="/">Inicio</a> · <a href="/blog/">Blog</a></div>
+    </footer>
+  </body>
+</html>

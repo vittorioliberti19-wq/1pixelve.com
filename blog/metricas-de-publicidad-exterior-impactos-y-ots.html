@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="es-VE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>Métricas de publicidad exterior: impactos, OTS y CPM explicados | 1PIXEL</title>
+    <meta name="description" content="Qué significan impactos, OTS, alcance, frecuencia y CPM en publicidad exterior, cómo se calculan de verdad y cómo detectar cifras infladas en una propuesta de medios." />
+    <meta name="author" content="1PIXEL" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <link rel="canonical" href="https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html" />
+    <link rel="alternate" hreflang="es-ve" href="https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html" />
+    <link rel="alternate" hreflang="es" href="https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html" />
+    <link rel="alternate" hreflang="x-default" href="https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="es_VE" />
+    <meta property="og:site_name" content="1PIXEL" />
+    <meta property="og:title" content="Métricas de publicidad exterior: impactos, OTS y CPM explicados" />
+    <meta property="og:description" content="Qué significan impactos, OTS, alcance, frecuencia y CPM en publicidad exterior, cómo se calculan de verdad y cómo detectar cifras infladas en una propuesta de medios." />
+    <meta property="og:image" content="https://1pixelve.com/logo.png" />
+    <meta property="og:url" content="https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html" />
+    <meta property="article:published_time" content="2026-08-12T08:00:00-04:00" />
+    <meta property="article:section" content="Medición" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Métricas de publicidad exterior: impactos, OTS y CPM explicados" />
+    <meta name="twitter:description" content="Qué significan impactos, OTS, alcance, frecuencia y CPM en publicidad exterior, cómo se calculan de verdad y cómo detectar cifras infladas en una propuesta de medios." />
+    <meta name="twitter:image" content="https://1pixelve.com/logo.png" />
+    <link rel="icon" href="/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" />
+    
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --bg2: #161616;
+        --fg: #f0f0f0;
+        --muted: rgba(240,240,240,.72);
+        --accent: #8b00ff;
+        --accent-soft: rgba(139,0,255,.14);
+        --border: rgba(255,255,255,.10);
+        --surface: rgba(255,255,255,.03);
+        --display: "Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+        --body: "Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+        --mono: ui-monospace,SFMono-Regular,Menlo,monospace;
+        --radius: 14px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+      a { color: inherit; }
+      img { max-width: 100%; height: auto; }
+      .invert { filter: invert(1); }
+      .shell { width: min(820px, 100% - 40px); margin: 0 auto; }
+      .micro {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        opacity: .85;
+      }
+      /* nav */
+      .topnav {
+        position: sticky; top: 0; z-index: 50;
+        background: color-mix(in srgb, var(--bg) 85%, transparent);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .topnav .row {
+        width: min(1280px, 100% - 40px); margin: 0 auto;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 20px; padding: 12px 0;
+      }
+      .topnav img { height: 34px; width: auto; display: block; }
+      .navlinks { display: flex; gap: 22px; flex-wrap: wrap; }
+      .navlinks a {
+        font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+        text-transform: uppercase; text-decoration: none; color: var(--muted);
+      }
+      .navlinks a:hover { color: var(--fg); }
+      /* article */
+      main { padding: 48px 0 80px; }
+      .crumbs { display: flex; gap: 8px; flex-wrap: wrap; list-style: none;
+                 padding: 0; margin: 0 0 32px; }
+      .crumbs a { text-decoration: none; }
+      .crumbs a:hover { color: var(--fg); }
+      h1 {
+        font-family: var(--display); font-weight: 800; letter-spacing: -.03em;
+        line-height: 1.06; font-size: clamp(2rem, 5.5vw, 3.4rem);
+        margin: 14px 0 20px;
+      }
+      .lede { font-size: 1.14rem; color: var(--muted); line-height: 1.7; margin: 0 0 8px; }
+      article h2 {
+        font-family: var(--display); font-weight: 700; letter-spacing: -.02em;
+        font-size: clamp(1.4rem, 3.4vw, 2rem); margin: 3rem 0 1rem;
+        scroll-margin-top: 90px;
+      }
+      article h3 { font-weight: 700; font-size: 1.15rem; margin: 2rem 0 .7rem; }
+      article p { color: var(--muted); margin: 0 0 1.2rem; }
+      article ul, article ol { color: var(--muted); padding-left: 1.4rem; margin: 0 0 1.3rem; }
+      article li { margin-bottom: .5rem; }
+      article strong { color: var(--fg); font-weight: 600; }
+      article a { color: var(--accent); text-decoration: none;
+                   border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+      article a:hover { border-bottom-color: var(--accent); }
+      article table { width: 100%; border-collapse: collapse; margin: 1.6rem 0;
+                       font-size: .93rem; display: block; overflow-x: auto; }
+      article th, article td { border: 1px solid var(--border); padding: .7rem .9rem;
+                                text-align: left; color: var(--muted); }
+      article th { background: var(--surface); color: var(--fg); font-weight: 600;
+                    font-family: var(--mono); font-size: .74rem;
+                    text-transform: uppercase; letter-spacing: .08em; }
+      blockquote { margin: 1.6rem 0; padding: 1rem 1.2rem; border-left: 3px solid var(--accent);
+                    background: var(--accent-soft); border-radius: 0 var(--radius) var(--radius) 0; }
+      blockquote p { margin: 0; color: var(--fg); }
+      .toc { border: 1px solid var(--border); background: var(--surface);
+              border-radius: var(--radius); padding: 22px; margin: 32px 0; box-shadow: none; }
+      .toc ol { list-style: none; padding: 0; margin: 10px 0 0; counter-reset: toc; }
+      .toc li { counter-increment: toc; padding: .38rem 0;
+                 border-bottom: 1px solid var(--border); }
+      .toc li:last-child { border-bottom: none; }
+      .toc li::before { content: counter(toc, decimal-leading-zero) "  ";
+                         font-family: var(--mono); font-size: .78rem; opacity: .5; }
+      .toc a { text-decoration: none; color: var(--muted); }
+      .toc a:hover { color: var(--fg); }
+      .faq { border-top: 1px solid var(--border); margin-top: 1.2rem; }
+      .faq details { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+      .faq summary { cursor: pointer; font-weight: 600; list-style: none; }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: "+"; float: right; color: var(--accent); }
+      .faq details[open] summary::after { content: "−"; }
+      .faq p { margin: .8rem 0 0; }
+      .cta { margin: 56px 0 0; padding: 32px; border: 1px solid var(--border);
+              border-radius: var(--radius); background: var(--accent-soft); box-shadow: none; }
+      .cta h2 { margin: 0 0 .6rem; font-size: 1.5rem; }
+      .cta p { margin: 0 0 1.2rem; }
+      .btn { display: inline-block; background: var(--accent); color: #fff;
+              padding: 13px 26px; border-radius: 999px; text-decoration: none;
+              font-weight: 600; border: none; }
+      .btn:hover { opacity: .9; }
+      .related { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border); }
+      .related ul { list-style: none; padding: 0; margin: 14px 0 0; }
+      .related li { padding: .55rem 0; border-bottom: 1px solid var(--border); }
+      .related a { text-decoration: none; color: var(--fg); font-weight: 600; }
+      .related a:hover { color: var(--accent); }
+      footer.site { border-top: 1px solid var(--border); padding: 30px 0;
+                     text-align: center; }
+      /* index de blog */
+      .postlist { list-style: none; padding: 0; margin: 40px 0 0; }
+      .postcard { border: 1px solid var(--border); border-radius: var(--radius);
+                   background: var(--surface); padding: 26px; margin-bottom: 18px;
+                   box-shadow: none; }
+      .postcard h2 { font-family: var(--display); font-size: 1.4rem; margin: 10px 0 .6rem;
+                      letter-spacing: -.02em; }
+      .postcard a { text-decoration: none; }
+      .postcard a:hover h2 { color: var(--accent); }
+      .postcard p { color: var(--muted); margin: 0; }
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://1pixelve.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://1pixelve.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Métricas: impactos, OTS y CPM",
+      "item": "https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html"
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Métricas de publicidad exterior: impactos, OTS y CPM explicados",
+  "description": "Qué significan impactos, OTS, alcance, frecuencia y CPM en publicidad exterior, cómo se calculan de verdad y cómo detectar cifras infladas en una propuesta de medios.",
+  "image": "https://1pixelve.com/logo.png",
+  "datePublished": "2026-08-12T08:00:00-04:00",
+  "dateModified": "2026-08-12T08:00:00-04:00",
+  "author": {
+    "@type": "Organization",
+    "name": "1PIXEL",
+    "url": "https://1pixelve.com/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "1PIXEL",
+    "url": "https://1pixelve.com/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://1pixelve.com/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://1pixelve.com/blog/metricas-de-publicidad-exterior-impactos-y-ots.html"
+  },
+  "inLanguage": "es-VE",
+  "articleSection": "Medición",
+  "keywords": "impactos publicidad exterior, que es OTS publicidad, CPM DOOH, medir publicidad exterior, alcance y frecuencia OOH, metricas vallas"
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es un impacto en publicidad exterior?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Una exposición potencial: una persona que pasó por el punto donde está el anuncio y tuvo la oportunidad de verlo. No equivale a una visualización confirmada, por eso también se le llama OTS, opportunity to see."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo se calculan los impactos de una pantalla LED?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Multiplicando el aforo vehicular diario por el factor de ocupación (1,4 a 1,8 personas por vehículo) y por un factor de visibilidad de 0,3 a 0,7 según ángulo y obstáculos, ajustado por las horas de operación."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántas veces debe ver alguien mi anuncio para recordarlo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre seis y diez veces al mes. Por debajo de seis exposiciones el mensaje no se fija; por encima de doce empieza el desgaste y el rendimiento decae."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo sé si los números de una propuesta están inflados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Revisa si declaran la metodología, si el factor de visibilidad es menor a 1,0, si descuentan el sentido contrario del tráfico y las horas apagadas, y si suman impactos de varias pantallas como si fueran personas distintas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se puede medir el retorno de la publicidad exterior?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí, con número de WhatsApp exclusivo, código de descuento propio de la campaña, URL corta dedicada, encuesta en punto de venta o comparación de ventas entre zona con pauta y zona sin pauta."
+      }
+    }
+  ]
+}
+    </script>
+  </head>
+  <body>
+    <nav class="topnav">
+      <div class="row">
+        <a href="/" aria-label="1PIXEL — Inicio"><img src="/logo.png" alt="1PIXEL" width="200" height="68" /></a>
+        <div class="navlinks"><a href="/">← Inicio</a><a href="/blog/">Blog</a><a href="/#contacto">Contacto</a></div>
+      </div>
+    </nav>
+    <main>
+      <div class="shell">
+        <article>
+          <ol class="crumbs micro">
+            <li><a href="/">Inicio</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/blog/">Blog</a></li>
+            <li aria-hidden="true">/</li>
+            <li>Métricas: impactos, OTS y CPM</li>
+          </ol>
+
+          <header>
+            <div class="micro">12 AGO 2026 · MEDICIÓN · 4 MIN LECTURA</div>
+            <h1>Métricas de publicidad exterior: impactos, OTS y CPM explicados</h1>
+            <p class="lede">"120.000 impactos mensuales" suena espectacular hasta que preguntas cómo se calculó. La medición en publicidad exterior es estimación, no conteo — y entender la diferencia es lo que te evita comprar humo.</p>
+          </header>
+
+          <nav class="toc" aria-label="Tabla de contenidos">
+            <div class="micro">En esta guía</div>
+            <ol><li><a href="#vocabulario">El vocabulario, sin adornos</a></li><li><a href="#como-se-calcula">Cómo se calculan los impactos de verdad</a></li><li><a href="#senales">Cómo detectar cifras infladas</a></li><li><a href="#frecuencia">Frecuencia efectiva: el número que de verdad importa</a></li><li><a href="#atribucion">Cómo medir el resultado real de una campaña</a></li><li><a href="#benchmarks">Benchmarks para comparar</a></li></ol>
+          </nav>
+
+          <h2 id="vocabulario">El vocabulario, sin adornos</h2>
+          <table>
+            <thead><tr><th>Término</th><th>Qué significa</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Impacto</strong></td><td>Una exposición potencial: una persona que pasó por donde estaba el anuncio</td></tr>
+              <tr><td><strong>OTS</strong> (opportunity to see)</td><td>Lo mismo, con el nombre honesto: <em>oportunidad</em> de ver, no visualización confirmada</td></tr>
+              <tr><td><strong>Alcance</strong></td><td>Personas distintas expuestas al menos una vez</td></tr>
+              <tr><td><strong>Frecuencia</strong></td><td>Cuántas veces vio el anuncio, en promedio, cada persona alcanzada</td></tr>
+              <tr><td><strong>CPM</strong></td><td>Costo por mil impactos: inversión ÷ (impactos ÷ 1.000)</td></tr>
+              <tr><td><strong>Share of voice</strong></td><td>Tu porción del tiempo total del loop</td></tr>
+            </tbody>
+          </table>
+          <p>La distinción clave: <strong>impactos ≠ personas</strong>. Si mil personas pasan
+          ocho veces al mes por la pantalla, eso son 8.000 impactos pero solo 1.000 personas.
+          Ambos números son válidos; presentar el primero como si fuera el segundo, no.</p>
+          <h2 id="como-se-calcula">Cómo se calculan los impactos de verdad</h2>
+          <p>La cadena de cálculo estándar en publicidad exterior:</p>
+          <ol>
+            <li><strong>Aforo vehicular del punto</strong> — vehículos por día, por conteo propio,
+            data de tránsito o sensores.</li>
+            <li><strong>Factor de ocupación</strong> — personas por vehículo. En Venezuela se usa
+            entre 1,4 y 1,8; en Maracaibo, 1,5 es una cifra razonable.</li>
+            <li><strong>Factor de visibilidad</strong> — qué porcentaje del flujo está en posición
+            real de ver la pantalla. Entre 0,3 y 0,7 según ángulo, obstáculos y sentido de
+            circulación.</li>
+            <li><strong>Peatones</strong>, si el punto los tiene, contados aparte.</li>
+            <li><strong>Share of voice</strong> — tu porción del loop.</li>
+          </ol>
+          <p>Fórmula completa:</p>
+          <blockquote><p>Impactos diarios = aforo × ocupación × factor de visibilidad × share of voice</p></blockquote>
+          <p>Ejemplo: 30.000 vehículos/día × 1,5 personas × 0,5 de visibilidad = 22.500
+          personas expuestas al soporte. Si tu spot ocupa 15 de 180 segundos del loop, tu
+          share es 8,3 %, pero como la pantalla repite el loop constantemente, la métrica
+          relevante pasa a ser cuántas veces coincides con cada persona que pasa.</p>
+          <h2 id="senales">Cómo detectar cifras infladas</h2>
+          <p>Banderas rojas en una propuesta de medios:</p>
+          <ul>
+            <li><strong>No dicen la metodología.</strong> Si el número aparece sin explicar de
+            dónde sale, no es una estimación: es marketing.</li>
+            <li><strong>Factor de visibilidad de 1,0.</strong> Implica que el 100 % de quienes
+            pasan ven la pantalla. Imposible en cualquier vía real.</li>
+            <li><strong>Ocupación vehicular de 2,5 o más.</strong> Muy por encima del promedio
+            urbano venezolano.</li>
+            <li><strong>Usan el aforo total de la avenida</strong> sin descontar el sentido
+            contrario, desde donde no se ve la pantalla.</li>
+            <li><strong>Suman los impactos de todas las pantallas del circuito</strong> como si
+            fueran personas distintas. Es la misma gente pasando por varios puntos.</li>
+            <li><strong>No descuentan las horas apagadas.</strong> Si la pantalla opera 14 horas,
+            no puedes contar el tráfico de 24.</li>
+          </ul>
+          <h2 id="frecuencia">Frecuencia efectiva: el número que de verdad importa</h2>
+          <p>La investigación clásica en publicidad exterior sitúa el umbral de recordación
+          entre <strong>seis y diez exposiciones al mes</strong> por persona. Por debajo de
+          seis, el mensaje no se fija; por encima de doce, empieza el desgaste.</p>
+          <p>Esto tiene una consecuencia práctica que contradice el instinto: <strong>concentrar
+          es mejor que dispersar</strong>. Con un presupuesto limitado, una pantalla en el
+          corredor por donde tu público pasa a diario supera a tres pantallas repartidas por
+          la ciudad, porque la primera acumula frecuencia y las tres solo suman alcance
+          superficial.</p>
+          <table>
+            <thead><tr><th>Estrategia</th><th>Alcance</th><th>Frecuencia</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>1 pantalla, corredor clave</td><td>30.000</td><td>9x</td><td>Recordación sólida</td></tr>
+              <tr><td>3 pantallas dispersas</td><td>75.000</td><td>3x</td><td>Bajo el umbral, se olvida</td></tr>
+            </tbody>
+          </table>
+          <h2 id="atribucion">Cómo medir el resultado real de una campaña</h2>
+          <p>La publicidad exterior no da clics, pero sí se puede atribuir. Métodos que
+          funcionan sin instrumentación cara:</p>
+          <ul>
+            <li><strong>Número de teléfono o WhatsApp exclusivo</strong> para la campaña. Es el
+            método más limpio y el más barato.</li>
+            <li><strong>Código de descuento exclusivo</strong> mencionado solo en la pantalla.</li>
+            <li><strong>Landing o URL corta propia</strong>, con su tráfico directo aislado.</li>
+            <li><strong>Encuesta de "cómo nos conoció"</strong> en el punto de venta durante la
+            campaña.</li>
+            <li><strong>Comparación geográfica</strong>: ventas o consultas en la zona de cobertura
+            de la pantalla contra otra zona sin pauta, en el mismo período.</li>
+            <li><strong>Búsquedas de marca</strong> en Google Search Console y Google Trends
+            durante y después de la campaña. El DOOH suele mover ese indicador con dos o tres
+            semanas de rezago.</li>
+          </ul>
+          <blockquote><p>Define la métrica de éxito <em>antes</em> de arrancar. Medir después,
+          sin línea base, siempre termina en una discusión de opiniones.</p></blockquote>
+          <h2 id="benchmarks">Benchmarks para comparar</h2>
+          <p>CPM aproximado por medio en Venezuela, 2026, como referencia gruesa:</p>
+          <table>
+            <thead><tr><th>Medio</th><th>CPM estimado (USD)</th><th>Segmentación</th></tr></thead>
+            <tbody>
+              <tr><td>Pantalla LED (DOOH)</td><td>0,40 – 1,20</td><td>Geográfica y horaria</td></tr>
+              <tr><td>Valla impresa</td><td>0,60 – 1,80</td><td>Geográfica</td></tr>
+              <tr><td>Radio</td><td>1,00 – 3,00</td><td>Por programa y franja</td></tr>
+              <tr><td>Meta Ads</td><td>2,00 – 6,00</td><td>Alta: intereses y comportamiento</td></tr>
+              <tr><td>Influencer local</td><td>3,00 – 12,00</td><td>Por audiencia del creador</td></tr>
+            </tbody>
+          </table>
+          <p>El DOOH gana en costo por impacto y pierde en precisión. Por eso la combinación
+          más eficiente suele ser exterior para construir reconocimiento masivo y digital para
+          convertir a quien ya te reconoce.</p>
+
+          <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+          <div class="faq"><details><summary>¿Qué es un impacto en publicidad exterior?</summary><p>Una exposición potencial: una persona que pasó por el punto donde está el anuncio y tuvo la oportunidad de verlo. No equivale a una visualización confirmada, por eso también se le llama OTS, opportunity to see.</p></details><details><summary>¿Cómo se calculan los impactos de una pantalla LED?</summary><p>Multiplicando el aforo vehicular diario por el factor de ocupación (1,4 a 1,8 personas por vehículo) y por un factor de visibilidad de 0,3 a 0,7 según ángulo y obstáculos, ajustado por las horas de operación.</p></details><details><summary>¿Cuántas veces debe ver alguien mi anuncio para recordarlo?</summary><p>Entre seis y diez veces al mes. Por debajo de seis exposiciones el mensaje no se fija; por encima de doce empieza el desgaste y el rendimiento decae.</p></details><details><summary>¿Cómo sé si los números de una propuesta están inflados?</summary><p>Revisa si declaran la metodología, si el factor de visibilidad es menor a 1,0, si descuentan el sentido contrario del tráfico y las horas apagadas, y si suman impactos de varias pantallas como si fueran personas distintas.</p></details><details><summary>¿Se puede medir el retorno de la publicidad exterior?</summary><p>Sí, con número de WhatsApp exclusivo, código de descuento propio de la campaña, URL corta dedicada, encuesta en punto de venta o comparación de ventas entre zona con pauta y zona sin pauta.</p></details></div>
+
+          <section class="cta">
+            <h2>Pauta en las pantallas LED de Maracaibo</h2>
+            <p>Cotiza tu campaña en las galerías 1PIXEL. Te armamos el plan de medios y el arte.</p>
+            <a class="btn" href="/#contacto">Cotizar campaña</a>
+          </section>
+
+        <section class="related">
+          <div class="micro">Sigue leyendo</div>
+          <ul><li><a href="/blog/cuanto-cuesta-publicidad-en-pantallas-led-maracaibo.html">Cuánto cuesta la publicidad en pantallas LED en Maracaibo</a></li><li><a href="/blog/pantallas-led-vs-vallas-tradicionales.html">Pantallas LED vs vallas tradicionales: cuál conviene y cuándo</a></li><li><a href="/blog/como-disenar-un-anuncio-para-pantalla-led.html">Cómo diseñar un anuncio para pantalla LED que sí se lea</a></li><li><a href="/blog/publicidad-exterior-para-negocios-locales.html">Publicidad exterior para negocios locales: guía para empezar</a></li></ul>
+        </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site">
+      <div class="shell micro">© 2026 1PIXEL · <a href="/">Inicio</a> · <a href="/blog/">Blog</a></div>
+    </footer>
+  </body>
+</html>
