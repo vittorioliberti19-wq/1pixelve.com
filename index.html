@@ -59,6 +59,11 @@
          Sustituye a Font Awesome, que bajaba 269 KB de webfonts (fa-solid
          153 KB + fa-brands 115 KB) para esos mismos 20 glifos. -->
     <link rel="stylesheet" href="icons.css" />
+    <!-- Terceros que solo se usan al interactuar (CTA de WhatsApp, captcha del
+         formulario): abrir la conexión antes reduce la latencia del INP. -->
+    <link rel="preconnect" href="https://wa.me" />
+    <link rel="preconnect" href="https://js.hcaptcha.com" crossorigin />
+    <link rel="dns-prefetch" href="https://newassets.hcaptcha.com" />
     <!-- reCAPTCHA loaded lazily when contact section is visible -->
     <style>
       /* === RESET & BASE === */
@@ -1504,6 +1509,22 @@
         margin-top: 60px;
       }
 
+      .contacto-mapa {
+        margin-top: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        line-height: 0;
+      }
+
+      .contacto-mapa iframe {
+        width: 100%;
+        height: 260px;
+        border: 0;
+        display: block;
+        filter: invert(0.92) hue-rotate(180deg) saturate(0.7);
+      }
+
       .contacto-info h3 {
         font-family: var(--font-display);
         font-size: 1.8rem;
@@ -2124,7 +2145,7 @@
     <!-- NAV -->
     <nav id="navbar">
       <div class="container">
-        <a href="#" class="logo"
+        <a href="/" class="logo" aria-label="1PIXEL — inicio"
           ><img
             src="logo.webp"
             width="286"
@@ -2167,6 +2188,7 @@
           playsinline
           preload="metadata"
           poster="hero-poster.webp"
+          aria-label="Recorrido por las pantallas LED publicitarias de 1PIXEL en Maracaibo"
         >
           <source src="" type="video/mp4" />
         </video>
@@ -2251,10 +2273,19 @@
                 a las marcas visibilidad 24/7 en las zonas de mayor tráfico
                 peatonal y vehicular de la ciudad. Las pantallas están ubicadas
                 estratégicamente en las entradas y áreas de mayor circulación,
-                garantizando que cada anuncio sea visto por miles de personas
-                diariamente. El contenido se transmite en formato digital
-                dinámico — imágenes estáticas y videos cortos en alta resolución
-                — con actualización remota y soporte técnico continuo.
+                donde se concentra el flujo de visitantes de cada galería. El
+                contenido se transmite en formato digital dinámico — imágenes
+                estáticas y videos cortos en alta resolución — con actualización
+                remota y soporte técnico continuo.
+              </p>
+              <p>
+                Este formato se conoce como <strong>publicidad DOOH</strong>
+                (digital out of home, o publicidad exterior digital) y es uno de
+                los medios de mayor crecimiento en Venezuela: en lugar de un
+                arte impreso fijo, tu marca ocupa un espacio rotativo en
+                pantalla que puedes cambiar sin costos de producción ni
+                instalación. 1PIXEL opera la red DOOH más grande de Maracaibo y
+                la está expandiendo a nuevas galerías del estado Zulia.
               </p>
               <div class="stat-row">
                 <div class="stat-item">
@@ -2294,7 +2325,81 @@
         aria-label="Marcas que confían en 1PIXEL"
       >
         <div class="clientes-label">Marcas que confían en nosotros</div>
-        <div class="clientes-grid" id="clientesGrid"></div>
+        <!-- Las celdas se renderizan en HTML estático (no por JS) para que los
+             crawlers de Google y de IA vean los nombres de marca. El script solo
+             agrega el canvas del efecto shimmer sobre las celdas ya existentes. -->
+        <div class="clientes-grid" id="clientesGrid">
+          <div class="clientes-textblock">
+            <span class="pill">Nuestros clientes</span>
+            <h2>Marcas líderes que confían en nuestras pantallas LED</h2>
+          </div>
+          <div class="logo-cell">
+            <img
+              src="clientes/polar.webp"
+              alt="Cervecería Polar"
+              loading="lazy"
+            />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/pepsi.webp" alt="Pepsi" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/mavesa.webp" alt="Mavesa" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/pan.webp" alt="Harina P.A.N." loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/alkosto.webp" alt="Alkosto" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img
+              src="clientes/margarita.webp"
+              alt="Atún Margarita"
+              loading="lazy"
+            />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/maraplus.webp" alt="Maraplus" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/yukery.webp" alt="Yukery" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/canel.webp" alt="Canel" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/disprocar.webp" alt="Disprocar" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/farruggio.webp" alt="Farruggio" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/oz.webp" alt="OZ" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/salvaje.webp" alt="Salvaje" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/san-simon.webp" alt="San Simón" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/javitour.webp" alt="Javitour" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img
+              src="clientes/carorena.webp"
+              alt="Sangría Carorena"
+              loading="lazy"
+            />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/bnc.webp" alt="BNC" loading="lazy" />
+          </div>
+          <div class="logo-cell">
+            <img src="clientes/palmira.webp" alt="Palmira" loading="lazy" />
+          </div>
+        </div>
       </section>
 
       <!-- GALERIAS -->
@@ -2316,6 +2421,7 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-calle77.mp4"
+                  aria-label="Pantallas LED de 1PIXEL en la galería de Calle 77 con Bella Vista, Maracaibo"
                   poster="galeria-calle77-poster.webp"
                   preload="none"
                   loop
@@ -2342,6 +2448,7 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-cecilio.mp4"
+                  aria-label="Pantallas LED de 1PIXEL en la galería de Cecilio Acosta, Calle 67, Maracaibo"
                   poster="galeria-cecilio-poster.webp"
                   preload="none"
                   loop
@@ -2368,6 +2475,7 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-corredor.mp4"
+                  aria-label="Pantallas LED de 1PIXEL en el Corredor Gastronómico de AV 3H, Maracaibo"
                   poster="galeria-corredor-poster.webp"
                   preload="none"
                   loop
@@ -2394,6 +2502,7 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-bellavista.mp4"
+                  aria-label="Galería de Bella Vista con Calle 72, próxima ubicación de pantallas LED de 1PIXEL en Maracaibo"
                   poster="galeria-bellavista-poster.webp"
                   preload="none"
                   loop
@@ -2420,6 +2529,7 @@
               <div class="galeria-photo">
                 <video
                   src="galeria-5dejulio.mp4"
+                  aria-label="Galería de la Calle 77 con Las Delicias, próxima ubicación de pantallas LED de 1PIXEL en Maracaibo"
                   poster="galeria-5dejulio-poster.webp"
                   preload="none"
                   loop
@@ -2693,6 +2803,17 @@
                   </div>
                 </a>
               </div>
+              <!-- Ficha de Google Business Profile: refuerza la señal local y
+                   da a Google la confirmación de que el negocio es real. -->
+              <div class="contacto-mapa">
+                <iframe
+                  src="https://www.google.com/maps?cid=2102201468574125439&hl=es&output=embed"
+                  title="Ubicación de 1PIXEL en Maracaibo, Zulia"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                ></iframe>
+              </div>
             </div>
             <div class="reveal reveal-delay-2">
               <div class="contact-form" id="contactForm">
@@ -2959,6 +3080,43 @@
                 </p>
               </div>
             </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                ¿Dónde puedo anunciar mi marca en Maracaibo con mayor
+                visibilidad?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  1PIXEL es la red de publicidad exterior digital (DOOH) más
+                  grande de Maracaibo: 44 pantallas LED repartidas en tres
+                  galerías comerciales de alto tráfico — Calle 77 con Bella
+                  Vista, Cecilio Acosta y el Corredor Gastronómico de AV 3H —
+                  con exposición continua las 24 horas y activación de tu
+                  campaña en menos de 48 horas.
+                </p>
+              </div>
+            </div>
+            <div class="faq-item reveal">
+              <button class="faq-question">
+                ¿Qué diferencia hay entre una valla digital y una valla
+                tradicional?
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Una valla tradicional es impresa: muestra un solo arte fijo
+                  durante todo el contrato y cambiarlo implica reimprimir e
+                  instalar. Una valla digital LED, en cambio, permite rotar tu
+                  contenido, usar video en movimiento y actualizar el arte sin
+                  costo de producción — en 1PIXEL incluimos dos cambios de
+                  contenido al mes. Además comparte la pantalla con un máximo de
+                  15 marcas por galería y aplica exclusividad por subrubro, así
+                  que el costo de entrada es mucho menor que el de una valla
+                  propia.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2968,7 +3126,7 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="#" class="logo"
+            <a href="/" class="logo" aria-label="1PIXEL — inicio"
               ><img
                 src="logo.webp"
                 width="286"
@@ -3058,7 +3216,7 @@
                 " /></a
           ></span>
           <span>Maracaibo, Venezuela</span>
-          <span>Actualizado: junio 2026</span>
+          <span>Actualizado: agosto 2026</span>
         </div>
       </div>
     </footer>
@@ -3504,14 +3662,19 @@
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "LocalBusiness",
+            "@type": "AdvertisingAgency",
             "@id": "https://1pixelve.com/#business",
             "name": "1PIXEL",
-            "description": "Red de pantallas LED publicitarias en galerías comerciales de Maracaibo, Venezuela. 44 pantallas activas en 3 ubicaciones estratégicas.",
+            "description": "Red de pantallas LED publicitarias (DOOH) en galerías comerciales de Maracaibo, Venezuela. 44 pantallas activas en 3 ubicaciones estratégicas.",
             "url": "https://1pixelve.com",
-            "logo": "https://1pixelve.com/logo.webp",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://1pixelve.com/logo.png",
+              "width": 3357,
+              "height": 1125
+            },
             "image": "https://1pixelve.com/galeria-calle77-new.webp",
-            "telephone": "+58-422-217-4935",
+            "telephone": "+584222174935",
             "email": "ventas@1pixelve.com",
             "priceRange": "$$",
             "address": {
@@ -3547,6 +3710,8 @@
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
+                    "@id": "https://1pixelve.com/#service-calle77",
+                    "provider": { "@id": "https://1pixelve.com/#business" },
                     "name": "Pantallas LED Calle 77 con Bella Vista",
                     "description": "24 pantallas LED de alta resolución en Calle 77 con Bella Vista, zona de alto tráfico peatonal y vehicular en Maracaibo",
                     "areaServed": "Maracaibo, Zulia, Venezuela",
@@ -3557,6 +3722,8 @@
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
+                    "@id": "https://1pixelve.com/#service-cecilioacosta",
+                    "provider": { "@id": "https://1pixelve.com/#business" },
                     "name": "Pantallas LED Cecilio Acosta",
                     "description": "12 pantallas LED en Calle 67, Cecilio Acosta. Vida comercial diurna y zona gastronómica nocturna en Maracaibo",
                     "areaServed": "Maracaibo, Zulia, Venezuela",
@@ -3567,6 +3734,8 @@
                   "@type": "Offer",
                   "itemOffered": {
                     "@type": "Service",
+                    "@id": "https://1pixelve.com/#service-3h",
+                    "provider": { "@id": "https://1pixelve.com/#business" },
                     "name": "Pantallas LED Corredor Gastronómico 3H",
                     "description": "8 pantallas LED en AV 3H, Corredor Gastronómico. Punto de encuentro y entretenimiento en Maracaibo",
                     "areaServed": "Maracaibo, Zulia, Venezuela",
@@ -3603,7 +3772,10 @@
             "@type": "WebSite",
             "@id": "https://1pixelve.com/#website",
             "name": "1PIXEL",
-            "url": "https://1pixelve.com"
+            "url": "https://1pixelve.com",
+            "dateModified": "2026-08-12",
+            "inLanguage": "es-VE",
+            "publisher": { "@id": "https://1pixelve.com/#business" }
           },
           {
             "@type": "FAQPage",
@@ -3680,6 +3852,22 @@
                   "@type": "Answer",
                   "text": "Puedes contratar una sola galería, varias o las tres, según tu objetivo y presupuesto. Cada galería tiene un público distinto, así que te asesoramos para elegir la ubicación que mejor llega a tu cliente ideal en Maracaibo."
                 }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Dónde puedo anunciar mi marca en Maracaibo con mayor visibilidad?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "1PIXEL es la red de publicidad exterior digital (DOOH) más grande de Maracaibo: 44 pantallas LED repartidas en tres galerías comerciales de alto tráfico — Calle 77 con Bella Vista, Cecilio Acosta y el Corredor Gastronómico de AV 3H — con exposición continua las 24 horas y activación de tu campaña en menos de 48 horas."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Qué diferencia hay entre una valla digital y una valla tradicional?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Una valla tradicional es impresa: muestra un solo arte fijo durante todo el contrato y cambiarlo implica reimprimir e instalar. Una valla digital LED permite rotar tu contenido, usar video en movimiento y actualizar el arte sin costo de producción — en 1PIXEL incluimos dos cambios de contenido al mes. Además comparte la pantalla con un máximo de 15 marcas por galería y aplica exclusividad por subrubro, así que el costo de entrada es mucho menor que el de una valla propia."
+                }
               }
             ]
           }
@@ -3689,39 +3877,12 @@
     <script>
       /* === CLIENTES GRID PIXEL (shimmer hover) === */
       (function () {
-        var CLIENTES = [
-          { src: "clientes/polar.webp", name: "Cervecería Polar" },
-          { src: "clientes/pepsi.webp", name: "Pepsi" },
-          { src: "clientes/mavesa.webp", name: "Mavesa" },
-          { src: "clientes/pan.webp", name: "Harina P.A.N." },
-          { src: "clientes/alkosto.webp", name: "Alkosto" },
-          { src: "clientes/margarita.webp", name: "Atún Margarita" },
-          { src: "clientes/maraplus.webp", name: "Maraplus" },
-          { src: "clientes/yukery.webp", name: "Yukery" },
-          { src: "clientes/canel.webp", name: "Canel" },
-          { src: "clientes/disprocar.webp", name: "Disprocar" },
-          { src: "clientes/farruggio.webp", name: "Farruggio" },
-          { src: "clientes/oz.webp", name: "OZ" },
-          { src: "clientes/salvaje.webp", name: "Salvaje" },
-          { src: "clientes/san-simon.webp", name: "San Simón" },
-          { src: "clientes/javitour.webp", name: "Javitour" },
-          { src: "clientes/carorena.webp", name: "Sangría Carorena" },
-          { src: "clientes/bnc.webp", name: "BNC" },
-          { src: "clientes/palmira.webp", name: "Palmira" },
-        ];
         var COLORS = ["#8b00ff", "#5a1fe0", "#e0102f", "#b30f2a"];
         var grid = document.getElementById("clientesGrid");
         if (!grid) return;
         var reduce = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
-
-        var tb = document.createElement("div");
-        tb.className = "clientes-textblock";
-        tb.innerHTML =
-          '<span class="pill">Nuestros clientes</span>' +
-          "<h2>Marcas líderes que confían en nuestras pantallas LED</h2>";
-        grid.appendChild(tb);
 
         function rand(min, max) {
           return Math.random() * (max - min) + min;
@@ -3849,23 +4010,9 @@
           });
         }
 
-        function makeCell(client) {
-          var cell = document.createElement("div");
-          cell.className = "logo-cell";
-          if (client) {
-            var img = document.createElement("img");
-            img.src = client.src;
-            img.alt = client.name;
-            img.loading = "lazy";
-            cell.appendChild(img);
-          }
-          grid.appendChild(cell);
-          attachPixels(cell);
-        }
-
-        CLIENTES.forEach(function (c) {
-          makeCell(c);
-        });
+        // Las celdas ya vienen en el HTML; el script solo les monta el canvas.
+        var cells = grid.querySelectorAll(".logo-cell");
+        for (var i = 0; i < cells.length; i++) attachPixels(cells[i]);
       })();
     </script>
     <!-- Cloudflare Web Analytics -->

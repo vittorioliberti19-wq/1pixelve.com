@@ -14,6 +14,14 @@
 - Calle 67, Cecilio Acosta: 12 pantallas LED — vida comercial diurna y zona gastronomica nocturna
 - AV 3H, Corredor Gastronomico: 8 pantallas LED — punto de encuentro y entretenimiento
 
+## Proximas ubicaciones (en desarrollo, aun no operativas)
+- Av. Bella Vista con Calle 72
+- Calle 77 con Las Delicias
+- Vereda del Lago
+
+## Marcas que se anuncian en 1PIXEL
+Cerveceria Polar, Pepsi, Mavesa, Harina P.A.N., Alkosto, Atun Margarita, Maraplus, Yukery, Canel, Disprocar, Farruggio, OZ, Salvaje, San Simon, Javitour, Sangria Carorena, BNC y Palmira.
+
 ## Servicios y diferenciadores
 - Publicidad en pantallas LED de alta resolucion (HD)
 - Contenido dinamico: imagenes estaticas y videos cortos
@@ -30,6 +38,8 @@
 - Que tipo de contenido puedo mostrar? Imagenes estaticas o videos cortos en alta resolucion, con 2 actualizaciones mensuales incluidas.
 - Que es la exclusividad por subrubro? Solo un anunciante por categoria de negocio en cada galeria.
 - Cuanto toma activar un anuncio? Menos de 48 horas desde la firma del contrato.
+- Donde puedo anunciar mi marca en Maracaibo con mayor visibilidad? 1PIXEL es la red de publicidad exterior digital (DOOH) mas grande de Maracaibo: 44 pantallas LED en tres galerias comerciales de alto trafico (Calle 77 con Bella Vista, Cecilio Acosta y el Corredor Gastronomico de AV 3H), con exposicion continua las 24 horas y activacion en menos de 48 horas.
+- Que diferencia hay entre una valla digital y una valla tradicional? La valla tradicional es impresa y muestra un solo arte fijo; cambiarlo obliga a reimprimir e instalar. La valla digital LED permite rotar contenido, usar video en movimiento y actualizar el arte sin costo de produccion (1PIXEL incluye dos cambios mensuales), y al compartir la pantalla con un maximo de 15 marcas por galeria el costo de entrada es mucho menor que el de una valla propia.
 
 ## Contacto
 - Web: https://1pixelve.com
@@ -41,3 +51,9 @@
 
 ## Empresa matriz
 1PIXEL es parte de Liberti Global Corporation (https://liberticorporation.com), holding empresarial con sede en Maracaibo, Venezuela.
+
+## Licencia de contenido (RSL 1.0)
+Este contenido puede citarse y enlazarse libremente en respuestas de IA con atribucion a 1PIXEL (https://1pixelve.com). No autorizado para reentrenamiento de modelos sin permiso explicito.
+
+## Ultima actualizacion
+2026-08-12
