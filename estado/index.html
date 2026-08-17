@@ -291,6 +291,26 @@
       .card.off {
         border-color: rgba(255, 84, 112, 0.45);
       }
+      .card.central {
+        border-color: rgba(139, 92, 255, 0.45);
+      }
+      .card.central.off {
+        border-color: rgba(255, 84, 112, 0.45);
+      }
+      .card .role {
+        font-size: 0.75rem;
+        color: var(--text-faint);
+        line-height: 1.45;
+        margin: -6px 0 12px;
+      }
+      .badge.infra {
+        margin-left: auto;
+        background: rgba(139, 92, 255, 0.15);
+        color: var(--accent);
+      }
+      .badge.infra + .badge {
+        margin-left: 6px;
+      }
       .card .top {
         display: flex;
         align-items: center;
@@ -677,6 +697,11 @@
 
       <div class="grid" id="grid"></div>
 
+      <div id="centralWrap" style="display: none">
+        <h2 class="sec">Infraestructura</h2>
+        <div class="grid" id="central"></div>
+      </div>
+
       <h2 class="sec">SLA · Disponibilidad</h2>
       <div class="sla" id="sla"></div>
 
@@ -821,6 +846,34 @@
             El reproductor que pone los videos en la pantalla LED. "VLC ✓" =
             reproduciendo; "✗" = pantalla negra (problema).
           </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">PC Central</dt>
+          <dd style="color: var(--text-dim)">
+            No es una galería: es la PC que graba las cámaras de TODAS las
+            galerías y cuenta los vehículos. Si se cae, se pierde la grabación y
+            el conteo aunque las pantallas sigan encendidas. Por eso no entra en
+            el SLA, el ranking ni los impactos perdidos, que son de las
+            pantallas LED.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Blue Iris / Camlytics
+          </dt>
+          <dd style="color: var(--text-dim)">
+            <b>Blue Iris</b>: el software que graba las cámaras ("✓" =
+            grabando). <b>Web :81</b>: su servidor web, por donde se ven las
+            cámaras en remoto. <b>Camlytics</b>: los servicios que cuentan los
+            vehículos que pasan — "OK" todos arriba, "PARCIAL" faltan algunos,
+            "CAIDO" no se está contando nada.
+          </dd>
+
+          <dt style="color: var(--accent); font-weight: 600">
+            Disco de grabación
+          </dt>
+          <dd style="color: var(--text-dim)">
+            Espacio libre en el disco donde caen los videos de las cámaras. Si
+            baja de 10% libre hay riesgo de perder grabaciones.
+          </dd>
         </dl>
       </div>
 
@@ -955,7 +1008,12 @@
         try {
           const r = await fetch(API, { cache: "no-store" });
           const d = await r.json();
-          const gals = d.galleries || [];
+          // El feed mezcla galerías LED (kind "gallery") con la PC central de
+          // Blue Iris + Camlytics (kind "central"). Las métricas de galerías
+          // (SLA, impactos, heatmap, ranking, stats) excluyen la central.
+          const nodos = d.galleries || [];
+          const gals = nodos.filter((g) => g.kind !== "central");
+          const centrales = nodos.filter((g) => g.kind === "central");
           lastGals = gals;
           const recv = d.received_at ? new Date(d.received_at) : null;
           const ageMin = recv ? Math.round((Date.now() - recv) / 60000) : null;
@@ -983,13 +1041,14 @@
           sub.appendChild(
             el("span", null, "Última lectura: " + fmtDate(d.generated_at)),
           );
-          renderAlerts(gals);
+          renderAlerts(nodos);
           const grid = document.getElementById("grid");
           grid.textContent = "";
           gals.forEach((g) => grid.appendChild(card(g)));
+          renderCentral(centrales);
           renderSLA(gals);
           renderImpacts(gals);
-          renderTimeline(gals);
+          renderTimeline(nodos);
           renderHeatmap(gals);
           renderAvailChart(gals);
           renderRanking(gals);
@@ -1009,21 +1068,66 @@
               "crit",
               g.emoji + " " + g.name + ": OFFLINE / posible corte",
             ]);
-          if (g.online && g.vlc && g.vlc !== "SI")
-            a.push([
-              "crit",
-              g.emoji + " " + g.name + ": VLC caído (pantalla negra)",
-            ]);
-          if (g.online && g.wd && g.wd !== "OK")
-            a.push(["warn", g.emoji + " " + g.name + ": watchdog " + g.wd]);
-          if (g.online && g.sync && g.sync !== "OK")
-            a.push(["warn", g.emoji + " " + g.name + ": sync " + g.sync]);
+          if (g.kind === "central") {
+            if (g.online && g.bi && g.bi !== "SI")
+              a.push([
+                "crit",
+                g.emoji + " " + g.name + ": Blue Iris caído — sin grabación",
+              ]);
+            if (g.online && g.cam && g.cam !== "OK")
+              a.push([
+                g.cam === "CAIDO" ? "crit" : "warn",
+                g.emoji +
+                  " " +
+                  g.name +
+                  ": Camlytics " +
+                  g.cam +
+                  " — conteo vehicular afectado",
+              ]);
+            if (g.online && g.web && g.web !== "SI")
+              a.push([
+                "warn",
+                g.emoji + " " + g.name + ": webserver Blue Iris (:81) caído",
+              ]);
+            const dp = num(g.disk_pct);
+            if (dp != null && dp < 10)
+              a.push([
+                dp < 5 ? "crit" : "warn",
+                g.emoji +
+                  " " +
+                  g.name +
+                  ": disco de grabación " +
+                  dp +
+                  "% libre",
+              ]);
+          } else {
+            if (g.online && g.vlc && g.vlc !== "SI")
+              a.push([
+                "crit",
+                g.emoji + " " + g.name + ": VLC caído (pantalla negra)",
+              ]);
+            if (g.online && g.wd && g.wd !== "OK")
+              a.push(["warn", g.emoji + " " + g.name + ": watchdog " + g.wd]);
+            if (g.online && g.sync && g.sync !== "OK")
+              a.push(["warn", g.emoji + " " + g.name + ": sync " + g.sync]);
+          }
           const ct = num(g.cpu_temp),
             st = num(g.ssd_temp);
           if (ct && ct > 78)
             a.push(["warn", g.emoji + " " + g.name + ": CPU " + g.cpu_temp]);
           if (st && st > 62)
             a.push(["warn", g.emoji + " " + g.name + ": SSD " + g.ssd_temp]);
+          // Red de seguridad: el bot marcó problema y ninguna regla lo cubrió.
+          if (!a.length && (g.severity === "🔴" || g.severity === "🟡"))
+            a.push([
+              g.severity === "🔴" ? "crit" : "warn",
+              g.emoji +
+                " " +
+                g.name +
+                ": el monitor reporta " +
+                g.severity +
+                " — revisar",
+            ]);
           a.forEach(([k, t]) =>
             box.appendChild(
               el(
@@ -1123,6 +1227,111 @@
         if (g.sync && g.sync !== "OK") ch("Sync " + g.sync, true);
         c.appendChild(chips);
         return c;
+      }
+
+      // PC central (Blue Iris + Camlytics): graba y cuenta vehículos para TODAS
+      // las galerías. No tiene VLC/watchdog/sync — trae bi/cam/web/disk.
+      function centralCard(g) {
+        const off = !g.online;
+        const c = el("div", "card central" + (off ? " off" : ""));
+        const top = el("div", "top");
+        top.appendChild(el("span", "emoji", g.emoji || "🖥"));
+        top.appendChild(el("span", "name", g.name || g.id));
+        top.appendChild(el("span", "badge infra", "INFRA"));
+        top.appendChild(
+          el(
+            "span",
+            "badge " + (off ? "off" : "on"),
+            off ? "OFFLINE" : "ONLINE",
+          ),
+        );
+        c.appendChild(top);
+        c.appendChild(
+          el(
+            "div",
+            "role",
+            "Graba las cámaras y cuenta los vehículos de todas las galerías. Si se cae, se pierde grabación y conteo aunque las pantallas sigan bien.",
+          ),
+        );
+        const m = el("div", "metrics");
+        const m1 = el("div", "metric");
+        m1.appendChild(el("div", "k", "Uptime"));
+        m1.appendChild(el("div", "v", g.uptime || "—"));
+        m.appendChild(m1);
+        const m2 = el("div", "metric");
+        m2.appendChild(el("div", "k", "Caídas 24h"));
+        m2.appendChild(
+          el("div", "v", String(g.outages_24h != null ? g.outages_24h : 0)),
+        );
+        m.appendChild(m2);
+        c.appendChild(m);
+        const dp = num(g.disk_pct);
+        if (g.disk) {
+          const av = el("div", "avail");
+          av.appendChild(
+            el(
+              "div",
+              "k",
+              "Disco de grabación · " +
+                g.disk +
+                (dp != null ? " (" + dp + "% libre)" : ""),
+            ),
+          );
+          if (dp != null) {
+            const bar = el("div", "bar");
+            const fill = el("div", "fill" + (dp < 20 ? " low" : ""));
+            fill.style.width = dp + "%";
+            bar.appendChild(fill);
+            av.appendChild(bar);
+          }
+          c.appendChild(av);
+        }
+        const lo = g.last_outage,
+          ot = el("div", "outage");
+        if (lo) {
+          if (!lo.restored_at) {
+            ot.appendChild(el("b", null, "Caída ahora"));
+            ot.appendChild(
+              document.createTextNode(
+                " desde " +
+                  fmtDate(lo.lost_at) +
+                  " (" +
+                  durMin(lo.lost_at, null) +
+                  ")",
+              ),
+            );
+          } else
+            ot.textContent =
+              "Última caída: " +
+              fmtDate(lo.lost_at) +
+              " · duró " +
+              durMin(lo.lost_at, lo.restored_at);
+        } else ot.textContent = "Sin caídas registradas ✓";
+        c.appendChild(ot);
+        const ct = num(g.cpu_temp),
+          st = num(g.ssd_temp),
+          chips = el("div", "chips");
+        const ch = (t, b) =>
+          chips.appendChild(el("span", "chip" + (b ? " bad" : ""), t));
+        ch("Blue Iris " + (g.bi === "SI" ? "✓" : "✗"), g.bi !== "SI");
+        ch("Camlytics " + (g.cam || "?"), g.cam !== "OK");
+        ch("Web :81 " + (g.web === "SI" ? "✓" : "✗"), g.web !== "SI");
+        if (dp != null) ch("Disco " + dp + "% libre", dp < 10);
+        ch("CPU " + (g.cpu ?? "?") + "%");
+        ch("RAM " + (g.ram_pct ?? "?") + "%");
+        if (ct != null) ch("CPU " + g.cpu_temp, ct > 75);
+        if (st != null) ch("SSD " + g.ssd_temp, st > 62);
+        c.appendChild(chips);
+        return c;
+      }
+
+      function renderCentral(centrales) {
+        const box = document.getElementById("central");
+        box.textContent = "";
+        document.getElementById("centralWrap").style.display = centrales.length
+          ? "block"
+          : "none";
+        centrales.forEach((g) => box.appendChild(centralCard(g)));
       }
 
       function renderSLA(gals) {
