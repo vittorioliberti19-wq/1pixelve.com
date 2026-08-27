@@ -83,17 +83,17 @@ const GALLERIES = [
     label: "Calle 77 con Bella Vista",
     active: true,
   },
+  {
+    id: "bellavista",
+    short: "Bella Vista",
+    label: "Bella Vista (Av. 5)",
+    active: true,
+  },
   // --- pendientes por activar ---
   {
     id: "calle77",
     short: "C77 Delicias",
     label: "Calle 77 con Delicias",
-    active: false,
-  },
-  {
-    id: "bellavista",
-    short: "Bella Vista 72",
-    label: "Bella Vista con Calle 72",
     active: false,
   },
   { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
