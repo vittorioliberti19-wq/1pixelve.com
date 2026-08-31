@@ -549,33 +549,33 @@ def video(slug):
 PAGINAS = [
     {
         "slug": "pantallas-led-maracaibo",
-        "title": "Pantallas LED Publicitarias en Maracaibo: 44 Pantallas en 3 Galerías | 1PIXEL",
-        "description": "Red de 44 pantallas LED publicitarias en 3 galerías comerciales de Maracaibo. Alta resolución, transmisión 24/7 y exclusividad por subrubro. Conoce las ubicaciones.",
+        "title": "Pantallas LED Publicitarias en Maracaibo: 92 Pantallas en 6 Galerías | 1PIXEL",
+        "description": "Red de 92 pantallas LED publicitarias en 6 galerías comerciales de Maracaibo. Alta resolución, transmisión 24/7 y exclusividad por subrubro. Conoce las ubicaciones.",
         "h1": "Pantallas LED publicitarias en Maracaibo",
         "breadcrumb": "Pantallas LED en Maracaibo",
-        "bajada": "44 pantallas de alta resolución repartidas en tres galerías comerciales de alto tráfico. Tu marca visible las 24 horas, en las zonas donde de verdad camina la gente.",
+        "bajada": "92 pantallas de alta resolución repartidas en seis galerías comerciales de alto tráfico. Tu marca visible las 24 horas, en las zonas donde de verdad camina la gente.",
         "cta_titulo": "¿Quieres tu marca en estas pantallas?",
         "cta_texto": "Cuéntanos qué vendes y en qué zona de Maracaibo está tu cliente. Te decimos cuál galería te conviene y si tu subrubro sigue libre.",
         "cuerpo": """
         <p>
           <strong>1PIXEL</strong> es la red de pantallas LED publicitarias más
-          grande de Maracaibo. Operamos 44 pantallas de alta resolución
-          instaladas en las entradas y pasillos principales de tres galerías
+          grande de Maracaibo. Operamos 92 pantallas de alta resolución
+          instaladas en las entradas y pasillos principales de seis galerías
           comerciales del municipio, donde el tráfico peatonal se concentra
           durante todo el día. Tu anuncio se transmite las 24 horas, los 7 días
           de la semana, sin costos de impresión ni de instalación.
         </p>
 """
         + datos(
-            ("44", "Pantallas activas"),
-            ("3", "Galerías"),
+            ("92", "Pantallas activas"),
+            ("6", "Galerías"),
             ("24/7", "Transmisión"),
             ("48 h", "Activación"),
         )
         + """
         <h2>¿Dónde están las pantallas LED de 1PIXEL en Maracaibo?</h2>
         <p>
-          La red está distribuida en tres puntos con perfiles de público
+          La red está distribuida en seis puntos con perfiles de público
           distintos. No es la misma persona la que entra a una galería de
           Bella Vista a mediodía que la que camina el Corredor Gastronómico un
           viernes en la noche, y esa diferencia es la que usamos para ubicar
@@ -601,11 +601,26 @@ PAGINAS = [
                 <td>Tráfico peatonal y vehicular alto, comercio general</td>
               </tr>
               <tr>
+                <td>Calle 77 con Delicias</td>
+                <td>24</td>
+                <td>Uno de los cruces de mayor flujo vehicular de la ciudad</td>
+              </tr>
+              <tr>
                 <td>
-                  <a href="/galerias/cecilio-acosta/">Cecilio Acosta</a>
+                  <a href="/galerias/cecilio-acosta/">Cecilio Acosta (Calle 67)</a>
                 </td>
                 <td>12</td>
                 <td>Comercio diurno y zona gastronómica nocturna</td>
+              </tr>
+              <tr>
+                <td>Av. Bella Vista con Calle 72</td>
+                <td>12</td>
+                <td>Corredor comercial y bancario de tránsito constante</td>
+              </tr>
+              <tr>
+                <td>Vereda del Lago</td>
+                <td>12</td>
+                <td>Recreación, deporte y familias; picos de tarde y fin de semana</td>
               </tr>
               <tr>
                 <td>
@@ -689,8 +704,8 @@ PAGINAS = [
         <ul>
           <li>
             Si buscas <strong>volumen general de ciudad</strong> y recordación
-            de marca, Calle 77 con Bella Vista, que concentra 24 de las 44
-            pantallas.
+            de marca, Calle 77 con Bella Vista o Calle 77 con Delicias, que
+            concentran 24 pantallas cada una.
           </li>
           <li>
             Si tu cliente es <strong>del sector</strong> y quieres presencia
@@ -704,7 +719,7 @@ PAGINAS = [
           </li>
         </ul>
         <p>
-          Si tu público no está en ninguna de las tres, te lo decimos. Vender
+          Si tu público no está en ninguna de ellas, te lo decimos. Vender
           tres meses de pauta que no van a rendir nos cuesta más caro que no
           venderlos.
         </p>
@@ -743,9 +758,9 @@ PAGINAS = [
           sol del mediodía y de noche. En zonas como el Corredor Gastronómico
           de AV 3H, de hecho, el horario nocturno es el de mayor tráfico.
         </p>
-        <h3>¿Tengo que contratar las tres galerías?</h3>
+        <h3>¿Tengo que contratar las seis galerías?</h3>
         <p>
-          No. Puedes contratar una, dos o las tres según tu objetivo y tu
+          No. Puedes contratar una, varias o todas según tu objetivo y tu
           presupuesto. Lo más común en marcas que arrancan es empezar por la
           galería donde está su cliente y ampliar después.
         </p>
@@ -783,7 +798,7 @@ PAGINAS = [
         "cuerpo": """
         <p>
           Alquilar una pantalla LED con 1PIXEL significa comprar un espacio
-          rotativo dentro de nuestra red de 44 pantallas en Maracaibo. No
+          rotativo dentro de nuestra red de 92 pantallas en Maracaibo. No
           compras la pantalla ni pagas instalación: pagas por aparecer, y
           nosotros nos encargamos del resto —el equipo, la electricidad, el
           mantenimiento y la reposición si algo falla.
@@ -996,8 +1011,8 @@ PAGINAS = [
           Una <strong>valla digital</strong> es una pantalla LED que cumple la
           misma función que una valla publicitaria tradicional —estar donde
           pasa la gente— pero mostrando contenido digital en vez de una lona
-          impresa. En Maracaibo, 1PIXEL opera 44 vallas digitales distribuidas
-          en tres galerías comerciales.
+          impresa. En Maracaibo, 1PIXEL opera 92 vallas digitales distribuidas
+          en seis galerías comerciales.
         </p>
 
         <h2>Valla digital vs. valla tradicional</h2>
@@ -1093,7 +1108,7 @@ PAGINAS = [
           sustancia, y ahí la repetición trabaja dentro de la misma visita.
         </p>
         <p>
-          Las 44 vallas digitales de 1PIXEL son del segundo tipo. Por eso
+          Las 92 vallas digitales de 1PIXEL son del segundo tipo. Por eso
           insistimos tanto en preguntar dónde está tu cliente antes de cotizar:
           si tu público no camina estas galerías, el formato no te va a rendir
           por barato que salga el impacto.
@@ -1142,7 +1157,7 @@ PAGINAS = [
         </p>
 """,
         "relacionados": [
-            ("/pantallas-led-maracaibo/", "Las 44 pantallas LED de la red"),
+            ("/pantallas-led-maracaibo/", "Las 92 pantallas LED de la red"),
             ("/publicidad-dooh-venezuela/", "Qué es la publicidad DOOH"),
             ("/alquiler-pantallas-led-maracaibo/", "Cómo contratar"),
         ],
@@ -1408,7 +1423,7 @@ PAGINAS = [
         <h2>DOOH en Maracaibo con 1PIXEL</h2>
         <p>
           1PIXEL opera la red DOOH más grande de Maracaibo:
-          <strong>44 pantallas LED</strong> en tres galerías comerciales, con
+          <strong>92 pantallas LED</strong> en seis galerías comerciales, con
           transmisión 24/7, dos cambios de contenido al mes incluidos y
           exclusividad por subrubro. Puedes ver
           <a href="/pantallas-led-maracaibo/">el detalle de la red</a> o
@@ -1439,9 +1454,9 @@ PAGINAS = [
         <p>
           La galería de <strong>Calle 77 con Av. Bella Vista</strong> es la
           ubicación más grande de la red 1PIXEL:
-          <strong>24 de nuestras 44 pantallas</strong> están aquí. Es más de la
-          mitad de la red concentrada en un solo punto, y la razón es simple: es
-          donde pasa más gente.
+          <strong>24 de nuestras 92 pantallas</strong> están aquí. Es el punto
+          con más pantallas de toda la red, y la razón es simple: es donde pasa
+          más gente.
         </p>
 """
         + datos(
@@ -1779,8 +1794,8 @@ PAGINAS = [
         "cta_texto": "Escríbenos y te decimos con franqueza si nuestra red te sirve o si te conviene otro canal.",
         "cuerpo": """
         <p>
-          <strong>1PIXEL</strong> opera una red de 44 pantallas LED
-          publicitarias en tres galerías comerciales de Maracaibo, estado Zulia.
+          <strong>1PIXEL</strong> opera una red de 92 pantallas LED
+          publicitarias en seis galerías comerciales de Maracaibo, estado Zulia.
           Somos parte de
           <a href="https://liberticorporation.com" target="_blank" rel="noopener"
             >Liberti Global Corporation</a
@@ -1788,9 +1803,9 @@ PAGINAS = [
         </p>
 """
         + datos(
-            ("44", "Pantallas LED"),
-            ("3", "Galerías activas"),
-            ("3", "En expansión"),
+            ("92", "Pantallas LED"),
+            ("6", "Galerías activas"),
+            ("24/7", "Transmisión"),
             ("18", "Marcas anunciantes"),
         )
         + """
@@ -1913,7 +1928,7 @@ PAGINAS = [
         </p>
 """,
         "relacionados": [
-            ("/pantallas-led-maracaibo/", "La red de 44 pantallas LED"),
+            ("/pantallas-led-maracaibo/", "La red de 92 pantallas LED"),
             ("/alquiler-pantallas-led-maracaibo/", "Cómo se contrata"),
             ("/publicidad-dooh-venezuela/", "Guía de publicidad DOOH"),
         ],
