@@ -508,6 +508,24 @@ GALERIAS = {
         "video": "galeria-corredor.mp4",
         "poster": "galeria-corredor-poster.webp",
     },
+    "calle-77-delicias": {
+        "nombre": "Calle 77 con Delicias",
+        "pantallas": 24,
+        "video": "galeria-5dejulio.mp4",
+        "poster": "galeria-5dejulio-poster.webp",
+    },
+    "bella-vista-calle-72": {
+        "nombre": "Bella Vista con Calle 72",
+        "pantallas": 12,
+        "video": "galeria-bellavista.mp4",
+        "poster": "galeria-bellavista-poster.webp",
+    },
+    "vereda-del-lago": {
+        "nombre": "Vereda del Lago",
+        "pantallas": 12,
+        "video": "galeria-vereda.mp4",
+        "poster": "galeria-vereda-poster.webp",
+    },
 }
 
 MARCAS = (
@@ -601,7 +619,9 @@ PAGINAS = [
                 <td>Tráfico peatonal y vehicular alto, comercio general</td>
               </tr>
               <tr>
-                <td>Calle 77 con Delicias</td>
+                <td>
+                  <a href="/galerias/calle-77-delicias/">Calle 77 con Delicias</a>
+                </td>
                 <td>24</td>
                 <td>Uno de los cruces de mayor flujo vehicular de la ciudad</td>
               </tr>
@@ -613,12 +633,18 @@ PAGINAS = [
                 <td>Comercio diurno y zona gastronómica nocturna</td>
               </tr>
               <tr>
-                <td>Av. Bella Vista con Calle 72</td>
+                <td>
+                  <a href="/galerias/bella-vista-calle-72/"
+                    >Av. Bella Vista con Calle 72</a
+                  >
+                </td>
                 <td>12</td>
                 <td>Corredor comercial y bancario de tránsito constante</td>
               </tr>
               <tr>
-                <td>Vereda del Lago</td>
+                <td>
+                  <a href="/galerias/vereda-del-lago/">Vereda del Lago</a>
+                </td>
                 <td>12</td>
                 <td>Recreación, deporte y familias; picos de tarde y fin de semana</td>
               </tr>
@@ -1087,9 +1113,15 @@ PAGINAS = [
           </li>
         </ul>
         <p>
-          Estamos expandiendo la red a tres ubicaciones más en Maracaibo:
-          Av. Bella Vista con Calle 72, Calle 77 con Las Delicias y Vereda del
-          Lago. Todavía no están operativas.
+          A esas se suman tres galerías más, todas operativas:
+          <a href="/galerias/calle-77-delicias/">Calle 77 con Delicias</a>
+          (24 pantallas),
+          <a href="/galerias/bella-vista-calle-72/"
+            >Av. Bella Vista con Calle 72</a
+          >
+          (12 pantallas) y
+          <a href="/galerias/vereda-del-lago/">Vereda del Lago</a>
+          (12 pantallas).
         </p>
 
         <h2>Valla de calle vs. valla digital en galería</h2>
@@ -1784,6 +1816,245 @@ PAGINAS = [
         ],
     },
     {
+        "slug": "galerias/calle-77-delicias",
+        "title": "Pantallas LED en Calle 77 con Delicias, Maracaibo | 1PIXEL",
+        "description": "24 pantallas LED publicitarias en Calle 77 con Av. Las Delicias, Maracaibo. Uno de los cruces de mayor flujo vehicular del norte de la ciudad.",
+        "h1": "Pantallas LED en Calle 77 con Delicias",
+        "breadcrumb": '<a href="/pantallas-led-maracaibo/">Pantallas LED</a><span>/</span>Calle 77 con Delicias',
+        "bajada": "24 pantallas en el cruce que conecta las zonas residenciales del norte con el eje comercial de la ciudad. Volumen alto de tráfico vehicular durante todo el día.",
+        "cta_titulo": "Reserva tu espacio en Calle 77 con Delicias",
+        "cta_texto": "24 pantallas, máximo 15 marcas y exclusividad por subrubro. Escríbenos y verificamos si tu categoría sigue libre.",
+        "cuerpo": """
+        <p>
+          El cruce de <strong>Calle 77 con Av. Las Delicias</strong> es, junto a
+          Calle 77 con Bella Vista, una de las dos ubicaciones más grandes de la
+          red: <strong>24 pantallas LED</strong>. Es el punto donde el norte
+          residencial de Maracaibo se conecta con el eje comercial, y por ahí
+          pasa a diario buena parte de la ciudad.
+        </p>
+"""
+        + datos(
+            ("24", "Pantallas LED"), ("24/7", "Transmisión"), ("15", "Marcas máximo")
+        )
+        + video("calle-77-delicias")
+        + """
+
+        <h2>La zona</h2>
+        <p>
+          Las Delicias es una de las avenidas que estructura el movimiento del
+          norte de Maracaibo. Quien vive en las urbanizaciones de esa zona la usa
+          para bajar al centro comercial y de servicios, y quien trabaja en el
+          eje comercial la usa para volver. El resultado es un flujo que no
+          depende de una hora pico única: se sostiene durante casi todo el día.
+        </p>
+
+        <h2>Perfil del público</h2>
+        <p>
+          Predomina el <strong>tráfico vehicular</strong>, con un componente
+          peatonal fuerte en los comercios del cruce. Es un público de poder
+          adquisitivo medio y medio-alto, que se mueve por rutina: pasa por el
+          mismo punto varias veces a la semana. Esa repetición es justamente lo
+          que hace que la publicidad exterior funcione.
+        </p>
+
+        <h2>¿Qué rubros funcionan mejor aquí?</h2>
+        <p>
+          Rinde para <strong>consumo masivo, concesionarios, inmobiliarias,
+          clínicas y bancos</strong>, que buscan recordación de marca a escala de
+          ciudad, y para comercios de la zona que quieren capturar al vecino en
+          su trayecto diario.
+        </p>
+
+        <h2>Volumen comparado con el resto de la red</h2>
+        <p>
+          Con 24 pantallas está a la par de
+          <a href="/galerias/calle-77-bella-vista/">Calle 77 con Bella Vista</a>
+          y por encima de
+          <a href="/galerias/cecilio-acosta/">Cecilio Acosta</a> (12) o del
+          <a href="/galerias/corredor-gastronomico-3h/">Corredor Gastronómico</a>
+          (8). Si tu objetivo es volumen y no un nicho específico, esta y Bella
+          Vista son las dos ubicaciones a considerar primero.
+        </p>
+
+        <h2>Cómo contratar en esta galería</h2>
+        <p>
+          Mismas condiciones que en el resto de la red: contrato desde tres
+          meses, máximo 15 marcas por galería, exclusividad por subrubro, dos
+          cambios de contenido al mes y salida al aire en menos de 48 horas.
+          Puedes ver el proceso completo en
+          <a href="/alquiler-pantallas-led-maracaibo/"
+            >la página de alquiler de pantallas LED</a
+          >.
+        </p>
+""",
+        "relacionados": [
+            (
+                "/galerias/calle-77-bella-vista/",
+                "Calle 77 con Bella Vista (24 pantallas)",
+            ),
+            ("/galerias/vereda-del-lago/", "Vereda del Lago (12 pantallas)"),
+            ("/pantallas-led-maracaibo/", "Toda la red de pantallas LED"),
+        ],
+    },
+    {
+        "slug": "galerias/bella-vista-calle-72",
+        "title": "Pantallas LED en Av. Bella Vista con Calle 72, Maracaibo | 1PIXEL",
+        "description": "12 pantallas LED publicitarias en Av. Bella Vista con Calle 72, Maracaibo. Corredor comercial y bancario con flujo vehicular continuo.",
+        "h1": "Pantallas LED en Bella Vista con Calle 72",
+        "breadcrumb": '<a href="/pantallas-led-maracaibo/">Pantallas LED</a><span>/</span>Bella Vista con Calle 72',
+        "bajada": "12 pantallas sobre la avenida Bella Vista, en el corredor comercial y bancario de Maracaibo. Tránsito constante, público de rutina.",
+        "cta_titulo": "Reserva tu espacio en Bella Vista con Calle 72",
+        "cta_texto": "12 pantallas, máximo 15 marcas y exclusividad por subrubro. Escríbenos y lo verificamos en el momento.",
+        "cuerpo": """
+        <p>
+          La galería de <strong>Av. Bella Vista con Calle 72</strong> tiene
+          <strong>12 pantallas LED</strong> sobre uno de los ejes más
+          reconocidos de Maracaibo. Bella Vista es la avenida que la ciudad usa
+          para casi todo: comercio, bancos, oficinas y tránsito de paso.
+        </p>
+"""
+        + datos(
+            ("12", "Pantallas LED"), ("24/7", "Transmisión"), ("15", "Marcas máximo")
+        )
+        + video("bella-vista-calle-72")
+        + """
+
+        <h2>La zona</h2>
+        <p>
+          El tramo de la Calle 72 concentra agencias bancarias, comercios y
+          servicios profesionales. Es una zona de diligencias: la gente va a un
+          trámite concreto, estaciona, camina un par de cuadras y vuelve. Ese
+          patrón produce exposición repetida dentro de la misma visita.
+        </p>
+
+        <h2>Perfil del público</h2>
+        <p>
+          Público adulto, económicamente activo, en horario diurno sobre todo.
+          Mezcla de residentes de la zona norte y de gente que baja a resolver
+          gestiones bancarias o comerciales. Es una audiencia menos impulsiva que
+          la de una zona de entretenimiento, y más receptiva a mensajes de
+          servicio, salud, finanzas y hogar.
+        </p>
+
+        <h2>¿Qué rubros funcionan mejor aquí?</h2>
+        <p>
+          Funciona para <strong>servicios financieros, seguros, clínicas,
+          farmacias, ópticas, inmobiliarias y comercios del corredor</strong>.
+          También para marcas de consumo que quieren estar frente a un público
+          adulto con capacidad de compra, en un entorno de baja saturación
+          publicitaria digital.
+        </p>
+
+        <h2>Cuándo conviene esta galería</h2>
+        <p>
+          Es una ubicación de escala media, igual que
+          <a href="/galerias/cecilio-acosta/">Cecilio Acosta</a> y
+          <a href="/galerias/vereda-del-lago/">Vereda del Lago</a>. Conviene
+          cuando tu cliente es de la zona o cuando quieres presencia sostenida
+          sin el volumen —ni el costo— de las galerías de 24 pantallas. Muchas
+          marcas la combinan con
+          <a href="/galerias/calle-77-bella-vista/">Calle 77 con Bella Vista</a>
+          para cubrir el eje completo.
+        </p>
+
+        <h2>Cómo contratar en esta galería</h2>
+        <p>
+          Contrato desde tres meses, máximo 15 marcas por galería, exclusividad
+          por subrubro, dos cambios de contenido al mes y salida al aire en menos
+          de 48 horas. El proceso completo está en
+          <a href="/alquiler-pantallas-led-maracaibo/"
+            >la página de alquiler de pantallas LED</a
+          >.
+        </p>
+""",
+        "relacionados": [
+            (
+                "/galerias/calle-77-bella-vista/",
+                "Calle 77 con Bella Vista (24 pantallas)",
+            ),
+            ("/galerias/cecilio-acosta/", "Cecilio Acosta (12 pantallas)"),
+            ("/pantallas-led-maracaibo/", "Toda la red de pantallas LED"),
+        ],
+    },
+    {
+        "slug": "galerias/vereda-del-lago",
+        "title": "Pantallas LED en Vereda del Lago, Maracaibo | 1PIXEL",
+        "description": "12 pantallas LED publicitarias en la avenida principal de Vereda del Lago, Maracaibo. Público familiar, deportivo y recreativo con picos de tarde y fin de semana.",
+        "h1": "Pantallas LED en Vereda del Lago",
+        "breadcrumb": '<a href="/pantallas-led-maracaibo/">Pantallas LED</a><span>/</span>Vereda del Lago',
+        "bajada": "12 pantallas en la avenida principal del parque más visitado de Maracaibo. Público familiar y deportivo, con picos de tarde y de fin de semana.",
+        "cta_titulo": "Reserva tu espacio en Vereda del Lago",
+        "cta_texto": "12 pantallas, máximo 15 marcas y exclusividad por subrubro. Escríbenos y verificamos disponibilidad para tu categoría.",
+        "cuerpo": """
+        <p>
+          La galería de <strong>Vereda del Lago</strong> tiene
+          <strong>12 pantallas LED</strong> sobre la avenida principal del
+          parque recreativo más visitado de Maracaibo. Es la ubicación con el
+          público más distinto de toda la red: no va de paso ni a comprar, va a
+          pasar el rato.
+        </p>
+"""
+        + datos(
+            ("12", "Pantallas LED"), ("24/7", "Transmisión"), ("15", "Marcas máximo")
+        )
+        + video("vereda-del-lago")
+        + """
+
+        <h2>La zona</h2>
+        <p>
+          Vereda del Lago concentra actividad deportiva en la mañana y en la
+          tarde, y actividad familiar y recreativa en las tardes y los fines de
+          semana. El movimiento no sigue el calendario laboral: los picos más
+          altos son sábado y domingo, justo cuando otras ubicaciones bajan.
+        </p>
+
+        <h2>Perfil del público</h2>
+        <p>
+          Familias, corredores, ciclistas y grupos de amigos. Gente que está
+          <strong>caminando o detenida</strong>, no manejando, con tiempo real
+          de mirar una pantalla completa en lugar de captarla dos segundos. Es
+          el tipo de atención que ninguna valla de avenida puede ofrecer.
+        </p>
+
+        <h2>¿Qué rubros funcionan mejor aquí?</h2>
+        <p>
+          Rinde para <strong>marcas de consumo, bebidas, comida, deporte, salud,
+          educación y entretenimiento familiar</strong>, y para eventos con fecha
+          —un concierto, una feria, una apertura— porque el público está en modo
+          ocio y receptivo a planes.
+        </p>
+
+        <h2>La galería que completa la semana</h2>
+        <p>
+          Su valor real aparece al combinarla. Las galerías comerciales como
+          <a href="/galerias/calle-77-bella-vista/">Calle 77 con Bella Vista</a>
+          o
+          <a href="/galerias/bella-vista-calle-72/">Bella Vista con Calle 72</a>
+          rinden de lunes a viernes; Vereda del Lago cubre el fin de semana.
+          Para una marca de consumo masivo, esa combinación cierra los siete
+          días.
+        </p>
+
+        <h2>Cómo contratar en esta galería</h2>
+        <p>
+          Contrato desde tres meses, máximo 15 marcas por galería, exclusividad
+          por subrubro, dos cambios de contenido al mes y salida al aire en menos
+          de 48 horas. Puedes ver el proceso completo en
+          <a href="/alquiler-pantallas-led-maracaibo/"
+            >la página de alquiler de pantallas LED</a
+          >.
+        </p>
+""",
+        "relacionados": [
+            ("/galerias/calle-77-delicias/", "Calle 77 con Delicias (24 pantallas)"),
+            (
+                "/galerias/corredor-gastronomico-3h/",
+                "Corredor Gastronómico 3H (8 pantallas)",
+            ),
+            ("/pantallas-led-maracaibo/", "Toda la red de pantallas LED"),
+        ],
+    },
+    {
         "slug": "nosotros",
         "title": "Quiénes Somos: la Red de Pantallas LED de Maracaibo | 1PIXEL",
         "description": "1PIXEL es la red de pantallas LED publicitarias más grande de Maracaibo, parte de Liberti Global Corporation. Conoce cómo operamos y en qué nos comprometemos.",
@@ -1860,19 +2131,29 @@ PAGINAS = [
                 <td>Activa</td>
               </tr>
               <tr>
-                <td>Av. Bella Vista con Calle 72</td>
-                <td>—</td>
-                <td>En desarrollo</td>
+                <td>
+                  <a href="/galerias/calle-77-delicias/"
+                    >Calle 77 con Delicias</a
+                  >
+                </td>
+                <td>24</td>
+                <td>Activa</td>
               </tr>
               <tr>
-                <td>Calle 77 con Las Delicias</td>
-                <td>—</td>
-                <td>En desarrollo</td>
+                <td>
+                  <a href="/galerias/bella-vista-calle-72/"
+                    >Av. Bella Vista con Calle 72</a
+                  >
+                </td>
+                <td>12</td>
+                <td>Activa</td>
               </tr>
               <tr>
-                <td>Vereda del Lago</td>
-                <td>—</td>
-                <td>En desarrollo</td>
+                <td>
+                  <a href="/galerias/vereda-del-lago/">Vereda del Lago</a>
+                </td>
+                <td>12</td>
+                <td>Activa</td>
               </tr>
             </tbody>
           </table>
