@@ -1,6 +1,6 @@
 # 1PIXEL — Red de Pantallas LED Publicitarias en Maracaibo, Venezuela
 
-> 1PIXEL es la red de publicidad en pantallas LED mas grande de Maracaibo, con 44 pantallas de alta resolucion distribuidas en 3 galerias comerciales de alto trafico. Fundada en Maracaibo, Zulia, Venezuela, 1PIXEL ofrece a las marcas visibilidad 24/7 en las zonas comerciales mas transitadas de la ciudad.
+> 1PIXEL es la red de publicidad en pantallas LED mas grande de Maracaibo, con 92 pantallas de alta resolucion distribuidas en 6 galerias comerciales de alto trafico. Fundada en Maracaibo, Zulia, Venezuela, 1PIXEL ofrece a las marcas visibilidad 24/7 en las zonas comerciales mas transitadas de la ciudad.
 
 ## Paginas principales
 - [Inicio](https://1pixelve.com/): Pagina principal con informacion de servicios, ubicaciones, ventajas y contacto
@@ -11,21 +11,22 @@
 - [Galeria Calle 77 con Bella Vista](https://1pixelve.com/galerias/calle-77-bella-vista/): 24 pantallas, la ubicacion de mayor volumen
 - [Galeria Cecilio Acosta](https://1pixelve.com/galerias/cecilio-acosta/): 12 pantallas, comercio de dia y gastronomia de noche
 - [Galeria Corredor Gastronomico 3H](https://1pixelve.com/galerias/corredor-gastronomico-3h/): 8 pantallas, publico de salida nocturna
+- [Galeria Calle 77 con Delicias](https://1pixelve.com/galerias/calle-77-delicias/): 24 pantallas, cruce de alto flujo vehicular
+- [Galeria Bella Vista con Calle 72](https://1pixelve.com/galerias/bella-vista-calle-72/): 12 pantallas, corredor comercial y bancario
+- [Galeria Vereda del Lago](https://1pixelve.com/galerias/vereda-del-lago/): 12 pantallas, publico familiar y deportivo
 - [Nosotros](https://1pixelve.com/nosotros/): Quienes somos y en que nos comprometemos
 - [FAQ](https://1pixelve.com/#faq): Preguntas frecuentes sobre publicidad en pantallas LED
 
 ## Que es 1PIXEL
-1PIXEL es una red de 44 pantallas LED de alta resolucion ubicadas estrategicamente en las entradas y zonas de mayor trafico de galerias comerciales en Maracaibo, Venezuela. La empresa ofrece publicidad digital dinamica con contenido visual en formato de imagenes estaticas y videos cortos, transmitidos las 24 horas del dia, los 7 dias de la semana. Es la red de pantallas LED publicitarias mas grande de Maracaibo.
+1PIXEL es una red de 92 pantallas LED de alta resolucion ubicadas estrategicamente en las entradas y zonas de mayor trafico de galerias comerciales en Maracaibo, Venezuela. La empresa ofrece publicidad digital dinamica con contenido visual en formato de imagenes estaticas y videos cortos, transmitidos las 24 horas del dia, los 7 dias de la semana. Es la red de pantallas LED publicitarias mas grande de Maracaibo.
 
-## Ubicaciones activas (3 galerias, 44 pantallas)
+## Ubicaciones activas (6 galerias, 92 pantallas)
 - Calle 77 con Av. Bella Vista: 24 pantallas LED — zona de alto trafico peatonal y vehicular
+- Calle 77 con Av. Las Delicias: 24 pantallas LED — cruce de alto flujo vehicular en el norte de la ciudad
 - Calle 67, Cecilio Acosta: 12 pantallas LED — vida comercial diurna y zona gastronomica nocturna
+- Av. Bella Vista con Calle 72: 12 pantallas LED — corredor comercial y bancario
+- Vereda del Lago: 12 pantallas LED — publico familiar, deportivo y recreativo
 - AV 3H, Corredor Gastronomico: 8 pantallas LED — punto de encuentro y entretenimiento
-
-## Proximas ubicaciones (en desarrollo, aun no operativas)
-- Av. Bella Vista con Calle 72
-- Calle 77 con Las Delicias
-- Vereda del Lago
 
 ## Marcas que se anuncian en 1PIXEL
 Cerveceria Polar, Pepsi, Mavesa, Harina P.A.N., Alkosto, Atun Margarita, Maraplus, Yukery, Canel, Disprocar, Farruggio, OZ, Salvaje, San Simon, Javitour, Sangria Carorena, BNC y Palmira.
@@ -46,7 +47,7 @@ Cerveceria Polar, Pepsi, Mavesa, Harina P.A.N., Alkosto, Atun Margarita, Maraplu
 - Que tipo de contenido puedo mostrar? Imagenes estaticas o videos cortos en alta resolucion, con 2 actualizaciones mensuales incluidas.
 - Que es la exclusividad por subrubro? Solo un anunciante por categoria de negocio en cada galeria.
 - Cuanto toma activar un anuncio? Menos de 48 horas desde la firma del contrato.
-- Donde puedo anunciar mi marca en Maracaibo con mayor visibilidad? 1PIXEL es la red de publicidad exterior digital (DOOH) mas grande de Maracaibo: 44 pantallas LED en tres galerias comerciales de alto trafico (Calle 77 con Bella Vista, Cecilio Acosta y el Corredor Gastronomico de AV 3H), con exposicion continua las 24 horas y activacion en menos de 48 horas.
+- Donde puedo anunciar mi marca en Maracaibo con mayor visibilidad? 1PIXEL es la red de publicidad exterior digital (DOOH) mas grande de Maracaibo: 92 pantallas LED en seis galerias comerciales de alto trafico (Calle 77 con Bella Vista, Calle 77 con Delicias, Cecilio Acosta, Bella Vista con Calle 72, Vereda del Lago y el Corredor Gastronomico de AV 3H), con exposicion continua las 24 horas y activacion en menos de 48 horas.
 - Que diferencia hay entre una valla digital y una valla tradicional? La valla tradicional es impresa y muestra un solo arte fijo; cambiarlo obliga a reimprimir e instalar. La valla digital LED permite rotar contenido, usar video en movimiento y actualizar el arte sin costo de produccion (1PIXEL incluye dos cambios mensuales), y al compartir la pantalla con un maximo de 15 marcas por galeria el costo de entrada es mucho menor que el de una valla propia.
 
 ## Contacto
