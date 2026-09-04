@@ -89,13 +89,13 @@ const GALLERIES = [
     label: "Bella Vista (Av. 5)",
     active: true,
   },
-  // --- pendientes por activar ---
   {
     id: "calle77",
-    short: "C77 Delicias",
-    label: "Calle 77 con Delicias",
-    active: false,
+    short: "5J Delicias",
+    label: "5J con Delicias",
+    active: true,
   },
+  // --- pendientes por activar ---
   { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
 ];
 
