@@ -3,7 +3,6 @@ Allow: /
 Disallow: /conteo/
 Disallow: /estado/
 Disallow: /jd/
-Disallow: /brief/
 Disallow: /onboarding.html
 Disallow: /calculadora/
 
