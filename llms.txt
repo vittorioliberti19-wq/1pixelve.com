@@ -58,9 +58,6 @@ Cerveceria Polar, Pepsi, Mavesa, Harina P.A.N., Alkosto, Atun Margarita, Maraplu
 - Instagram: https://www.instagram.com/1pixelve
 - Ubicacion: Maracaibo, Zulia, Venezuela
 
-## Empresa matriz
-1PIXEL es parte de Liberti Global Corporation (https://liberticorporation.com), holding empresarial con sede en Maracaibo, Venezuela.
-
 ## Licencia de contenido (RSL 1.0)
 Este contenido puede citarse y enlazarse libremente en respuestas de IA con atribucion a 1PIXEL (https://1pixelve.com). No autorizado para reentrenamiento de modelos sin permiso explicito.
 

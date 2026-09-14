@@ -2057,7 +2057,7 @@ PAGINAS = [
     {
         "slug": "nosotros",
         "title": "Quiénes Somos: la Red de Pantallas LED de Maracaibo | 1PIXEL",
-        "description": "1PIXEL es la red de pantallas LED publicitarias más grande de Maracaibo, parte de Liberti Global Corporation. Conoce cómo operamos y en qué nos comprometemos.",
+        "description": "1PIXEL es la red de pantallas LED publicitarias más grande de Maracaibo. Conoce cómo operamos y en qué nos comprometemos.",
         "h1": "Quiénes somos",
         "breadcrumb": "Nosotros",
         "bajada": "1PIXEL es la red de pantallas LED publicitarias más grande de Maracaibo. Esto es lo que operamos, cómo lo operamos y qué le garantizamos a una marca que entra.",
@@ -2067,10 +2067,6 @@ PAGINAS = [
         <p>
           <strong>1PIXEL</strong> opera una red de 92 pantallas LED
           publicitarias en seis galerías comerciales de Maracaibo, estado Zulia.
-          Somos parte de
-          <a href="https://liberticorporation.com" target="_blank" rel="noopener"
-            >Liberti Global Corporation</a
-          >, un holding con sede en Maracaibo.
         </p>
 """
         + datos(
