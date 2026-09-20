@@ -242,6 +242,7 @@ CSS_PAGINAS = """
 PLANTILLA = """<!doctype html>
 <html lang="es">
   <head>
+    <script defer src="/assets/google-ads.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
