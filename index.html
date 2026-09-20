@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <script defer src="/assets/google-ads.js"></script>
+    <script defer src="/assets/site-measurement.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pantallas LED Publicitarias en Maracaibo | 1PIXEL</title>
@@ -3603,6 +3603,7 @@
             .then((res) => res.json())
             .then((data) => {
               if (data.success) {
+                window.dispatchEvent(new Event("site-lead-success"));
                 document.getElementById("contactForm").style.display = "none";
                 document.getElementById("formSuccess").classList.add("show");
               } else {
