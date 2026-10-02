@@ -96,7 +96,7 @@ const GALLERIES = [
     active: true,
   },
   // --- pendientes por activar ---
-  { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: false },
+  { id: "vereda", short: "Vereda", label: "Vereda del Lago", active: true },
 ];
 
 const VEHICLE_META = {
