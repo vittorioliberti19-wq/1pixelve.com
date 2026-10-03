@@ -1,0 +1,3202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Calculadora comercial | 1PIXEL</title>
+    <link rel="icon" type="image/png" href="../../favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      /* === RESET & BASE === */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0a0a;
+        --bg-light: #111;
+        --bg-card: #161616;
+        --cyan: #8b00ff;
+        --magenta: #ff00ff;
+        --green: #00ff88;
+        --white: #f0f0f0;
+        --gray: #888;
+        --purple: #8b00ff;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--white);
+        font-family: var(--font-body);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* === SCROLLBAR === */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--cyan);
+        border-radius: 3px;
+      }
+
+      @keyframes scale-in {
+        from {
+          opacity: 0;
+          transform: scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* === SHINY CTA === */
+      @property --gradient-angle {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-angle-offset {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @property --gradient-percent {
+        syntax: "<percentage>";
+        initial-value: 5%;
+        inherits: false;
+      }
+      @property --gradient-shine {
+        syntax: "<color>";
+        initial-value: #f0f0f0;
+        inherits: false;
+      }
+
+      .shiny-cta {
+        --shiny-cta-bg: #0a0a0a;
+        --shiny-cta-bg-subtle: #1a1622;
+        --shiny-cta-fg: #f0f0f0;
+        --shiny-cta-highlight: #8b00ff;
+        --shiny-cta-highlight-subtle: #b366ff;
+        --animation: gradient-angle linear infinite;
+        --duration: 3s;
+        --shadow-size: 2px;
+        --transition: 800ms cubic-bezier(0.25, 1, 0.5, 1);
+        isolation: isolate;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        outline-offset: 4px;
+        padding: 1rem 2.2rem;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.2;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 1px solid transparent;
+        border-radius: 360px;
+        color: var(--shiny-cta-fg);
+        background:
+          linear-gradient(var(--shiny-cta-bg), var(--shiny-cta-bg)) padding-box,
+          conic-gradient(
+              from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+              transparent,
+              var(--shiny-cta-highlight) var(--gradient-percent),
+              var(--gradient-shine) calc(var(--gradient-percent) * 2),
+              var(--shiny-cta-highlight) calc(var(--gradient-percent) * 3),
+              transparent calc(var(--gradient-percent) * 4)
+            )
+            border-box;
+        box-shadow: inset 0 0 0 1px var(--shiny-cta-bg-subtle);
+        transition: var(--transition);
+        transition-property:
+          --gradient-angle-offset, --gradient-percent, --gradient-shine;
+      }
+      .shiny-cta::before,
+      .shiny-cta::after,
+      .shiny-cta span::before {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        translate: -50% -50%;
+        z-index: -1;
+      }
+      .shiny-cta:active {
+        translate: 0 1px;
+      }
+      .shiny-cta::before {
+        --size: calc(100% - var(--shadow-size) * 3);
+        --position: 2px;
+        --space: calc(var(--position) * 2);
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(
+            circle at var(--position) var(--position),
+            #fff calc(var(--position) / 4),
+            transparent 0
+          )
+          padding-box;
+        background-size: var(--space) var(--space);
+        background-repeat: space;
+        mask-image: conic-gradient(
+          from calc(var(--gradient-angle) + 45deg),
+          black,
+          transparent 10% 90%,
+          black
+        );
+        border-radius: inherit;
+        opacity: 0.4;
+        z-index: -1;
+      }
+      .shiny-cta::after {
+        --animation: shimmer linear infinite;
+        width: 100%;
+        aspect-ratio: 1;
+        background: linear-gradient(
+          -50deg,
+          transparent,
+          var(--shiny-cta-highlight),
+          transparent
+        );
+        mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+        opacity: 0.6;
+      }
+      .shiny-cta span {
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--shiny-cta-fg);
+      }
+      .shiny-cta span::before {
+        --size: calc(100% + 1rem);
+        width: var(--size);
+        height: var(--size);
+        box-shadow: inset 0 -1ex 2rem 4px var(--shiny-cta-highlight);
+        opacity: 0;
+        transition: opacity var(--transition);
+        animation: calc(var(--duration) * 1.5) breathe linear infinite;
+      }
+      .shiny-cta,
+      .shiny-cta::before,
+      .shiny-cta::after {
+        animation:
+          var(--animation) var(--duration),
+          var(--animation) calc(var(--duration) / 0.4) reverse paused;
+        animation-composition: add;
+      }
+      .shiny-cta:is(:hover, :focus-visible) {
+        --gradient-percent: 20%;
+        --gradient-angle-offset: 95deg;
+        --gradient-shine: var(--shiny-cta-highlight-subtle);
+      }
+      .shiny-cta:is(:hover, :focus-visible),
+      .shiny-cta:is(:hover, :focus-visible)::before,
+      .shiny-cta:is(:hover, :focus-visible)::after {
+        animation-play-state: running;
+      }
+      .shiny-cta:is(:hover, :focus-visible) span::before {
+        opacity: 1;
+      }
+      .shiny-cta:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .shiny-cta,
+        .shiny-cta::before,
+        .shiny-cta::after {
+          animation: none;
+        }
+      }
+      @keyframes gradient-angle {
+        to {
+          --gradient-angle: 360deg;
+        }
+      }
+      @keyframes shimmer {
+        to {
+          rotate: 360deg;
+        }
+      }
+      @keyframes breathe {
+        from,
+        to {
+          scale: 1;
+        }
+        50% {
+          scale: 1.2;
+        }
+      }
+
+      /* === NAV === */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 16px 0;
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(139, 0, 255, 0.1);
+      }
+
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .logo {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 32px;
+        width: auto;
+        transition: opacity 0.3s;
+      }
+
+      .logo:hover img {
+        opacity: 0.8;
+      }
+
+      .nav-tag {
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #c89bff;
+        border: 1px solid rgba(139, 0, 255, 0.5);
+        background: rgba(139, 0, 255, 0.08);
+        padding: 6px 14px;
+        border-radius: 999px;
+      }
+
+      /* === GATE === */
+      .gate {
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .gate.hidden {
+        display: none;
+      }
+
+      .gate-card {
+        width: 100%;
+        max-width: 380px;
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 36px 28px;
+        text-align: center;
+      }
+
+      .gate-lock {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .gate-card h1 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+
+      .gate-card p {
+        color: var(--gray);
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+      }
+
+      .gate-card input {
+        width: 100%;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        outline: none;
+        min-height: 50px;
+        transition: all 0.3s;
+        margin-bottom: 14px;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+
+      .gate-card input:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.15);
+      }
+
+      .gate-card .shiny-cta {
+        width: 100%;
+      }
+
+      .gate-error {
+        display: none;
+        color: #ff5577;
+        font-size: 0.85rem;
+        margin-top: 14px;
+      }
+
+      .gate-error.show {
+        display: block;
+      }
+
+      /* === APP === */
+      .app {
+        display: none;
+      }
+
+      .app.visible {
+        display: block;
+      }
+
+      .ct-hero {
+        padding: 48px 0 12px;
+      }
+
+      .ct-hero h2 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 5vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+      }
+
+      .ct-hero h2 .highlight {
+        background: linear-gradient(135deg, var(--cyan), var(--magenta));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .ct-hero p {
+        color: var(--gray);
+        font-size: 1rem;
+        max-width: 540px;
+      }
+
+      /* === LAYOUT === */
+      .ct-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 28px 0 80px;
+        align-items: start;
+      }
+
+      @media (min-width: 920px) {
+        .ct-grid {
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 36px;
+        }
+        .result-col {
+          position: sticky;
+          top: 88px;
+        }
+      }
+
+      /* === FORM CARD === */
+      .panel {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 20px;
+        padding: 32px;
+      }
+
+      @media (max-width: 640px) {
+        .panel {
+          padding: 22px 18px;
+        }
+      }
+
+      .block + .block {
+        margin-top: 30px;
+        padding-top: 26px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .block-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      .block-title .ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .field-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 10px;
+        color: var(--gray);
+      }
+
+      /* === CHECK CARDS === */
+      .check-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .check-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .check-card:hover {
+        border-color: rgba(139, 0, 255, 0.4);
+      }
+
+      .check-card:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+      }
+
+      .check-card:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .check-card input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--cyan);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .check-card .ck-body {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .check-card .ck-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--white);
+        display: block;
+      }
+
+      .check-card .ck-sub {
+        font-size: 0.78rem;
+        color: var(--gray);
+        margin-top: 2px;
+      }
+
+      /* === RADIO PILLS === */
+      .radio-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .radio-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 22px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .radio-pill:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+        color: var(--white);
+      }
+
+      .radio-pill:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .radio-pill input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--cyan);
+        cursor: pointer;
+      }
+
+      /* === INPUT / SELECT === */
+      .form-group {
+        margin-bottom: 18px;
+      }
+
+      .form-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--gray);
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 14px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: var(--white);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        outline: none;
+        min-height: 50px;
+      }
+
+      .form-group select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        padding-right: 44px;
+        cursor: pointer;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.15);
+      }
+
+      .form-group input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      /* === TOGGLE === */
+      .toggle-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        min-height: 44px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .toggle-card:hover {
+        border-color: rgba(139, 0, 255, 0.4);
+      }
+
+      .toggle-card:has(input:checked) {
+        border-color: var(--cyan);
+        background: rgba(139, 0, 255, 0.1);
+      }
+
+      .toggle-card:has(input:focus-visible) {
+        box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.25);
+      }
+
+      .toggle-card input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--cyan);
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      .toggle-card .tg-body {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .toggle-card .tg-label {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--white);
+        display: block;
+      }
+
+      .toggle-card .tg-sub {
+        font-size: 0.78rem;
+        color: var(--gray);
+        margin-top: 2px;
+      }
+
+      /* === RESULT CARD === */
+      .result {
+        background: var(--bg-card);
+        border: 1px solid rgba(139, 0, 255, 0.25);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 0 0 1px rgba(139, 0, 255, 0.05);
+      }
+
+      .result-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+
+      .result-head .ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(139, 0, 255, 0.12);
+        color: #c89bff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .result-head h3 {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+
+      .result-plan {
+        font-size: 0.88rem;
+        color: var(--gray);
+        margin: 0 0 22px 46px;
+      }
+
+      .result-plan strong {
+        color: #c89bff;
+        font-weight: 600;
+      }
+
+      /* Empty / error state */
+      .result-empty {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: rgba(255, 184, 107, 0.08);
+        border: 1px solid rgba(255, 184, 107, 0.25);
+        color: #ffb86b;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .result-body.hidden,
+      .result-empty.hidden {
+        display: none;
+      }
+
+      .line {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        padding: 9px 0;
+        font-size: 0.92rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .line:last-of-type {
+        border-bottom: none;
+      }
+
+      .line .lbl {
+        color: var(--gray);
+      }
+
+      .line .val {
+        font-weight: 600;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      .line.discount .val {
+        color: var(--green);
+      }
+
+      .line.muted .val {
+        color: var(--gray);
+        font-weight: 500;
+      }
+
+      .line-feature {
+        margin-top: 14px;
+        padding: 16px 18px;
+        background: rgba(139, 0, 255, 0.1);
+        border: 1px solid rgba(139, 0, 255, 0.3);
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .line-feature .lbl {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #c89bff;
+        font-weight: 600;
+      }
+
+      .line-feature .val {
+        font-family: var(--font-display);
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .total-row {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .total-row .lbl {
+        color: var(--gray);
+        font-size: 0.92rem;
+      }
+
+      .total-row .val {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .prepago-box {
+        display: none;
+        margin-top: 16px;
+        padding: 16px 18px;
+        background: rgba(0, 255, 136, 0.07);
+        border: 1px solid rgba(0, 255, 136, 0.3);
+        border-radius: 14px;
+      }
+
+      .prepago-box.show {
+        display: block;
+      }
+
+      .prepago-box .pp-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+
+      .prepago-box .pp-lbl {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .prepago-box .pp-val {
+        font-family: var(--font-display);
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--white);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .prepago-box .pp-save {
+        font-size: 0.85rem;
+        color: var(--green);
+      }
+
+      .result-note {
+        font-size: 0.75rem;
+        color: var(--gray);
+        line-height: 1.55;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .copy-btn {
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .copy-feedback {
+        text-align: center;
+        font-size: 0.82rem;
+        color: var(--green);
+        margin-top: 12px;
+        min-height: 18px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .copy-feedback.show {
+        opacity: 1;
+      }
+
+      /* === FOOTER === */
+      footer {
+        padding: 28px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: center;
+        color: var(--gray);
+        font-size: 0.82rem;
+      }
+
+      footer a {
+        color: var(--gray);
+        transition: color 0.3s;
+      }
+
+      footer a:hover {
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         GATE DE CLAVE — protección ligera DELIBERADA.
+         Esto NO es seguridad real: es una lista de precios interna,
+         no secretos. El hash y la lógica viven en el cliente, así que
+         cualquiera con devtools podría saltarlo. Solo evita que la URL
+         quede expuesta a curiosos casuales.
+         ============================================================ -->
+    <div class="gate" id="gate">
+      <div class="gate-card">
+        <div class="gate-lock">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+        </div>
+        <h1>Acceso interno</h1>
+        <p>
+          Calculadora comercial de 1PIXEL. Introduce la clave para continuar.
+        </p>
+        <form id="gateForm">
+          <input
+            type="password"
+            id="gateInput"
+            placeholder="Clave"
+            autocomplete="off"
+            aria-label="Clave de acceso"
+          />
+          <button type="submit" class="shiny-cta">
+            <span>Entrar</span>
+          </button>
+          <p
+            class="gate-error"
+            id="gateError"
+            role="alert"
+            aria-live="assertive"
+          >
+            Clave incorrecta.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================ APP -->
+    <div class="app" id="app" aria-hidden="true">
+      <nav>
+        <div class="container">
+          <a href="/" class="logo" aria-label="1PIXEL — inicio">
+            <img src="../../logo.webp" width="3357" height="1125" alt="1PIXEL" />
+          </a>
+          <a href="../" class="nav-tag" style="text-decoration: none"
+            >&larr; Calculadoras</a
+          >
+        </div>
+      </nav>
+
+      <header class="ct-hero">
+        <div class="container">
+          <h2>Calculadora <span class="highlight">comercial</span></h2>
+          <p>
+            Arma la propuesta en segundos. Elige galerías, duración y opciones;
+            los números se recalculan al instante y los copias en formato
+            WhatsApp.
+          </p>
+        </div>
+      </header>
+
+      <!-- ===== TABS DE MODO ===== -->
+      <div class="container" style="margin-top: 18px">
+        <div class="radio-row" role="tablist" aria-label="Modo de cálculo">
+          <label class="radio-pill">
+            <input type="radio" name="modo" value="mono" checked />
+            Mono-marca
+          </label>
+          <label class="radio-pill">
+            <input type="radio" name="modo" value="multi" />
+            Multimarca (3+ marcas)
+          </label>
+        </div>
+      </div>
+
+      <main id="monoMain">
+        <div class="container ct-grid">
+          <!-- ===== COLUMNA FORMULARIO ===== -->
+          <section class="panel" aria-label="Opciones de la cotización">
+            <!-- Galerías -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-tv" aria-hidden="true"></i
+                ></span>
+                Galerías
+              </div>
+              <div
+                class="check-list"
+                id="galeriasList"
+                role="group"
+                aria-label="Galerías"
+              >
+                <!-- generadas por JS -->
+              </div>
+            </div>
+
+            <!-- Duración -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-clock" aria-hidden="true"></i
+                ></span>
+                Duración del contrato
+              </div>
+              <span class="field-label" id="durLabel">Meses</span>
+              <div
+                class="radio-row"
+                role="radiogroup"
+                aria-labelledby="durLabel"
+              >
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="1" />
+                  1 mes
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="3" />
+                  3 meses
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="6" checked />
+                  6 meses
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="duracion" value="12" />
+                  12 meses
+                </label>
+              </div>
+              <p
+                class="dur-nota"
+                id="durNota"
+                style="
+                  display: none;
+                  font-size: 0.78rem;
+                  color: var(--gray);
+                  margin-top: 12px;
+                "
+              >
+                Contratos de 1 mes: sin descuento de contratación ni prepago
+                (pago en divisas sí aplica).
+              </p>
+            </div>
+
+            <!-- Opciones -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-sliders" aria-hidden="true"></i
+                ></span>
+                Opciones
+              </div>
+
+              <div class="form-group">
+                <label for="boost">Boost de frecuencia</label>
+                <select id="boost">
+                  <option value="no">Sin boost</option>
+                  <option value="2x">2X (+30%)</option>
+                  <option value="3x">3X (+60%)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="toggle-card" id="prepagoCard">
+                  <input type="checkbox" id="prepago" />
+                  <span class="tg-body">
+                    <span class="tg-label">Pago prepago</span>
+                    <span class="tg-sub"
+                      >Paga la totalidad del contrato por adelantado y aplica
+                      descuento extra.</span
+                    >
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="toggle-card">
+                  <input type="checkbox" id="divisas" />
+                  <span class="tg-body">
+                    <span class="tg-label">Pago en divisas (−20%)</span>
+                    <span class="tg-sub"
+                      >Descuento adicional por pagar en dólares.</span
+                    >
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label for="descCustom">Descuento personalizado (%)</label>
+                <input
+                  type="number"
+                  id="descCustom"
+                  min="0"
+                  max="100"
+                  step="1"
+                  inputmode="decimal"
+                  placeholder="0"
+                  autocomplete="off"
+                />
+                <p
+                  style="
+                    font-size: 0.78rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                >
+                  Otros descuentos. Se aplica de último, sobre el monto ya
+                  rebajado.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cliente -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-user" aria-hidden="true"></i
+                ></span>
+                Cliente
+              </div>
+              <div class="form-group">
+                <label for="cliente">Razón social / Nombre</label>
+                <input
+                  type="text"
+                  id="cliente"
+                  placeholder="Ej: Farmacia La Económica, C.A."
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteRif">RIF</label>
+                <input
+                  type="text"
+                  id="clienteRif"
+                  placeholder="Ej: J-12345678-9"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteDir">Dirección</label>
+                <input
+                  type="text"
+                  id="clienteDir"
+                  placeholder="Ciudad, sector, dirección"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteEmail">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="clienteEmail"
+                  placeholder="cliente@correo.com"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteFirmante"
+                  >Firma por el cliente — Nombre</label
+                >
+                <input
+                  type="text"
+                  id="clienteFirmante"
+                  placeholder="Nombre de quien firma"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteCedula">Cédula del firmante</label>
+                <input
+                  type="text"
+                  id="clienteCedula"
+                  placeholder="Ej: V-12.345.678"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="clienteCargo">Cargo del firmante</label>
+                <input
+                  type="text"
+                  id="clienteCargo"
+                  placeholder="Ej: Gerente de Mercadeo"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+
+            <!-- Firma por 1PIXEL -->
+            <div class="block">
+              <div class="block-title">
+                <span class="ico"
+                  ><i class="fas fa-signature" aria-hidden="true"></i
+                ></span>
+                Firma por 1PIXEL
+              </div>
+              <div class="form-group">
+                <label for="firmaNombre">Nombre</label>
+                <input
+                  type="text"
+                  id="firmaNombre"
+                  value="Daniel Velásquez"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="firmaCedula">Cédula</label>
+                <input
+                  type="text"
+                  id="firmaCedula"
+                  placeholder="Ej: V-12.345.678"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="firmaCorreo">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="firmaCorreo"
+                  value="ventas@1pixelve.com"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="firmaCargo">Cargo</label>
+                <input
+                  type="text"
+                  id="firmaCargo"
+                  value="VP de Mercadeo"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== COLUMNA RESULTADOS ===== -->
+          <aside class="result-col" aria-label="Resultado de la cotización">
+            <div class="result">
+              <div class="result-head">
+                <span class="ico"
+                  ><i class="fas fa-calculator" aria-hidden="true"></i
+                ></span>
+                <h3>Propuesta</h3>
+              </div>
+              <p class="result-plan" id="resultPlan"></p>
+
+              <div
+                class="result-empty"
+                id="resultEmpty"
+                role="status"
+                aria-live="polite"
+              >
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                <span>Marca al menos una galería para ver la cotización.</span>
+              </div>
+
+              <div
+                class="result-body hidden"
+                id="resultBody"
+                aria-live="polite"
+              >
+                <div class="line muted" id="rowMensualLista">
+                  <span class="lbl" id="rMensualListaLbl">Mensual lista</span>
+                  <span class="val" id="rMensualLista"></span>
+                </div>
+                <div class="line discount" id="rowBoost" style="display: none">
+                  <span class="lbl" id="rBoostLbl">Boost</span>
+                  <span class="val" id="rBoost"></span>
+                </div>
+
+                <div class="line">
+                  <span class="lbl" id="rSubtotalLbl">Subtotal contrato</span>
+                  <span class="val" id="rSubtotal"></span>
+                </div>
+
+                <div
+                  class="line discount"
+                  id="rowDescContrat"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescContratLbl"
+                    >Descuento por contratación</span
+                  >
+                  <span class="val" id="rDescContrat"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescPrepago"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescPrepagoLbl"
+                    >Descuento prepago</span
+                  >
+                  <span class="val" id="rDescPrepago"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescDivisas"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescDivisasLbl"
+                    >Descuento pago en divisas (20%)</span
+                  >
+                  <span class="val" id="rDescDivisas"></span>
+                </div>
+                <div
+                  class="line discount"
+                  id="rowDescCustom"
+                  style="display: none"
+                >
+                  <span class="lbl" id="rDescCustomLbl"
+                    >Descuento personalizado</span
+                  >
+                  <span class="val" id="rDescCustom"></span>
+                </div>
+
+                <div class="line-feature">
+                  <span class="lbl"
+                    >Total contrato <small>(sin IVA)</small></span
+                  >
+                  <span class="val" id="rTotal"></span>
+                </div>
+
+                <p
+                  style="
+                    text-align: right;
+                    font-size: 0.82rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                  id="rEquivalente"
+                ></p>
+
+                <p class="result-note">
+                  Precios en USD, sin IVA ni impuestos de publicidad. Prepago =
+                  pago total del contrato al inicio. Descuento divisas aplica
+                  pagando en dólares.
+                </p>
+
+                <button type="button" class="shiny-cta copy-btn" id="copyBtn">
+                  <span
+                    ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
+                    propuesta</span
+                  >
+                </button>
+                <button type="button" class="shiny-cta copy-btn" id="pdfBtn">
+                  <span
+                    ><i class="fas fa-file-pdf" aria-hidden="true"></i>
+                    Descargar PDF</span
+                  >
+                </button>
+                <p
+                  class="copy-feedback"
+                  id="copyFeedback"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <!-- ===== MODO MULTIMARCA (excel "Simulador 1PIXEL" 2026-07) ===== -->
+      <main id="multiMain" style="display: none">
+        <div class="container ct-grid">
+          <section class="panel" aria-label="Marcas del ejercicio multimarca">
+            <p
+              class="dur-nota"
+              id="multiAviso"
+              style="
+                display: none;
+                font-size: 0.82rem;
+                color: #e0a13a;
+                margin-bottom: 14px;
+              "
+            >
+              El beneficio corporativo multimarca aplica con 3+ marcas. Con 1-2
+              marcas rige la política estándar (descuentos por Nº de galerías →
+              prepago → divisas): usa el modo Mono-marca.
+            </p>
+            <div id="marcasList"></div>
+            <button type="button" class="shiny-cta copy-btn" id="addMarcaBtn">
+              <span
+                ><i class="fas fa-plus" aria-hidden="true"></i> Agregar
+                marca</span
+              >
+            </button>
+          </section>
+
+          <aside class="result-col" aria-label="Consolidado multimarca">
+            <div class="result">
+              <div class="result-head">
+                <span class="ico"
+                  ><i class="fas fa-layer-group" aria-hidden="true"></i
+                ></span>
+                <h3>Consolidado</h3>
+              </div>
+              <p class="result-plan" id="multiPlan"></p>
+              <div
+                class="result-empty"
+                id="multiEmpty"
+                role="status"
+                aria-live="polite"
+              >
+                <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+                <span>Marca galerías en al menos una marca.</span>
+              </div>
+              <div class="result-body hidden" id="multiBody" aria-live="polite">
+                <div class="line">
+                  <span class="lbl">Subtotal lista total</span>
+                  <span class="val" id="mSubtotal"></span>
+                </div>
+                <div class="line discount" id="mRowBeneficio">
+                  <span class="lbl" id="mBeneficioLbl">Beneficio total</span>
+                  <span class="val" id="mBeneficio"></span>
+                </div>
+                <div class="line-feature">
+                  <span class="lbl"
+                    >Inversión total neta <small>(sin IVA)</small></span
+                  >
+                  <span class="val" id="mNeta"></span>
+                </div>
+                <p
+                  style="
+                    text-align: right;
+                    font-size: 0.82rem;
+                    color: var(--gray);
+                    margin-top: 8px;
+                  "
+                  id="mMensualidad"
+                ></p>
+                <p class="result-note">
+                  Precios en USD, sin IVA. Beneficio corporativo multimarca (3m
+                  15% · 6m 20% · 12m 25%) sustituye los descuentos estándar por
+                  galerías; se aplica por marca según su plan.
+                </p>
+
+                <div class="form-group" style="margin-top: 12px">
+                  <label for="multiCliente">Cliente / grupo (opcional)</label>
+                  <input
+                    type="text"
+                    id="multiCliente"
+                    placeholder="Ej: Grupo Empresarial XYZ"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <!-- Firma por el cliente / grupo (representante único) -->
+                <div class="form-group">
+                  <label for="multiFirmanteNombre"
+                    >Firma por el cliente — Nombre</label
+                  >
+                  <input
+                    type="text"
+                    id="multiFirmanteNombre"
+                    placeholder="Nombre de quien firma"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCedula">Cédula del firmante</label>
+                  <input
+                    type="text"
+                    id="multiFirmanteCedula"
+                    placeholder="Ej: V-12.345.678"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCargo">Cargo del firmante</label>
+                  <input
+                    type="text"
+                    id="multiFirmanteCargo"
+                    placeholder="Ej: Gerente de Mercadeo"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmanteCorreo">Correo del firmante</label>
+                  <input
+                    type="email"
+                    id="multiFirmanteCorreo"
+                    placeholder="cliente@correo.com"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <!-- Firma por 1PIXEL -->
+                <div class="form-group">
+                  <label for="multiFirmaNombre"
+                    >Firma por 1PIXEL — Nombre</label
+                  >
+                  <input
+                    type="text"
+                    id="multiFirmaNombre"
+                    value="Daniel Velásquez"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCedula">Cédula (1PIXEL)</label>
+                  <input
+                    type="text"
+                    id="multiFirmaCedula"
+                    placeholder="Ej: V-12.345.678"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCargo">Cargo (1PIXEL)</label>
+                  <input
+                    type="text"
+                    id="multiFirmaCargo"
+                    value="VP de Mercadeo"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="multiFirmaCorreo">Correo (1PIXEL)</label>
+                  <input
+                    type="email"
+                    id="multiFirmaCorreo"
+                    value="ventas@1pixelve.com"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  class="shiny-cta copy-btn"
+                  id="multiCopyBtn"
+                >
+                  <span
+                    ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
+                    propuesta</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="shiny-cta copy-btn"
+                  id="multiPdfBtn"
+                >
+                  <span
+                    ><i class="fas fa-file-pdf" aria-hidden="true"></i> Generar
+                    propuesta (PDF)</span
+                  >
+                </button>
+                <p
+                  class="copy-feedback"
+                  id="multiCopyFeedback"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer>
+        <div class="container">
+          &copy; 2026 1PIXEL · Herramienta interna · Simulador Lista de Precios
+          2026/04 ·
+          <a href="/">1pixelve.com</a>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      /* ============================================================
+         GATE — comparación de hash SHA-256 client-side.
+         Protección ligera deliberada (no son secretos, es una lista
+         de precios interna). El hash corresponde a "Negocios2026".
+         ============================================================ */
+      const CLAVE_HASH =
+        "65bae8d46f6be724fbaef28621393493bab567f0141659d315d2540887bf6a39";
+      const SS_KEY = "1px_calculadora";
+
+      const gate = document.getElementById("gate");
+      const app = document.getElementById("app");
+      const gateForm = document.getElementById("gateForm");
+      const gateInput = document.getElementById("gateInput");
+      const gateError = document.getElementById("gateError");
+
+      function entrar() {
+        gate.classList.add("hidden");
+        app.classList.add("visible");
+        app.setAttribute("aria-hidden", "false");
+        recalcular();
+      }
+
+      async function sha256(text) {
+        const data = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      gateForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        gateError.classList.remove("show");
+        const hash = await sha256(gateInput.value);
+        if (hash === CLAVE_HASH) {
+          sessionStorage.setItem(SS_KEY, "ok");
+          entrar();
+        } else {
+          gateError.classList.add("show");
+          gateInput.value = "";
+          gateInput.focus();
+        }
+      });
+
+      /* ============================================================
+         DATOS — Simulador Lista de Precios 2026/04 (fuente de verdad).
+         ============================================================ */
+      const GALERIAS = {
+        c77: {
+          nombre: "Calle 77 con Bella Vista",
+          pantallas: 24,
+          precio: { 1: 2200, 3: 1850, 6: 1700, 12: 1580 },
+        },
+        a15: {
+          nombre: "Calle 77 con Delicias",
+          pantallas: 24,
+          precio: { 1: 2200, 3: 1850, 6: 1700, 12: 1580 },
+        },
+        c67: {
+          nombre: "Cecilio Acosta",
+          pantallas: 12,
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
+        },
+        a04: {
+          nombre: "Bella Vista con calle 72",
+          pantallas: 12,
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
+        },
+        vereda: {
+          nombre: "Vereda del Lago",
+          pantallas: 12,
+          precio: { 1: 1700, 3: 1200, 6: 1100, 12: 950 },
+        },
+        av3h: {
+          nombre: "Corredor Gastronómico 3H",
+          pantallas: 8,
+          precio: { 1: 1000, 3: 820, 6: 750, 12: 670 },
+        },
+      };
+
+      // Orden canónico de las galerías (filas del simulador).
+      const ORDEN = ["c77", "a15", "c67", "a04", "vereda", "av3h"];
+
+      // Descuento por contratación: filas = nº de galerías marcadas, cols = duración.
+      // 1 mes NUNCA tiene descuentos (ni contratación ni prepago).
+      const DESC_CONTRATACION = {
+        1: { 3: 0, 6: 0, 12: 0 },
+        2: { 3: 0.06, 6: 0.08, 12: 0.1 },
+        3: { 3: 0.08, 6: 0.1, 12: 0.12 },
+        4: { 3: 0.1, 6: 0.12, 12: 0.15 },
+        5: { 3: 0.12, 6: 0.15, 12: 0.18 },
+        6: { 3: 0.15, 6: 0.18, 12: 0.2 },
+      };
+      const DESC_PREPAGO = { 3: 0.1, 6: 0.15, 12: 0.2 }; // 1 mes: 0
+      const DESC_DIVISAS = 0.2; // checkbox "Pago en divisas"
+      const BOOST = { no: 0, "2x": 0.3, "3x": 0.6 };
+      const BOOST_LABEL = { no: "Sin boost", "2x": "2X", "3x": "3X" };
+
+      /* ============================================================
+         FORMATO — siempre venezolano: $1.850,00
+         ============================================================ */
+      const fmt = new Intl.NumberFormat("es-VE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      function money(n) {
+        return "$" + fmt.format(n);
+      }
+
+      /* ============================================================
+         CÁLCULO
+         ============================================================ */
+      function calcular() {
+        const seleccion = Array.from(
+          document.querySelectorAll('input[name="galeria"]:checked'),
+        ).map((c) => c.value);
+
+        if (seleccion.length === 0) return null;
+
+        const dur = Number(
+          document.querySelector('input[name="duracion"]:checked').value,
+        );
+        const boostKey = document.getElementById("boost").value;
+        const prepagoOn = document.getElementById("prepago").checked;
+        const divisasOn = document.getElementById("divisas").checked;
+        // Descuento personalizado (%): clamp 0-100, NaN -> 0.
+        const descCustomPct =
+          Math.min(
+            Math.max(
+              parseFloat(document.getElementById("descCustom").value) || 0,
+              0,
+            ),
+            100,
+          ) / 100;
+
+        const claves = ORDEN.filter((k) => seleccion.includes(k));
+        const nGalerias = claves.length;
+
+        // 1. Mensual lista (suma) + boost, luego subtotal del contrato.
+        const mensualBase = claves.reduce(
+          (acc, k) => acc + GALERIAS[k].precio[dur],
+          0,
+        );
+        const boostPct = BOOST[boostKey];
+        const mensualBoosted = mensualBase * (1 + boostPct);
+        const subtotal = mensualBoosted * dur;
+
+        // 2. Descuento por contratación (0 si dur=1).
+        const descContratacionPct =
+          dur === 1 ? 0 : DESC_CONTRATACION[nGalerias][dur];
+        const descContratacion = subtotal * descContratacionPct;
+
+        // 3. Descuento prepago sobre base2 (0 si dur=1 o prepago off).
+        const base2 = subtotal - descContratacion;
+        const descPrepagoPct = prepagoOn && dur > 1 ? DESC_PREPAGO[dur] : 0;
+        const descPrepago = base2 * descPrepagoPct;
+
+        // 4. Descuento divisas sobre base3. En el sheet aplica en CUALQUIER
+        // duración (incluye 1 mes); contratación y prepago no.
+        const base3 = base2 - descPrepago;
+        const descDivisasPct = divisasOn ? DESC_DIVISAS : 0;
+        const descDivisas = base3 * descDivisasPct;
+
+        // 5. Descuento personalizado ("otros descuentos") sobre base4.
+        // Se aplica de último, sobre el monto ya rebajado.
+        const base4 = base3 - descDivisas;
+        const descCustom = base4 * descCustomPct;
+
+        // 6. Total + mensual equivalente.
+        const total = base4 - descCustom;
+        const mensualEquivalente = total / dur;
+
+        const pantallas = claves.reduce(
+          (acc, k) => acc + GALERIAS[k].pantallas,
+          0,
+        );
+
+        return {
+          claves,
+          nGalerias,
+          dur,
+          boostKey,
+          boostPct,
+          prepagoOn,
+          divisasOn,
+          mensualBase,
+          mensualBoosted,
+          subtotal,
+          descContratacionPct,
+          descContratacion,
+          descPrepagoPct,
+          descPrepago,
+          descDivisasPct,
+          descDivisas,
+          descCustomPct,
+          descCustom,
+          total,
+          mensualEquivalente,
+          pantallas,
+        };
+      }
+
+      /* ============================================================
+         TEST (verificación interna — NO se ejecuta en runtime)
+         ------------------------------------------------------------
+         Caso 1 — C77 12m + C67 12m, divisas ON, prepago OFF:
+           subtotal = (1580 + 950) * 12 = 30.360
+           contratación 2gal/12m = 10% -> 3.036 ; base2 = 27.324
+           divisas 20% de 27.324 = 5.464,80
+           => TOTAL $21.859,20 ✓
+
+         Caso 2 — C77 + C67 + AV3H, 6m, prepago ON, divisas OFF:
+           subtotal = (1700 + 1100 + 750) * 6 = 21.300
+           contratación 3gal/6m = 10% -> 2.130 ; base2 = 19.170
+           prepago 15% de 19.170 = 2.875,50
+           => TOTAL $16.294,50 ✓
+
+         Caso 3 — Vereda sola, 3m, prepago ON:
+           subtotal = 1200 * 3 = 3.600
+           contratación 1gal = 0% ; prepago 10% = 360
+           => TOTAL $3.240,00 ✓
+
+         Caso 4 — C77 sola, 1 mes (prepago/divisas ON, sin efecto):
+           subtotal = 2200 ; sin descuentos
+           => TOTAL $2.200,00 ✓
+         ============================================================ */
+
+      /* ============================================================
+         RENDER
+         ============================================================ */
+      const $ = (id) => document.getElementById(id);
+
+      const resultEmpty = $("resultEmpty");
+      const resultBody = $("resultBody");
+      const resultPlan = $("resultPlan");
+
+      function recalcular() {
+        const r = calcular();
+
+        if (!r) {
+          resultEmpty.classList.remove("hidden");
+          resultBody.classList.add("hidden");
+          resultPlan.textContent = "";
+          return;
+        }
+
+        resultEmpty.classList.add("hidden");
+        resultBody.classList.remove("hidden");
+
+        resultPlan.innerHTML =
+          "<strong>" +
+          r.nGalerias +
+          (r.nGalerias === 1 ? " galería" : " galerías") +
+          "</strong> · " +
+          r.pantallas +
+          " pantallas · " +
+          r.dur +
+          (r.dur === 1 ? " mes" : " meses");
+
+        // Mensual lista (con boost desglosado si aplica).
+        $("rMensualListaLbl").textContent = r.boostPct
+          ? "Mensual lista (base)"
+          : "Mensual lista";
+        $("rMensualLista").textContent = money(r.mensualBase);
+
+        const rowBoost = $("rowBoost");
+        if (r.boostPct > 0) {
+          rowBoost.style.display = "";
+          const boostMonto = r.mensualBoosted - r.mensualBase;
+          $("rBoostLbl").textContent =
+            "Boost " +
+            BOOST_LABEL[r.boostKey] +
+            " (+" +
+            Math.round(r.boostPct * 100) +
+            "%)";
+          $("rBoost").textContent = "+ " + money(boostMonto);
+        } else {
+          rowBoost.style.display = "none";
+        }
+
+        $("rSubtotalLbl").textContent =
+          "Subtotal contrato (" + r.dur + (r.dur === 1 ? " mes)" : " meses)");
+        $("rSubtotal").textContent = money(r.subtotal);
+
+        const rowDescContrat = $("rowDescContrat");
+        if (r.descContratacion > 0) {
+          rowDescContrat.style.display = "";
+          $("rDescContratLbl").textContent =
+            "Descuento por contratación (" +
+            Math.round(r.descContratacionPct * 100) +
+            "%)";
+          $("rDescContrat").textContent = "− " + money(r.descContratacion);
+        } else {
+          rowDescContrat.style.display = "none";
+        }
+
+        const rowDescPrepago = $("rowDescPrepago");
+        if (r.descPrepago > 0) {
+          rowDescPrepago.style.display = "";
+          $("rDescPrepagoLbl").textContent =
+            "Descuento prepago (" + Math.round(r.descPrepagoPct * 100) + "%)";
+          $("rDescPrepago").textContent = "− " + money(r.descPrepago);
+        } else {
+          rowDescPrepago.style.display = "none";
+        }
+
+        const rowDescDivisas = $("rowDescDivisas");
+        if (r.descDivisas > 0) {
+          rowDescDivisas.style.display = "";
+          $("rDescDivisas").textContent = "− " + money(r.descDivisas);
+        } else {
+          rowDescDivisas.style.display = "none";
+        }
+
+        const rowDescCustom = $("rowDescCustom");
+        if (r.descCustom > 0) {
+          rowDescCustom.style.display = "";
+          $("rDescCustomLbl").textContent =
+            "Descuento personalizado (" +
+            Math.round(r.descCustomPct * 100) +
+            "%)";
+          $("rDescCustom").textContent = "− " + money(r.descCustom);
+        } else {
+          rowDescCustom.style.display = "none";
+        }
+
+        $("rTotal").textContent = money(r.total);
+        $("rEquivalente").textContent =
+          "Equivale a " + money(r.mensualEquivalente) + "/mes";
+      }
+
+      /* ============================================================
+         TEXTO WHATSAPP
+         ============================================================ */
+      function propuestaTexto(r) {
+        const cliente = $("cliente").value.trim() || "—";
+        const meses = r.dur === 1 ? " mes" : " meses";
+        const lineas = [];
+        lineas.push("*PROPUESTA COMERCIAL — 1PIXEL*");
+        lineas.push("Cliente: " + cliente);
+        const rif = $("clienteRif").value.trim();
+        const email = $("clienteEmail").value.trim();
+        if (rif) lineas.push("RIF: " + rif);
+        if (email) lineas.push("Correo: " + email);
+        lineas.push("");
+        lineas.push(
+          "📍 " +
+            r.nGalerias +
+            (r.nGalerias === 1 ? " galería" : " galerías") +
+            " — " +
+            r.pantallas +
+            " pantallas LED",
+        );
+        r.claves.forEach((k) => {
+          lineas.push("• " + GALERIAS[k].nombre);
+        });
+        lineas.push("⏱ Duración: " + r.dur + meses);
+        if (r.boostPct > 0) {
+          lineas.push("🚀 Boost de frecuencia " + BOOST_LABEL[r.boostKey]);
+        }
+        lineas.push("");
+        lineas.push("Subtotal contrato: " + money(r.subtotal));
+        if (r.descContratacion > 0) {
+          lineas.push(
+            "Descuento por contratación (" +
+              Math.round(r.descContratacionPct * 100) +
+              "%): − " +
+              money(r.descContratacion),
+          );
+        }
+        if (r.descPrepago > 0) {
+          lineas.push(
+            "Descuento prepago (" +
+              Math.round(r.descPrepagoPct * 100) +
+              "%): − " +
+              money(r.descPrepago),
+          );
+        }
+        if (r.descDivisas > 0) {
+          lineas.push(
+            "Descuento pago en divisas (20%): − " + money(r.descDivisas),
+          );
+        }
+        if (r.descCustom > 0) {
+          lineas.push(
+            "Descuento personalizado (" +
+              Math.round(r.descCustomPct * 100) +
+              "%): − " +
+              money(r.descCustom),
+          );
+        }
+        lineas.push("");
+        lineas.push("*💰 TOTAL contrato (sin IVA): " + money(r.total) + "*");
+        lineas.push("Equivale a " + money(r.mensualEquivalente) + "/mes");
+        lineas.push("");
+        lineas.push(
+          "_Precios en USD, sin IVA ni impuestos de publicidad. Prepago = pago total del contrato al inicio. Descuento divisas aplica pagando en dólares._",
+        );
+        lineas.push("1pixelve.com");
+        return lineas.join("\n");
+      }
+
+      const copyFeedback = $("copyFeedback");
+      let copyTimer = null;
+
+      function mostrarCopyFeedback(msg, ok) {
+        copyFeedback.textContent = msg;
+        copyFeedback.style.color = ok ? "var(--green)" : "#ff5577";
+        copyFeedback.classList.add("show");
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(
+          () => copyFeedback.classList.remove("show"),
+          2600,
+        );
+      }
+
+      $("copyBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) {
+          mostrarCopyFeedback("Marca al menos una galería.", false);
+          return;
+        }
+        const texto = propuestaTexto(r);
+        try {
+          await navigator.clipboard.writeText(texto);
+          mostrarCopyFeedback("Copiada ✓", true);
+        } catch (err) {
+          // Fallback para contextos sin clipboard API (http, permisos).
+          const ta = document.createElement("textarea");
+          ta.value = texto;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            mostrarCopyFeedback("Copiada ✓", true);
+          } catch (e2) {
+            mostrarCopyFeedback(
+              "No se pudo copiar. Cópiala manualmente.",
+              false,
+            );
+          }
+          document.body.removeChild(ta);
+        }
+      });
+
+      /* ============================================================
+         PDF — propuesta con logo, generada client-side con jsPDF
+         (cargado lazy al primer click, versión pinneada + SRI)
+         ============================================================ */
+      let jspdfReady = null;
+      function cargarJsPDF() {
+        if (jspdfReady) return jspdfReady;
+        jspdfReady = new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src =
+            "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js";
+          s.integrity =
+            "sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/";
+          s.crossOrigin = "anonymous";
+          s.onload = () => resolve(window.jspdf.jsPDF);
+          s.onerror = () => {
+            jspdfReady = null;
+            reject(new Error("jspdf load"));
+          };
+          document.head.appendChild(s);
+        });
+        return jspdfReady;
+      }
+
+      let logoDataUrl = null;
+      async function cargarLogo() {
+        if (logoDataUrl) return logoDataUrl;
+        // Downscale a 720px: el PNG original (3357px) infla el PDF a ~15MB
+        const img = new Image();
+        img.src = "../../logo.png";
+        await img.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 720;
+        canvas.height = Math.round(
+          720 * (img.naturalHeight / img.naturalWidth),
+        );
+        canvas
+          .getContext("2d")
+          .drawImage(img, 0, 0, canvas.width, canvas.height);
+        logoDataUrl = canvas.toDataURL("image/png");
+        return logoDataUrl;
+      }
+
+      function generarPDF(JsPDF, logo, r, cliente) {
+        const doc = new JsPDF({ unit: "mm", format: "a4" });
+        const W = 210;
+        const M = 18; // margen
+        const fecha = new Date().toLocaleDateString("es-VE", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        // Header oscuro con logo (logo blanco 3357x1125)
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 0, W, 38, "F");
+        doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.text("PROPUESTA COMERCIAL", W - M, 19, { align: "right" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(170, 170, 170);
+        doc.text("Maracaibo, " + fecha, W - M, 26, { align: "right" });
+        doc.setFillColor(139, 0, 255);
+        doc.rect(0, 38, W, 1.6, "F");
+
+        // Cliente
+        let y = 54;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("PREPARADA PARA", M, y);
+        y += 7;
+        doc.setTextColor(20, 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.text(cliente, M, y);
+
+        // Detalles del cliente (RIF / direccion / correo) si los hay.
+        const cRif = $("clienteRif").value.trim();
+        const cDir = $("clienteDir").value.trim();
+        const cEmail = $("clienteEmail").value.trim();
+        const detalles = [];
+        if (cRif) detalles.push("RIF: " + cRif);
+        if (cDir) detalles.push(cDir);
+        if (cEmail) detalles.push(cEmail);
+        if (detalles.length) {
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(110, 110, 110);
+          detalles.forEach((d) => {
+            y += 5.5;
+            doc.text(d, M, y);
+          });
+        }
+
+        // Plan
+        y += 14;
+        doc.setFillColor(139, 0, 255);
+        doc.rect(M, y - 5, 1.4, 24 + r.claves.length * 6, "F");
+        doc.setFontSize(12);
+        doc.text(
+          r.nGalerias +
+            (r.nGalerias === 1 ? " galeria" : " galerias") +
+            "  ·  " +
+            r.pantallas +
+            " pantallas LED",
+          M + 6,
+          y,
+        );
+        y += 7;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(70, 70, 70);
+        r.claves.forEach((k) => {
+          doc.text("•  Galeria " + GALERIAS[k].nombre, M + 6, y);
+          y += 6;
+        });
+        doc.text(
+          "•  Duracion: " + r.dur + (r.dur === 1 ? " mes" : " meses"),
+          M + 6,
+          y,
+        );
+        y += 6;
+        if (r.boostPct > 0) {
+          doc.text(
+            "•  Boost de frecuencia " +
+              BOOST_LABEL[r.boostKey] +
+              " (+" +
+              Math.round(r.boostPct * 100) +
+              "%)",
+            M + 6,
+            y,
+          );
+          y += 6;
+        }
+
+        // Inversion
+        y += 10;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("INVERSION (USD, sin IVA)", M, y);
+        y += 4;
+        doc.setDrawColor(225, 225, 225);
+
+        const meses = r.dur === 1 ? " mes" : " meses";
+
+        function fila(lbl, val, opts) {
+          opts = opts || {};
+          y += 9;
+          doc.setFont("helvetica", opts.bold ? "bold" : "normal");
+          doc.setFontSize(opts.big ? 13 : 10.5);
+          if (opts.color) doc.setTextColor(...opts.color);
+          else doc.setTextColor(40, 40, 40);
+          doc.text(lbl, M, y);
+          doc.text(val, W - M, y, { align: "right" });
+          doc.setDrawColor(235, 235, 235);
+          doc.line(M, y + 3, W - M, y + 3);
+        }
+
+        fila("Mensual lista", money(r.mensualBase));
+        if (r.boostPct > 0) {
+          fila(
+            "Boost " +
+              BOOST_LABEL[r.boostKey] +
+              " (+" +
+              Math.round(r.boostPct * 100) +
+              "%)",
+            "+ " + money(r.mensualBoosted - r.mensualBase),
+          );
+        }
+        fila("Subtotal contrato (" + r.dur + meses + ")", money(r.subtotal), {
+          bold: true,
+        });
+        if (r.descContratacion > 0) {
+          fila(
+            "Descuento por contratación (" +
+              Math.round(r.descContratacionPct * 100) +
+              "%)",
+            "- " + money(r.descContratacion),
+            { color: [0, 150, 90] },
+          );
+        }
+        if (r.descPrepago > 0) {
+          fila(
+            "Descuento prepago (" + Math.round(r.descPrepagoPct * 100) + "%)",
+            "- " + money(r.descPrepago),
+            { color: [0, 150, 90] },
+          );
+        }
+        if (r.descDivisas > 0) {
+          fila("Descuento pago en divisas (20%)", "- " + money(r.descDivisas), {
+            color: [0, 150, 90],
+          });
+        }
+        if (r.descCustom > 0) {
+          fila(
+            "Descuento personalizado (" +
+              Math.round(r.descCustomPct * 100) +
+              "%)",
+            "- " + money(r.descCustom),
+            { color: [0, 150, 90] },
+          );
+        }
+        fila("TOTAL contrato (sin IVA)", money(r.total), {
+          bold: true,
+          big: true,
+          color: [139, 0, 255],
+        });
+        fila("Equivale a", money(r.mensualEquivalente) + " / mes");
+
+        // Notas
+        y += 14;
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 120, 120);
+        doc.text(
+          "Precios en USD, sin IVA ni impuestos de publicidad del anunciante.",
+          M,
+          y,
+        );
+        y += 5;
+        doc.text(
+          "Prepago = pago total del contrato al inicio. Descuento divisas aplica pagando en dolares. Propuesta valida por 15 dias.",
+          M,
+          y,
+        );
+
+        // Footer oscuro
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 281, W, 16, "F");
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(220, 220, 220);
+        doc.text(
+          "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+          W / 2,
+          290,
+          { align: "center" },
+        );
+
+        // ============================================================
+        // PAGINA 2 — Términos & Condiciones (de la propuesta de servicio).
+        // ASCII deliberado: jsPDF/Helvetica WinAnsi no maneja U+2212 y se
+        // evitan acentos para no depender de la codificacion de la fuente.
+        // ============================================================
+        function pieDePagina() {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 281, W, 16, "F");
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(220, 220, 220);
+          doc.text(
+            "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+            W / 2,
+            290,
+            { align: "center" },
+          );
+        }
+
+        const TERMINOS = [
+          "El Cliente será el único responsable por el contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilización del material publicitario, incluyendo imágenes, marcas, logotipos, textos, música o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la República Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 días antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 días de cada mes. De no recibir el pago del mes en curso, se suspenderá la visual de las galerías; de no recibir respuesta antes del 15 de cada mes, se activará la cláusula de terminación anticipada con la emisión de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro específico del producto o servicio anunciado, no por categoría general ni por grupo empresarial.",
+          "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
+          "El cliente deberá notificar con 30 días de anticipación la no renovación del contrato; pasado este lapso, deberá cancelar una penalidad de un mes de arrendamiento.",
+          "La terminación anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensación razonable por la reserva de inventario.",
+        ];
+
+        doc.addPage();
+        // Header oscuro
+        doc.setFillColor(10, 10, 10);
+        doc.rect(0, 0, W, 38, "F");
+        doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.text("TÉRMINOS & CONDICIONES", W - M, 19, { align: "right" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(170, 170, 170);
+        doc.text(cliente, W - M, 26, { align: "right" });
+        doc.setFillColor(139, 0, 255);
+        doc.rect(0, 38, W, 1.6, "F");
+
+        let ty = 54;
+        const indent = 6;
+        const maxW = W - M * 2 - indent;
+        doc.setFontSize(9.5);
+        TERMINOS.forEach((t) => {
+          const lines = doc.splitTextToSize(t, maxW);
+          const blockH = lines.length * 5 + 4;
+          if (ty + blockH > 274) {
+            pieDePagina();
+            doc.addPage();
+            ty = 24;
+            doc.setFontSize(9.5);
+          }
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(139, 0, 255);
+          doc.text("•", M, ty);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(55, 55, 55);
+          doc.text(lines, M + indent, ty);
+          ty += blockH;
+        });
+
+        // Cierre
+        ty += 6;
+        if (ty < 268) {
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(8.5);
+          doc.setTextColor(120, 120, 120);
+          doc.text(
+            "Devolver la aceptación firmada y sellada para la validez de la propuesta económica y sus condiciones.",
+            M,
+            ty,
+            { maxWidth: W - M * 2 },
+          );
+          ty += 10;
+        }
+
+        // ===== Bloques de firma (ambas partes) =====
+        function bloqueFirma(x, w, titulo, nombre, cargo, cedula, correo, by) {
+          doc.setDrawColor(120, 120, 120);
+          doc.line(x, by, x + w, by);
+          let yy = by + 6;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9);
+          doc.setTextColor(40, 40, 40);
+          doc.text(titulo, x, yy);
+          yy += 6;
+          doc.setFontSize(9);
+          doc.setTextColor(70, 70, 70);
+          if (nombre) {
+            doc.setFont("helvetica", "bold");
+            doc.text(nombre, x, yy);
+            doc.setFont("helvetica", "normal");
+            yy += 5;
+          }
+          doc.setFont("helvetica", "normal");
+          if (cargo) {
+            doc.text(cargo, x, yy);
+            yy += 5;
+          }
+          if (cedula) {
+            doc.text("C.I.: " + cedula, x, yy);
+            yy += 5;
+          }
+          if (correo) {
+            doc.text(correo, x, yy);
+            yy += 5;
+          }
+        }
+
+        // Posicion: al pie si hay espacio; si no, pagina nueva.
+        let sigBaseY = Math.max(ty + 16, 246);
+        if (sigBaseY + 32 > 278) {
+          pieDePagina();
+          doc.addPage();
+          sigBaseY = 60;
+        }
+        const colW = (W - M * 2 - 12) / 2;
+        bloqueFirma(
+          M,
+          colW,
+          "Por: 1PIXEL S.A.",
+          $("firmaNombre").value.trim(),
+          $("firmaCargo").value.trim(),
+          $("firmaCedula").value.trim(),
+          $("firmaCorreo").value.trim(),
+          sigBaseY,
+        );
+        bloqueFirma(
+          M + colW + 12,
+          colW,
+          "Por: " + cliente,
+          $("clienteFirmante").value.trim(),
+          $("clienteCargo").value.trim(),
+          $("clienteCedula").value.trim(),
+          $("clienteEmail").value.trim(),
+          sigBaseY,
+        );
+
+        pieDePagina();
+
+        const slug = cliente
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        doc.save("Propuesta-1PIXEL-" + slug + ".pdf");
+      }
+
+      $("pdfBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) {
+          mostrarCopyFeedback("Marca al menos una galería.", false);
+          return;
+        }
+        const cliente = $("cliente").value.trim();
+        if (!cliente) {
+          mostrarCopyFeedback(
+            "Escribe el nombre del cliente para generar el PDF.",
+            false,
+          );
+          $("cliente").focus();
+          return;
+        }
+        const btn = $("pdfBtn");
+        btn.disabled = true;
+        try {
+          const [JsPDF, logo] = await Promise.all([
+            cargarJsPDF(),
+            cargarLogo(),
+          ]);
+          generarPDF(JsPDF, logo, r, cliente);
+          mostrarCopyFeedback("PDF descargado ✓", true);
+        } catch (err) {
+          mostrarCopyFeedback(
+            "No se pudo generar el PDF. Revisa tu conexión e intenta de nuevo.",
+            false,
+          );
+        }
+        btn.disabled = false;
+      });
+
+      /* ============================================================
+         GALERÍAS — render + listeners
+         ============================================================ */
+      const galeriasList = $("galeriasList");
+      ORDEN.forEach((k) => {
+        const g = GALERIAS[k];
+        const label = document.createElement("label");
+        label.className = "check-card";
+        label.innerHTML =
+          '<input type="checkbox" name="galeria" value="' +
+          k +
+          '" />' +
+          '<span class="ck-body">' +
+          '<span class="ck-label">' +
+          g.nombre +
+          "</span>" +
+          '<span class="ck-sub">' +
+          g.pantallas +
+          " pantallas</span>" +
+          "</span>";
+        galeriasList.appendChild(label);
+      });
+
+      // 1 mes: sin descuento de contratación ni prepago (divisas SÍ aplica,
+      // igual que en el sheet). Atenúa solo prepago y muestra nota.
+      function sincUIDuracion() {
+        const durSel = document.querySelector('input[name="duracion"]:checked');
+        const esUnMes = durSel && Number(durSel.value) === 1;
+        $("durNota").style.display = esUnMes ? "" : "none";
+        $("prepago").disabled = esUnMes;
+        $("prepago").closest(".toggle-card").style.opacity = esUnMes
+          ? "0.5"
+          : "";
+      }
+
+      // Recálculo en vivo ante cualquier cambio de entrada.
+      app.addEventListener("change", () => {
+        sincUIDuracion();
+        recalcular();
+      });
+      // El descuento personalizado es número: recalcular en cada tecla.
+      $("descCustom").addEventListener("input", recalcular);
+      sincUIDuracion();
+
+      /* ============================================================
+         MULTIMARCA — excel "Simulador 1PIXEL" 2026-07.
+         Beneficio corporativo (3+ marcas): 15/20/25% por plan de
+         3/6/12 meses. SUSTITUYE los descuentos estándar por galerías.
+         ============================================================ */
+      const PLANES_MULTI = [3, 6, 12];
+      const BENEFICIO_MULTI = { 3: 0.15, 6: 0.2, 12: 0.25 };
+      const MIN_MARCAS_MULTI = 3;
+
+      /* MULTI_CALC_START (extraíble para verificación por script) */
+      function multiCalcular(marcas, GAL) {
+        const activas = marcas.filter((m) => m.galerias.length > 0);
+        const multimarca = activas.length >= 3;
+        const BEN = { 3: 0.15, 6: 0.2, 12: 0.25 };
+        const detalle = activas.map((m) => {
+          const planes = [3, 6, 12].map((plan) => {
+            const tarifaMensual = m.galerias.reduce(
+              (acc, k) => acc + GAL[k].precio[plan],
+              0,
+            );
+            const subtotalLista = tarifaMensual * plan;
+            const beneficioPct = multimarca ? BEN[plan] : 0;
+            const beneficio = subtotalLista * beneficioPct;
+            const inversionNeta = subtotalLista - beneficio;
+            return {
+              plan,
+              tarifaMensual,
+              subtotalLista,
+              beneficioPct,
+              beneficio,
+              inversionNeta,
+              mensualidad: inversionNeta / plan,
+            };
+          });
+          return {
+            nombre: m.nombre,
+            plan: m.plan,
+            galerias: m.galerias,
+            planes,
+            elegido: planes.find((p) => p.plan === m.plan),
+          };
+        });
+        const sum = (f) => detalle.reduce((acc, m) => acc + f(m.elegido), 0);
+        return {
+          multimarca,
+          nMarcas: detalle.length,
+          marcas: detalle,
+          subtotalLista: sum((e) => e.subtotalLista),
+          beneficio: sum((e) => e.beneficio),
+          inversionNeta: sum((e) => e.inversionNeta),
+          mensualidad: sum((e) => e.mensualidad),
+        };
+      }
+      /* MULTI_CALC_END */
+
+      let marcasState = [
+        { nombre: "Marca 1", galerias: [], plan: 12 },
+        { nombre: "Marca 2", galerias: [], plan: 12 },
+        { nombre: "Marca 3", galerias: [], plan: 12 },
+      ];
+
+      function escapeHtml(s) {
+        return s.replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+
+      function marcaCardHTML(m, i, multimarca, det) {
+        const gals = ORDEN.map((k) => {
+          const on = m.galerias.includes(k);
+          return `<label class="radio-pill" style="display:block;margin-bottom:6px">
+            <input type="checkbox" data-mm-gal="${k}" data-mm-idx="${i}" ${on ? "checked" : ""} />
+            ${GALERIAS[k].nombre} · $${fmt.format(GALERIAS[k].precio[m.plan])}/mes a ${m.plan}m
+          </label>`;
+        }).join("");
+        const planBtns = PLANES_MULTI.map(
+          (p) => `<label class="radio-pill">
+            <input type="radio" name="mmplan${i}" value="${p}" data-mm-plan data-mm-idx="${i}" ${m.plan === p ? "checked" : ""} />
+            ${p}m${multimarca ? ` (−${Math.round(BENEFICIO_MULTI[p] * 100)}%)` : ""}
+          </label>`,
+        ).join("");
+        const tabla = det
+          ? `<div style="overflow-x:auto;margin-top:12px"><table style="width:100%;font-size:0.78rem;border-collapse:collapse">
+              <tr style="color:var(--gray);text-align:right">
+                <th style="text-align:left;padding:4px 6px">Plan</th>
+                <th style="padding:4px 6px">Tarifa/mes</th>
+                <th style="padding:4px 6px">Subtotal lista</th>
+                <th style="padding:4px 6px">Beneficio</th>
+                <th style="padding:4px 6px">Inversión neta</th>
+                <th style="padding:4px 6px">Mensualidad</th>
+              </tr>
+              ${det.planes
+                .map(
+                  (
+                    p,
+                  ) => `<tr style="text-align:right;${p.plan === m.plan ? "font-weight:700" : "color:var(--gray)"}">
+                    <td style="text-align:left;padding:4px 6px">${p.plan}m${p.plan === m.plan ? " ✓" : ""}</td>
+                    <td style="padding:4px 6px">${money(p.tarifaMensual)}</td>
+                    <td style="padding:4px 6px">${money(p.subtotalLista)}</td>
+                    <td style="padding:4px 6px">${p.beneficioPct > 0 ? Math.round(p.beneficioPct * 100) + "% · −" + money(p.beneficio) : "—"}</td>
+                    <td style="padding:4px 6px">${money(p.inversionNeta)}</td>
+                    <td style="padding:4px 6px">${money(p.mensualidad)}</td>
+                  </tr>`,
+                )
+                .join("")}
+            </table></div>`
+          : "";
+        return `<div class="block" data-mm-card="${i}">
+          <div class="block-title" style="display:flex;align-items:center;gap:10px">
+            <input type="text" value="${escapeHtml(m.nombre)}" data-mm-nombre data-mm-idx="${i}"
+              style="flex:1;max-width:240px" aria-label="Nombre de la marca" />
+            <button type="button" data-mm-remove="${i}" aria-label="Eliminar marca"
+              style="background:none;border:none;color:var(--gray);cursor:pointer">
+              <i class="fas fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div>${gals}</div>
+          <div class="radio-row" style="margin-top:10px">${planBtns}</div>
+          ${m.galerias.length > 0 ? tabla : ""}
+        </div>`;
+      }
+
+      const marcasList = $("marcasList");
+
+      function renderMulti() {
+        const r = multiCalcular(marcasState, GALERIAS);
+        // r.marcas preserva el orden de las marcas con galerías seleccionadas.
+        let activeIdx = -1;
+        marcasList.innerHTML = marcasState
+          .map((m, i) => {
+            const det = m.galerias.length > 0 ? r.marcas[++activeIdx] : null;
+            return marcaCardHTML(m, i, r.multimarca, det);
+          })
+          .join("");
+        renderMultiConsolidado(r);
+      }
+
+      function renderMultiConsolidado(r) {
+        const activas = marcasState.filter((m) => m.galerias.length > 0);
+        $("multiAviso").style.display =
+          activas.length > 0 && activas.length < MIN_MARCAS_MULTI
+            ? "block"
+            : "none";
+        if (r.nMarcas === 0) {
+          $("multiEmpty").classList.remove("hidden");
+          $("multiBody").classList.add("hidden");
+          $("multiPlan").textContent = "";
+          return;
+        }
+        $("multiEmpty").classList.add("hidden");
+        $("multiBody").classList.remove("hidden");
+        $("multiPlan").textContent =
+          r.marcas.map((m) => `${m.nombre} (${m.plan}m)`).join(" · ") +
+          (r.multimarca
+            ? " — beneficio corporativo activo"
+            : " — sin beneficio (requiere 3+ marcas)");
+        $("mSubtotal").textContent = money(r.subtotalLista);
+        $("mRowBeneficio").style.display = r.beneficio > 0 ? "" : "none";
+        $("mBeneficio").textContent = "− " + money(r.beneficio);
+        $("mNeta").textContent = money(r.inversionNeta);
+        $("mMensualidad").textContent =
+          "Mensualidad total: " + money(r.mensualidad);
+      }
+
+      marcasList.addEventListener("change", (e) => {
+        const t = e.target;
+        const i = Number(t.dataset.mmIdx);
+        if (t.dataset.mmGal !== undefined) {
+          const k = t.dataset.mmGal;
+          const g = marcasState[i].galerias;
+          marcasState[i].galerias = t.checked
+            ? [...g, k]
+            : g.filter((x) => x !== k);
+          renderMulti();
+        } else if (t.dataset.mmPlan !== undefined) {
+          marcasState[i].plan = Number(t.value);
+          renderMulti();
+        }
+      });
+      marcasList.addEventListener("input", (e) => {
+        const t = e.target;
+        if (t.dataset.mmNombre !== undefined) {
+          marcasState[Number(t.dataset.mmIdx)].nombre = t.value;
+          renderMultiConsolidado(multiCalcular(marcasState, GALERIAS));
+        }
+      });
+      marcasList.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-mm-remove]");
+        if (btn) {
+          marcasState.splice(Number(btn.dataset.mmRemove), 1);
+          renderMulti();
+        }
+      });
+      $("addMarcaBtn").addEventListener("click", () => {
+        marcasState.push({
+          nombre: `Marca ${marcasState.length + 1}`,
+          galerias: [],
+          plan: 12,
+        });
+        renderMulti();
+      });
+
+      /* ============================================================
+         MULTIMARCA — copiar propuesta + PDF (paridad con mono-marca)
+         ============================================================ */
+      /* MULTI_TEXTO_START (pura: r + cliente; extraíble para verificación) */
+      function multiPropuestaTexto(r, cliente, GAL) {
+        const lineas = [];
+        lineas.push("*PROPUESTA CORPORATIVA MULTIMARCA — 1PIXEL*");
+        if (cliente) lineas.push("Cliente: " + cliente);
+        lineas.push(
+          r.nMarcas +
+            (r.nMarcas === 1 ? " marca" : " marcas") +
+            (r.multimarca
+              ? " — beneficio corporativo 15/20/25% según plan (3/6/12 meses)"
+              : " — sin beneficio corporativo (requiere 3+ marcas)"),
+        );
+        r.marcas.forEach((m) => {
+          lineas.push("");
+          lineas.push("*" + m.nombre + "* — plan " + m.plan + " meses");
+          m.galerias.forEach((k) => {
+            lineas.push("• " + GAL[k].nombre);
+          });
+          const e = m.elegido;
+          lineas.push("Tarifa mensual lista: " + money(e.tarifaMensual));
+          lineas.push(
+            "Subtotal lista (" + m.plan + "m): " + money(e.subtotalLista),
+          );
+          if (e.beneficio > 0) {
+            lineas.push(
+              "Beneficio corporativo (" +
+                Math.round(e.beneficioPct * 100) +
+                "%): − " +
+                money(e.beneficio),
+            );
+          }
+          lineas.push("Inversión neta: " + money(e.inversionNeta));
+          lineas.push("Mensualidad: " + money(e.mensualidad));
+        });
+        lineas.push("");
+        lineas.push("*CONSOLIDADO*");
+        lineas.push("Subtotal lista total: " + money(r.subtotalLista));
+        if (r.beneficio > 0) {
+          lineas.push("Beneficio total: − " + money(r.beneficio));
+        }
+        lineas.push(
+          "*💰 INVERSIÓN TOTAL NETA (sin IVA): " + money(r.inversionNeta) + "*",
+        );
+        lineas.push("Mensualidad total: " + money(r.mensualidad));
+        lineas.push("");
+        lineas.push(
+          "_Precios en USD, sin IVA ni impuestos de publicidad. Beneficio corporativo multimarca (3m 15% · 6m 20% · 12m 25%) sustituye los descuentos estándar por galerías; se aplica por marca según su plan._",
+        );
+        lineas.push("1pixelve.com");
+        return lineas.join("\n");
+      }
+      /* MULTI_TEXTO_END */
+
+      const multiCopyFeedback = $("multiCopyFeedback");
+      let multiCopyTimer = null;
+      function mostrarMultiFeedback(msg, ok) {
+        multiCopyFeedback.textContent = msg;
+        multiCopyFeedback.style.color = ok ? "var(--green)" : "#ff5577";
+        multiCopyFeedback.classList.add("show");
+        clearTimeout(multiCopyTimer);
+        multiCopyTimer = setTimeout(
+          () => multiCopyFeedback.classList.remove("show"),
+          2600,
+        );
+      }
+
+      async function copiarTexto(texto) {
+        try {
+          await navigator.clipboard.writeText(texto);
+          return true;
+        } catch (err) {
+          // Fallback para contextos sin clipboard API (http, permisos).
+          const ta = document.createElement("textarea");
+          ta.value = texto;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          let ok = false;
+          try {
+            ok = document.execCommand("copy");
+          } catch (e2) {
+            ok = false;
+          }
+          document.body.removeChild(ta);
+          return ok;
+        }
+      }
+
+      $("multiCopyBtn").addEventListener("click", async () => {
+        const r = multiCalcular(marcasState, GALERIAS);
+        if (r.nMarcas === 0) {
+          mostrarMultiFeedback("Marca galerías en al menos una marca.", false);
+          return;
+        }
+        const texto = multiPropuestaTexto(
+          r,
+          $("multiCliente").value.trim(),
+          GALERIAS,
+        );
+        const ok = await copiarTexto(texto);
+        mostrarMultiFeedback(
+          ok ? "Copiada ✓" : "No se pudo copiar. Cópiala manualmente.",
+          ok,
+        );
+      });
+
+      // PDF multimarca — mismo diseño del mono-marca (header/footer oscuros,
+      // barra violeta, página de Términos & Condiciones y firmas).
+      // ASCII deliberado en el contenido (jsPDF/Helvetica WinAnsi).
+      function generarPDFMulti(JsPDF, logo, r, cliente) {
+        const doc = new JsPDF({ unit: "mm", format: "a4" });
+        const W = 210;
+        const M = 18;
+        const fecha = new Date().toLocaleDateString("es-VE", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        const titular = cliente || "Propuesta corporativa multimarca";
+
+        function pieDePagina() {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 281, W, 16, "F");
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(220, 220, 220);
+          doc.text(
+            "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+            W / 2,
+            290,
+            { align: "center" },
+          );
+        }
+
+        function headerPagina(titulo, sub) {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 0, W, 38, "F");
+          doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+          doc.setTextColor(255, 255, 255);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.text(titulo, W - M, 19, { align: "right" });
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(170, 170, 170);
+          doc.text(sub, W - M, 26, { align: "right" });
+          doc.setFillColor(139, 0, 255);
+          doc.rect(0, 38, W, 1.6, "F");
+        }
+
+        headerPagina("PROPUESTA CORPORATIVA", "Maracaibo, " + fecha);
+
+        let y = 54;
+        function ensureSpace(h) {
+          if (y + h > 272) {
+            pieDePagina();
+            doc.addPage();
+            headerPagina("PROPUESTA CORPORATIVA", titular);
+            y = 52;
+          }
+        }
+
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("PREPARADA PARA", M, y);
+        y += 7;
+        doc.setTextColor(20, 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        doc.text(titular, M, y);
+        y += 6;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.5);
+        doc.setTextColor(110, 110, 110);
+        doc.text(
+          r.nMarcas +
+            (r.nMarcas === 1 ? " marca" : " marcas") +
+            (r.multimarca
+              ? "  ·  beneficio corporativo multimarca 15/20/25% según plan"
+              : "  ·  sin beneficio corporativo (requiere 3+ marcas)"),
+          M,
+          y,
+        );
+
+        function fila(lbl, val, opts) {
+          opts = opts || {};
+          ensureSpace(12);
+          y += 8;
+          doc.setFont("helvetica", opts.bold ? "bold" : "normal");
+          doc.setFontSize(opts.big ? 13 : 10);
+          if (opts.color) doc.setTextColor(...opts.color);
+          else doc.setTextColor(40, 40, 40);
+          doc.text(lbl, M, y);
+          doc.text(val, W - M, y, { align: "right" });
+          doc.setDrawColor(235, 235, 235);
+          doc.line(M, y + 3, W - M, y + 3);
+        }
+
+        r.marcas.forEach((m) => {
+          const e = m.elegido;
+          ensureSpace(24 + m.galerias.length * 5.5);
+          y += 12;
+          doc.setFillColor(139, 0, 255);
+          doc.rect(M, y - 4.5, 1.4, 12 + m.galerias.length * 5.5, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(12);
+          doc.setTextColor(20, 20, 20);
+          doc.text(m.nombre + "  ·  plan " + m.plan + " meses", M + 6, y);
+          y += 6.5;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(70, 70, 70);
+          m.galerias.forEach((k) => {
+            doc.text("•  Galeria " + GALERIAS[k].nombre, M + 6, y);
+            y += 5.5;
+          });
+          fila("Tarifa mensual lista", money(e.tarifaMensual));
+          fila("Subtotal lista (" + m.plan + " meses)", money(e.subtotalLista));
+          if (e.beneficio > 0) {
+            fila(
+              "Beneficio corporativo (" +
+                Math.round(e.beneficioPct * 100) +
+                "%)",
+              "- " + money(e.beneficio),
+              { color: [0, 150, 90] },
+            );
+          }
+          fila("Inversión neta", money(e.inversionNeta), { bold: true });
+          fila("Mensualidad", money(e.mensualidad));
+        });
+
+        // Consolidado
+        ensureSpace(60);
+        y += 14;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("CONSOLIDADO (USD, sin IVA)", M, y);
+        y += 2;
+        fila("Subtotal lista total", money(r.subtotalLista), { bold: true });
+        if (r.beneficio > 0) {
+          fila("Beneficio total", "- " + money(r.beneficio), {
+            color: [0, 150, 90],
+          });
+        }
+        fila("INVERSIÓN TOTAL NETA (sin IVA)", money(r.inversionNeta), {
+          bold: true,
+          big: true,
+          color: [139, 0, 255],
+        });
+        fila("Mensualidad total", money(r.mensualidad));
+
+        ensureSpace(20);
+        y += 12;
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 120, 120);
+        doc.text(
+          "Precios en USD, sin IVA ni impuestos de publicidad del anunciante.",
+          M,
+          y,
+        );
+        y += 5;
+        doc.text(
+          "Beneficio corporativo multimarca (3 m 15% / 6 m 20% / 12 m 25%): sustituye los descuentos estándar por galerías. Propuesta válida por 15 días.",
+          M,
+          y,
+          { maxWidth: W - M * 2 },
+        );
+
+        pieDePagina();
+
+        // ===== Pagina de Términos & Condiciones (mismos del mono-marca) =====
+        const TERMINOS = [
+          "El Cliente será el único responsable por el contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
+          "El Cliente garantiza que posee todos los derechos, permisos, licencias o autorizaciones necesarias para la utilización del material publicitario, incluyendo imágenes, marcas, logotipos, textos, música o cualquier otro elemento del anuncio, y declara que el contenido cumple con las leyes y regulaciones vigentes en la República Bolivariana de Venezuela.",
+          "El contenido digital a publicar se debe entregar 7 días antes del inicio del servicio. La demora en la entrega no modifica la fecha de inicio acordada.",
+          "La fecha de pago son los primeros 5 días de cada mes. De no recibir el pago del mes en curso, se suspenderá la visual de las galerías; de no recibir respuesta antes del 15 de cada mes, se activará la cláusula de terminación anticipada con la emisión de la factura de penalidad que aplique.",
+          "La exclusividad se otorga por sub-rubro específico del producto o servicio anunciado, no por categoría general ni por grupo empresarial.",
+          "El cliente autoriza el uso de su marca para ser expuesta en las pantallas de 1PIXEL.",
+          "El beneficio corporativo multimarca aplica mientras el ejercicio mantenga 3 o más marcas activas; la salida de marcas que reduzca el grupo por debajo de 3 reajusta las condiciones a la política estándar.",
+          "El cliente deberá notificar con 30 días de anticipación la no renovación del contrato; pasado este lapso, deberá cancelar una penalidad de un mes de arrendamiento.",
+          "La terminación anticipada por parte del cliente causa una penalidad sobre el saldo pendiente: 50% en contratos de 3 meses, 40% en contratos de 6 meses y 30% en contratos de 12 meses. Estas penalidades se establecen como compensación razonable por la reserva de inventario.",
+        ];
+
+        doc.addPage();
+        headerPagina("TÉRMINOS & CONDICIONES", titular);
+
+        let ty = 54;
+        const indent = 6;
+        const maxW = W - M * 2 - indent;
+        doc.setFontSize(9.5);
+        TERMINOS.forEach((t) => {
+          const lines = doc.splitTextToSize(t, maxW);
+          const blockH = lines.length * 5 + 4;
+          if (ty + blockH > 274) {
+            pieDePagina();
+            doc.addPage();
+            ty = 24;
+            doc.setFontSize(9.5);
+          }
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(139, 0, 255);
+          doc.text("•", M, ty);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(55, 55, 55);
+          doc.text(lines, M + indent, ty);
+          ty += blockH;
+        });
+
+        ty += 6;
+        if (ty < 268) {
+          doc.setFont("helvetica", "italic");
+          doc.setFontSize(8.5);
+          doc.setTextColor(120, 120, 120);
+          doc.text(
+            "Devolver la aceptación firmada y sellada para la validez de la propuesta económica y sus condiciones.",
+            M,
+            ty,
+            { maxWidth: W - M * 2 },
+          );
+          ty += 10;
+        }
+
+        function bloqueFirma(x, w, titulo, nombre, cargo, cedula, correo, by) {
+          doc.setDrawColor(120, 120, 120);
+          doc.line(x, by, x + w, by);
+          let yy = by + 6;
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9);
+          doc.setTextColor(40, 40, 40);
+          doc.text(titulo, x, yy);
+          yy += 6;
+          doc.setFontSize(9);
+          doc.setTextColor(70, 70, 70);
+          if (nombre) {
+            doc.setFont("helvetica", "bold");
+            doc.text(nombre, x, yy);
+            doc.setFont("helvetica", "normal");
+            yy += 5;
+          }
+          doc.setFont("helvetica", "normal");
+          if (cargo) {
+            doc.text(cargo, x, yy);
+            yy += 5;
+          }
+          if (cedula) {
+            doc.text("C.I.: " + cedula, x, yy);
+            yy += 5;
+          }
+          if (correo) {
+            doc.text(correo, x, yy);
+            yy += 5;
+          }
+        }
+
+        let sigBaseY = Math.max(ty + 16, 246);
+        if (sigBaseY + 32 > 278) {
+          pieDePagina();
+          doc.addPage();
+          sigBaseY = 60;
+        }
+        const colW = (W - M * 2 - 12) / 2;
+        bloqueFirma(
+          M,
+          colW,
+          "Por: 1PIXEL S.A.",
+          $("multiFirmaNombre").value.trim(),
+          $("multiFirmaCargo").value.trim(),
+          $("multiFirmaCedula").value.trim(),
+          $("multiFirmaCorreo").value.trim(),
+          sigBaseY,
+        );
+        // Firma única del representante del grupo (aplica a todas las marcas).
+        bloqueFirma(
+          M + colW + 12,
+          colW,
+          "Por: " + titular,
+          $("multiFirmanteNombre").value.trim(),
+          $("multiFirmanteCargo").value.trim(),
+          $("multiFirmanteCedula").value.trim(),
+          $("multiFirmanteCorreo").value.trim(),
+          sigBaseY,
+        );
+
+        pieDePagina();
+
+        const slug = titular
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        doc.save("Propuesta-Multimarca-1PIXEL-" + slug + ".pdf");
+      }
+
+      $("multiPdfBtn").addEventListener("click", async () => {
+        const r = multiCalcular(marcasState, GALERIAS);
+        if (r.nMarcas === 0) {
+          mostrarMultiFeedback("Marca galerías en al menos una marca.", false);
+          return;
+        }
+        const btn = $("multiPdfBtn");
+        btn.disabled = true;
+        try {
+          const [JsPDF, logo] = await Promise.all([
+            cargarJsPDF(),
+            cargarLogo(),
+          ]);
+          generarPDFMulti(JsPDF, logo, r, $("multiCliente").value.trim());
+          mostrarMultiFeedback("PDF descargado ✓", true);
+        } catch (err) {
+          mostrarMultiFeedback(
+            "No se pudo generar el PDF. Revisa tu conexión e intenta de nuevo.",
+            false,
+          );
+        }
+        btn.disabled = false;
+      });
+
+      // Tabs de modo mono/multi.
+      document.querySelectorAll('input[name="modo"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const multi =
+            document.querySelector('input[name="modo"]:checked').value ===
+            "multi";
+          $("monoMain").style.display = multi ? "none" : "";
+          $("multiMain").style.display = multi ? "" : "none";
+        });
+      });
+
+      renderMulti();
+
+      // Sesión previa: entrar directo. Va al FINAL del script porque
+      // entrar() → recalcular() necesita los const y el render de galerías
+      // ya inicializados (si corre antes, TDZ revienta y mata la app).
+      if (sessionStorage.getItem(SS_KEY) === "ok") {
+        entrar();
+      } else {
+        gateInput.focus();
+      }
+    </script>
+  </body>
+</html>

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Calculadoras comerciales | 1PIXEL</title>
-    <link rel="icon" type="image/png" href="../favicon.png" />
+    <title>Calculadora de Light Box | 1PIXEL</title>
+    <link rel="icon" type="image/png" href="../../favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -948,47 +948,9 @@
       footer a:hover {
         color: var(--cyan);
       }
-      .hub-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 18px;
-        margin: 28px auto 60px;
-      }
-      .hub-card {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 28px;
-        border-radius: 20px;
-        background: var(--bg-card);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: var(--white);
-        text-decoration: none;
-        transition: border-color 0.2s, transform 0.2s;
-      }
-      .hub-card:hover {
-        border-color: var(--purple);
-        transform: translateY(-2px);
-      }
-      .hub-card .ico {
-        font-size: 1.6rem;
-        color: var(--purple);
-      }
-      .hub-title {
-        font-size: 1.15rem;
-        font-weight: 700;
-      }
-      .hub-sub {
-        font-size: 0.88rem;
-        color: var(--gray);
-      }
-      .hub-soon {
-        opacity: 0.45;
-        cursor: not-allowed;
-      }
-      .hub-soon:hover {
-        border-color: rgba(255, 255, 255, 0.08);
-        transform: none;
+      /* El monto no se parte en dos lineas en movil. */
+      .line .val {
+        white-space: nowrap;
       }
     </style>
   </head>
@@ -1037,53 +999,187 @@
   <nav>
     <div class="container">
       <a href="/" class="logo" aria-label="1PIXEL — inicio">
-        <img src="../logo.webp" width="3357" height="1125" alt="1PIXEL" />
+        <img src="../../logo.webp" width="3357" height="1125" alt="1PIXEL" />
       </a>
-      <span class="nav-tag">Calculadora interna</span>
+      <a href="../" class="nav-tag" style="text-decoration: none"
+        >&larr; Calculadoras</a
+      >
     </div>
   </nav>
 
   <header class="ct-hero">
     <div class="container">
-      <h2>Calculadoras <span class="highlight">comerciales</span></h2>
-      <p>Elige qué producto vas a cotizar.</p>
+      <h2>Light <span class="highlight">Box</span></h2>
+      <p>Av. 5 de Julio, de la 3Y a Delicias: 4 circuitos de 12 postes con cajas de luz doble cara. Cada circuito es exclusivo para una marca. Incluye instalación.</p>
     </div>
   </header>
 
   <main>
-    <div class="container hub-grid">
-      <a class="hub-card" href="galerias/">
-        <span class="ico"><i class="fas fa-tv" aria-hidden="true"></i></span>
-        <span class="hub-title">Calculadora de galerías</span>
-        <span class="hub-sub"
-          >Pantallas LED en las 6 galerías. Mono-marca y multimarca.</span
-        >
-      </a>
-      <a class="hub-card" href="paradas/">
-        <span class="ico"
-          ><i class="fas fa-bus-simple" aria-hidden="true"></i
-        ></span>
-        <span class="hub-title">Calculadora de paradas</span>
-        <span class="hub-sub"
-          >Paradas inteligentes de la Av. Bella Vista. 4 circuitos de 4
-          paradas.</span
-        >
-      </a>
-      <a class="hub-card" href="lightbox/">
-        <span class="ico"
-          ><i class="fas fa-lightbulb" aria-hidden="true"></i
-        ></span>
-        <span class="hub-title">Calculadora de Light Box</span>
-        <span class="hub-sub"
-          >Cajas de luz en la Av. 5 de Julio. 4 circuitos de 12 postes.</span
-        >
-      </a>
+    <div class="container ct-grid">
+      <section class="panel" aria-label="Opciones de la cotización">
+        <div class="block">
+          <div class="block-title">
+            <span class="ico"
+              ><i class="fas fa-lightbulb" aria-hidden="true"></i
+            ></span>
+            Circuitos
+          </div>
+          <div
+            class="check-list"
+            id="circuitosList"
+            role="group"
+            aria-label="Circuitos"
+          ></div>
+        </div>
+
+        <div class="block">
+          <div class="block-title">
+            <span class="ico"
+              ><i class="fas fa-clock" aria-hidden="true"></i
+            ></span>
+            Duración del contrato
+          </div>
+          <div class="radio-row" role="radiogroup" aria-label="Plazo">
+            <label class="radio-pill">
+              <input type="radio" name="plazo" value="6" />
+              6 meses
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="plazo" value="12" checked />
+              12 meses
+            </label>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-title">
+            <span class="ico"
+              ><i class="fas fa-sliders" aria-hidden="true"></i
+            ></span>
+            Opciones de pago
+          </div>
+          <div class="form-group">
+            <label class="toggle-card">
+              <input type="checkbox" id="prepago" />
+              <span class="tg-body">
+                <span class="tg-label">Pago prepago (−20%)</span>
+                <span class="tg-sub"
+                  >Paga la totalidad del contrato por adelantado.</span
+                >
+              </span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="toggle-card">
+              <input type="checkbox" id="divisas" />
+              <span class="tg-body">
+                <span class="tg-label">Pago en divisas (−20%)</span>
+                <span class="tg-sub"
+                  >Descuento adicional por pagar en dólares.</span
+                >
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-title">
+            <span class="ico"
+              ><i class="fas fa-user" aria-hidden="true"></i
+            ></span>
+            Empresa
+          </div>
+          <div class="form-group">
+            <label for="cliente">Nombre de la empresa</label>
+            <input
+              type="text"
+              id="cliente"
+              placeholder="Ej: Farmacia La Económica, C.A."
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </section>
+
+      <aside class="result-col" aria-label="Resultado de la cotización">
+        <div class="result">
+          <div class="result-head">
+            <span class="ico"
+              ><i class="fas fa-calculator" aria-hidden="true"></i
+            ></span>
+            <h3>Propuesta</h3>
+          </div>
+          <p class="result-plan" id="resultPlan"></p>
+
+          <div
+            class="result-empty"
+            id="resultEmpty"
+            role="status"
+            aria-live="polite"
+          >
+            <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+            <span>Marca al menos un circuito para ver la cotización.</span>
+          </div>
+
+          <div class="result-body hidden" id="resultBody" aria-live="polite">
+            <div class="line muted">
+              <span class="lbl" id="rListaLbl">Lista</span>
+              <span class="val" id="rLista"></span>
+            </div>
+            <div class="line discount" id="rowVolumen">
+              <span class="lbl" id="rVolumenLbl">Precio por volumen</span>
+              <span class="val" id="rVolumen"></span>
+            </div>
+            <div class="line discount" id="rowPrepago">
+              <span class="lbl">Prepago (20%)</span>
+              <span class="val" id="rPrepago"></span>
+            </div>
+            <div class="line discount" id="rowDivisas">
+              <span class="lbl">Pago en divisas (20%)</span>
+              <span class="val" id="rDivisas"></span>
+            </div>
+            <div class="line-feature">
+              <span class="lbl">Total contrato <small>(sin IVA)</small></span>
+              <span class="val" id="rTotal"></span>
+            </div>
+            <div class="line">
+              <span class="lbl">Mensualidad</span>
+              <span class="val" id="rMensual"></span>
+            </div>
+            <div class="line">
+              <span class="lbl">Postes</span>
+              <span class="val" id="rUnidades"></span>
+            </div>
+
+            <p class="result-note">Precio por circuito al mes: 6 meses $3.400 · 12 meses $3.160. Incluye instalación. USD sin IVA, a tasa BCV.</p>
+
+            <button type="button" class="shiny-cta copy-btn" id="copyBtn">
+              <span
+                ><i class="fas fa-copy" aria-hidden="true"></i> Copiar
+                propuesta</span
+              >
+            </button>
+            <button type="button" class="shiny-cta copy-btn" id="pdfBtn">
+              <span
+                ><i class="fas fa-file-pdf" aria-hidden="true"></i> Descargar
+                PDF</span
+              >
+            </button>
+            <p
+              class="copy-feedback"
+              id="copyFeedback"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+        </div>
+      </aside>
     </div>
   </main>
 
   <footer>
     <div class="container">
-      &copy; 2026 1PIXEL · Herramienta interna ·
+      &copy; 2026 1PIXEL · Herramienta interna · 1PIXEL Light Box ·
       <a href="/">1pixelve.com</a>
     </div>
   </footer>
@@ -1134,7 +1230,505 @@
         }
       });
 
-      function recalcular() {}
+      /* ============================================================
+         DATOS — PDF "LIGHTBOX 1PIXEL". Mismos precios y cascada que en 1PIXEL OS
+         (src/lib/mobiliario.ts): tarifa → prepago −20% → divisas −20%.
+         ============================================================ */
+      const CFG = {
+        "titulo": "Light Box",
+        "tituloPdf": "1PIXEL LIGHT BOX",
+        "zona": "Av. 5 de Julio",
+        "unidad": "postes",
+        "unidadesPorCircuito": 12,
+        "plazos": [
+          6,
+          12
+        ],
+        "archivo": "LightBox",
+        "notaWhatsapp": "USD a tasa BCV. Incluye instalación. Publicidad estática, sin loops ni tiempos de espera.",
+        "condiciones": [
+          "Cada circuito son 12 postes con cajas de luz doble cara (0,50 × 2,00 m) en la Av. 5 de Julio, visibles en ambos sentidos.",
+          "Publicidad estática: el espacio pertenece únicamente a su marca, sin loops ni tiempos de espera.",
+          "Incluye la instalación.",
+          "Contratos de 6 o 12 meses.",
+          "Precios en USD, sin IVA, pagaderos a tasa BCV del día de pago.",
+          "El descuento por prepago aplica al pagar el contrato completo al inicio; el de divisas, al pagar en moneda extranjera. Se aplican en cascada sobre el monto ya rebajado.",
+          "Propuesta válida por 15 días; la disponibilidad de los circuitos se confirma al aceptar."
+        ],
+        "circuitos": [
+          {
+            "n": 1,
+            "elementos": [
+              [
+                "Plaza de la República",
+                "4 postes"
+              ],
+              [
+                "La Napolitana",
+                "4 postes"
+              ],
+              [
+                "Bella Vista a Santa Rita",
+                "4 postes"
+              ]
+            ]
+          },
+          {
+            "n": 2,
+            "elementos": [
+              [
+                "Santa Rita a Av. 9",
+                "4 postes"
+              ],
+              [
+                "Av. 9 a Av. 9B",
+                "4 postes"
+              ],
+              [
+                "Av. 9B a Av. 10",
+                "4 postes"
+              ]
+            ]
+          },
+          {
+            "n": 3,
+            "elementos": [
+              [
+                "Av. 10 a Av. 11",
+                "4 postes"
+              ],
+              [
+                "Av. 11 a Av. 12",
+                "4 postes"
+              ],
+              [
+                "Av. 12 a Av. 13",
+                "4 postes"
+              ]
+            ]
+          },
+          {
+            "n": 4,
+            "elementos": [
+              [
+                "Av. 13 a Av. 13A",
+                "4 postes"
+              ],
+              [
+                "Av. 13A a Av. 14A",
+                "4 postes"
+              ],
+              [
+                "Av. 14A a Delicias",
+                "4 postes"
+              ]
+            ]
+          }
+        ],
+        "precioBase": (meses) => (meses >= 12 ? 3160 : 3400),
+        "precioCircuito": (n, meses) => (meses >= 12 ? 3160 : 3400)
+      };
+      const DESC_PREPAGO = 0.2;
+      const DESC_DIVISAS = 0.2;
+
+      const $ = (id) => document.getElementById(id);
+      const fmt = new Intl.NumberFormat("es-VE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      function money(n) {
+        return "$" + fmt.format(n);
+      }
+      const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+
+      function mesesElegidos() {
+        const el = document.querySelector('input[name="plazo"]:checked');
+        return el ? Number(el.value) : CFG.plazos[CFG.plazos.length - 1];
+      }
+
+      function calcular() {
+        const sel = Array.from(
+          document.querySelectorAll('input[name="circuito"]:checked'),
+        )
+          .map((i) => Number(i.value))
+          .sort((a, b) => a - b);
+        if (sel.length === 0) return null;
+        const meses = mesesElegidos();
+        const n = sel.length;
+        const precioBase = CFG.precioBase(meses);
+        const precioCircuito = CFG.precioCircuito(n, meses);
+        const lista = precioBase * n * meses;
+        const conVolumen = precioCircuito * n * meses;
+        const descPrepago = $("prepago").checked ? conVolumen * DESC_PREPAGO : 0;
+        const base3 = conVolumen - descPrepago;
+        const descDivisas = $("divisas").checked ? base3 * DESC_DIVISAS : 0;
+        const total = base3 - descDivisas;
+        return {
+          sel,
+          meses,
+          n,
+          unidades: n * CFG.unidadesPorCircuito,
+          precioBase,
+          precioCircuito,
+          lista,
+          descVolumen: lista - conVolumen,
+          descPrepago,
+          descDivisas,
+          total,
+          mensual: total / meses,
+          cliente: $("cliente").value.trim(),
+        };
+      }
+
+      function mostrar(id, visible) {
+        $(id).style.display = visible ? "" : "none";
+      }
+
+      function recalcular() {
+        // Un "Copiada ✓" viejo no debe quedar al cambiar la propuesta.
+        copyFeedback.classList.remove("show");
+        const r = calcular();
+        $("resultEmpty").classList.toggle("hidden", !!r);
+        $("resultBody").classList.toggle("hidden", !r);
+        if (!r) {
+          $("resultPlan").textContent = "";
+          return;
+        }
+        $("resultPlan").textContent =
+          plural(r.n, "circuito", "circuitos") +
+          " (" +
+          r.sel.map((c) => "#" + c).join(", ") +
+          ") · " +
+          r.unidades +
+          " " +
+          CFG.unidad +
+          " · " +
+          plural(r.meses, "mes", "meses");
+        $("rListaLbl").textContent =
+          "Tarifa: " + r.n + " × " + money(r.precioBase) + " × " + plural(r.meses, "mes", "meses");
+        $("rLista").textContent = money(r.lista);
+        mostrar("rowVolumen", r.descVolumen > 0);
+        $("rVolumenLbl").textContent =
+          "Precio por volumen (" + money(r.precioCircuito) + " por circuito)";
+        $("rVolumen").textContent = "−" + money(r.descVolumen);
+        mostrar("rowPrepago", r.descPrepago > 0);
+        $("rPrepago").textContent = "−" + money(r.descPrepago);
+        mostrar("rowDivisas", r.descDivisas > 0);
+        $("rDivisas").textContent = "−" + money(r.descDivisas);
+        $("rTotal").textContent = money(r.total);
+        $("rMensual").textContent = money(r.mensual);
+        $("rUnidades").textContent = String(r.unidades);
+      }
+
+      const lista = $("circuitosList");
+      CFG.circuitos.forEach((c) => {
+        const label = document.createElement("label");
+        label.className = "check-card";
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "circuito";
+        input.value = String(c.n);
+        const body = document.createElement("span");
+        body.className = "ck-body";
+        const titulo = document.createElement("span");
+        titulo.className = "ck-label";
+        titulo.textContent = "Circuito #" + c.n;
+        const sub = document.createElement("span");
+        sub.className = "ck-sub";
+        sub.textContent = c.elementos.map((p) => p[0]).join(" · ");
+        body.append(titulo, sub);
+        label.append(input, body);
+        lista.appendChild(label);
+      });
+      document
+        .querySelectorAll(
+          'input[name="circuito"], input[name="plazo"], #prepago, #divisas',
+        )
+        .forEach((el) => el.addEventListener("change", recalcular));
+      $("cliente").addEventListener("input", recalcular);
+
+      /* ============================================================
+         COPIAR — texto para WhatsApp
+         ============================================================ */
+      const copyFeedback = $("copyFeedback");
+      let copyTimer = null;
+      function mostrarCopyFeedback(msg, ok) {
+        copyFeedback.textContent = msg;
+        copyFeedback.style.color = ok ? "var(--green)" : "#ff5577";
+        copyFeedback.classList.add("show");
+        clearTimeout(copyTimer);
+        copyTimer = setTimeout(() => copyFeedback.classList.remove("show"), 2600);
+      }
+
+      function propuestaTexto(r) {
+        const l = [];
+        l.push("*Propuesta 1PIXEL · " + CFG.titulo + "*");
+        if (r.cliente) l.push("Para: " + r.cliente);
+        l.push("");
+        r.sel.forEach((n) => {
+          const c = CFG.circuitos.find((x) => x.n === n);
+          l.push("*Circuito #" + n + "* (" + CFG.zona + ")");
+          c.elementos.forEach((p, i) => l.push("  " + (i + 1) + ". " + p[0]));
+        });
+        l.push("");
+        l.push(r.unidades + " " + CFG.unidad + " · " + plural(r.meses, "mes", "meses"));
+        l.push("Tarifa: " + money(r.lista));
+        if (r.descVolumen > 0)
+          l.push(
+            "Precio por volumen (" + money(r.precioCircuito) + " por circuito): −" + money(r.descVolumen),
+          );
+        if (r.descPrepago > 0) l.push("Prepago (20%): −" + money(r.descPrepago));
+        if (r.descDivisas > 0) l.push("Pago en divisas (20%): −" + money(r.descDivisas));
+        l.push("*Total contrato: " + money(r.total) + "* (sin IVA)");
+        l.push("Mensualidad: " + money(r.mensual));
+        l.push("");
+        l.push(CFG.notaWhatsapp);
+        return l.join("\n");
+      }
+
+      $("copyBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) return mostrarCopyFeedback("Marca al menos un circuito.", false);
+        const texto = propuestaTexto(r);
+        try {
+          await navigator.clipboard.writeText(texto);
+          mostrarCopyFeedback("Copiada ✓", true);
+        } catch (err) {
+          const ta = document.createElement("textarea");
+          ta.value = texto;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            mostrarCopyFeedback("Copiada ✓", true);
+          } catch (e2) {
+            mostrarCopyFeedback("No se pudo copiar. Cópiala manualmente.", false);
+          }
+          document.body.removeChild(ta);
+        }
+      });
+
+      /* ============================================================
+         PDF — mismo diseño que la calculadora de galerías
+         ============================================================ */
+      let jspdfReady = null;
+      function cargarJsPDF() {
+        if (jspdfReady) return jspdfReady;
+        jspdfReady = new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src = "https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js";
+          s.integrity =
+            "sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/";
+          s.crossOrigin = "anonymous";
+          s.onload = () => resolve(window.jspdf.jsPDF);
+          s.onerror = () => {
+            jspdfReady = null;
+            reject(new Error("jspdf load"));
+          };
+          document.head.appendChild(s);
+        });
+        return jspdfReady;
+      }
+
+      let logoDataUrl = null;
+      async function cargarLogo() {
+        if (logoDataUrl) return logoDataUrl;
+        const img = new Image();
+        img.src = "../../logo.png";
+        await img.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 720;
+        canvas.height = Math.round(720 * (img.naturalHeight / img.naturalWidth));
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        logoDataUrl = canvas.toDataURL("image/png");
+        return logoDataUrl;
+      }
+
+      function generarPDF(JsPDF, logo, r) {
+        const doc = new JsPDF({ unit: "mm", format: "a4", compress: true });
+        const W = 210;
+        const M = 18;
+        const empresa = r.cliente || "Cliente";
+        const fecha = new Date().toLocaleDateString("es-VE", {
+          timeZone: "America/Caracas",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        function pie() {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 281, W, 16, "F");
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(220, 220, 220);
+          doc.text(
+            "ventas@1pixelve.com   ·   +58 422-217-4935   ·   1pixelve.com   ·   @1pixelve",
+            W / 2,
+            290,
+            { align: "center" },
+          );
+        }
+        function header(sub) {
+          doc.setFillColor(10, 10, 10);
+          doc.rect(0, 0, W, 38, "F");
+          doc.addImage(logo, "PNG", M, 11, 48, 16.1);
+          doc.setTextColor(255, 255, 255);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(13);
+          doc.text(CFG.tituloPdf, W - M, 19, { align: "right" });
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(170, 170, 170);
+          doc.text(sub, W - M, 26, { align: "right", maxWidth: 110 });
+          doc.setFillColor(139, 0, 255);
+          doc.rect(0, 38, W, 1.6, "F");
+        }
+        header("Maracaibo, " + fecha);
+        let y = 54;
+        function espacio(h) {
+          if (y + h > 272) {
+            pie();
+            doc.addPage();
+            header(empresa);
+            y = 52;
+          }
+        }
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("PREPARADA PARA", M, y);
+        y += 7;
+        doc.setTextColor(20, 20, 20);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(15);
+        const tit = doc.splitTextToSize(empresa, W - M * 2);
+        doc.text(tit, M, y);
+        y += 6 * tit.length;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.5);
+        doc.setTextColor(110, 110, 110);
+        doc.text(
+          plural(r.n, "circuito exclusivo", "circuitos exclusivos") +
+            "  ·  " +
+            r.unidades +
+            " " +
+            CFG.unidad +
+            "  ·  " +
+            plural(r.meses, "mes", "meses"),
+          M,
+          y,
+        );
+        r.sel.forEach((n) => {
+          const c = CFG.circuitos.find((x) => x.n === n);
+          espacio(14 + c.elementos.length * 5.5);
+          y += 12;
+          doc.setFillColor(139, 0, 255);
+          doc.rect(M, y - 4.5, 1.4, 8 + c.elementos.length * 5.5, "F");
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(11);
+          doc.setTextColor(20, 20, 20);
+          doc.text("Circuito #" + n + "  ·  " + CFG.zona, M + 6, y);
+          y += 6;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9);
+          doc.setTextColor(70, 70, 70);
+          c.elementos.forEach((p, i) => {
+            doc.text(i + 1 + ".  " + p[0] + "  -  " + p[1], M + 6, y, {
+              maxWidth: W - M * 2 - 8,
+            });
+            y += 5.5;
+          });
+        });
+        function fila(lbl, val, o) {
+          o = o || {};
+          espacio(12);
+          y += 8;
+          doc.setFont("helvetica", o.bold ? "bold" : "normal");
+          doc.setFontSize(o.big ? 13 : 10);
+          if (o.color) doc.setTextColor(o.color[0], o.color[1], o.color[2]);
+          else doc.setTextColor(40, 40, 40);
+          doc.text(lbl, M, y);
+          doc.text(val, W - M, y, { align: "right" });
+          doc.setDrawColor(235, 235, 235);
+          doc.line(M, y + 3, W - M, y + 3);
+        }
+        espacio(70);
+        y += 14;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("INVERSIÓN (USD, sin IVA)", M, y);
+        y += 2;
+        const verde = [0, 150, 90];
+        fila(
+          "Tarifa: " +
+            money(r.precioBase) +
+            " por circuito/mes × " +
+            r.n +
+            " × " +
+            plural(r.meses, "mes", "meses"),
+          money(r.lista),
+        );
+        if (r.descVolumen > 0)
+          fila(
+            "Precio por volumen (" + money(r.precioCircuito) + " por circuito/mes)",
+            "- " + money(r.descVolumen),
+            { color: verde },
+          );
+        if (r.descPrepago > 0)
+          fila("Descuento prepago (20%)", "- " + money(r.descPrepago), { color: verde });
+        if (r.descDivisas > 0)
+          fila("Descuento pago en divisas (20%)", "- " + money(r.descDivisas), {
+            color: verde,
+          });
+        fila("INVERSIÓN TOTAL NETA (sin IVA)", money(r.total), {
+          bold: true,
+          big: true,
+          color: [139, 0, 255],
+        });
+        fila("Mensualidad", money(r.mensual));
+        espacio(14 + CFG.condiciones.length * 10);
+        y += 14;
+        doc.setTextColor(120, 120, 120);
+        doc.setFontSize(9);
+        doc.text("CONDICIONES", M, y);
+        y += 6;
+        CFG.condiciones.forEach((t) => {
+          const lines = doc.splitTextToSize(t, W - M * 2 - 6);
+          espacio(lines.length * 4.6 + 3);
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(139, 0, 255);
+          doc.text("•", M, y);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(55, 55, 55);
+          doc.text(lines, M + 6, y);
+          y += lines.length * 4.6 + 3;
+        });
+        pie();
+        const slug = empresa
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+        doc.save("Propuesta-" + CFG.archivo + "-1PIXEL-" + (slug || "cliente") + ".pdf");
+      }
+
+      $("pdfBtn").addEventListener("click", async () => {
+        const r = calcular();
+        if (!r) return mostrarCopyFeedback("Marca al menos un circuito.", false);
+        if (!r.cliente) {
+          $("cliente").focus();
+          return mostrarCopyFeedback("Escribe el nombre de la empresa.", false);
+        }
+        try {
+          const [JsPDF, logo] = await Promise.all([cargarJsPDF(), cargarLogo()]);
+          generarPDF(JsPDF, logo, r);
+          mostrarCopyFeedback("PDF descargado ✓", true);
+        } catch (e) {
+          mostrarCopyFeedback("No se pudo generar el PDF. Revisa la conexión.", false);
+        }
+      });
 
       // Sesión previa (misma clave que las otras calculadoras): entrar directo.
       if (sessionStorage.getItem(SS_KEY) === "ok") {
