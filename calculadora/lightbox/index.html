@@ -1107,7 +1107,7 @@
             <span class="ico"
               ><i class="fas fa-user" aria-hidden="true"></i
             ></span>
-            Datos para acuerdo de servicio
+            Datos para propuesta comercial
           </div>
           <div class="form-grid">
             <div class="form-group wide">
@@ -1117,19 +1117,20 @@
                 id="cliente"
                 placeholder="Ej: Farmacia La Económica, C.A."
                 autocomplete="off"
+                maxlength="160"
               />
             </div>
             <div class="form-group">
               <label for="rif">RIF</label>
-              <input type="text" id="rif" placeholder="Ej: J-12345678-9" autocomplete="off" />
+              <input type="text" id="rif" placeholder="Ej: J-12345678-9" autocomplete="off" maxlength="32" />
             </div>
             <div class="form-group">
               <label for="email">Correo electrónico</label>
-              <input type="email" id="email" placeholder="correo@empresa.com" autocomplete="off" />
+              <input type="email" id="email" placeholder="correo@empresa.com" autocomplete="off" maxlength="254" />
             </div>
             <div class="form-group wide">
               <label for="direccion">Dirección fiscal</label>
-              <input type="text" id="direccion" placeholder="Dirección completa" autocomplete="off" />
+              <input type="text" id="direccion" placeholder="Dirección completa" autocomplete="off" maxlength="300" />
             </div>
             <div class="form-group">
               <label for="fechaInicio">Inicio del servicio</label>
@@ -1137,15 +1138,15 @@
             </div>
             <div class="form-group">
               <label for="firmante">Nombre del firmante</label>
-              <input type="text" id="firmante" placeholder="Nombre y apellido" autocomplete="off" />
+              <input type="text" id="firmante" placeholder="Nombre y apellido" autocomplete="off" maxlength="120" />
             </div>
             <div class="form-group">
               <label for="cedulaFirmante">Cédula del firmante</label>
-              <input type="text" id="cedulaFirmante" placeholder="Ej: V-12345678" autocomplete="off" />
+              <input type="text" id="cedulaFirmante" placeholder="Ej: V-12345678" autocomplete="off" maxlength="32" />
             </div>
             <div class="form-group">
               <label for="cargoFirmante">Cargo del firmante</label>
-              <input type="text" id="cargoFirmante" placeholder="Ej: Director(a)" autocomplete="off" />
+              <input type="text" id="cargoFirmante" placeholder="Ej: Director(a)" autocomplete="off" maxlength="100" />
             </div>
           </div>
         </div>
@@ -1212,7 +1213,7 @@
             <button type="button" class="shiny-cta copy-btn" id="pdfBtn">
               <span
                 ><i class="fas fa-file-pdf" aria-hidden="true"></i> Descargar
-                acuerdo PDF</span
+                PDF</span
               >
             </button>
             <p
@@ -1286,8 +1287,7 @@
          ============================================================ */
       const CFG = {
         "titulo": "Light Box",
-        "tituloPdf": "ACUERDO DE SERVICIO",
-        "subtituloPdf": "1PIXEL LIGHT BOX",
+        "tituloPdf": "1PIXEL LIGHT BOX",
         "zona": "Av. 5 de Julio",
         "unidad": "postes",
         "unidadesPorCircuito": 12,
@@ -1662,7 +1662,7 @@
           doc.setFillColor(139, 0, 255);
           doc.rect(0, 38, W, 1.6, "F");
         }
-        header(CFG.subtituloPdf + " · Maracaibo, " + fecha);
+        header("Maracaibo, " + fecha);
         let y = 54;
         function espacio(h) {
           if (y + h > 272) {
@@ -1821,7 +1821,11 @@
         const faltante = requeridos.find(([id]) => !$(id).value.trim());
         if (faltante) {
           $(faltante[0]).focus();
-          return mostrarCopyFeedback("Completa " + faltante[1] + " para generar el acuerdo.", false);
+          return mostrarCopyFeedback("Completa " + faltante[1] + " para generar la propuesta.", false);
+        }
+        if (!$("email").checkValidity()) {
+          $("email").focus();
+          return mostrarCopyFeedback("Escribe un correo electrónico válido.", false);
         }
         try {
           const [JsPDF, logo] = await Promise.all([cargarJsPDF(), cargarLogo()]);
