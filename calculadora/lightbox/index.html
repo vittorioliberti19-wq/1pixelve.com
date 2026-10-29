@@ -616,6 +616,26 @@
         margin-bottom: 0;
       }
 
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 14px;
+      }
+
+      .form-grid .form-group {
+        min-width: 0;
+      }
+
+      .form-group.wide {
+        grid-column: 1 / -1;
+      }
+
+      @media (max-width: 520px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .form-group label {
         display: block;
         font-size: 0.85rem;
@@ -1087,16 +1107,46 @@
             <span class="ico"
               ><i class="fas fa-user" aria-hidden="true"></i
             ></span>
-            Empresa
+            Datos para acuerdo de servicio
           </div>
-          <div class="form-group">
-            <label for="cliente">Nombre de la empresa</label>
-            <input
-              type="text"
-              id="cliente"
-              placeholder="Ej: Farmacia La Económica, C.A."
-              autocomplete="off"
-            />
+          <div class="form-grid">
+            <div class="form-group wide">
+              <label for="cliente">Razón social del cliente</label>
+              <input
+                type="text"
+                id="cliente"
+                placeholder="Ej: Farmacia La Económica, C.A."
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label for="rif">RIF</label>
+              <input type="text" id="rif" placeholder="Ej: J-12345678-9" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input type="email" id="email" placeholder="correo@empresa.com" autocomplete="off" />
+            </div>
+            <div class="form-group wide">
+              <label for="direccion">Dirección fiscal</label>
+              <input type="text" id="direccion" placeholder="Dirección completa" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="fechaInicio">Inicio del servicio</label>
+              <input type="date" id="fechaInicio" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="firmante">Nombre del firmante</label>
+              <input type="text" id="firmante" placeholder="Nombre y apellido" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="cedulaFirmante">Cédula del firmante</label>
+              <input type="text" id="cedulaFirmante" placeholder="Ej: V-12345678" autocomplete="off" />
+            </div>
+            <div class="form-group">
+              <label for="cargoFirmante">Cargo del firmante</label>
+              <input type="text" id="cargoFirmante" placeholder="Ej: Director(a)" autocomplete="off" />
+            </div>
           </div>
         </div>
       </section>
@@ -1162,7 +1212,7 @@
             <button type="button" class="shiny-cta copy-btn" id="pdfBtn">
               <span
                 ><i class="fas fa-file-pdf" aria-hidden="true"></i> Descargar
-                PDF</span
+                acuerdo PDF</span
               >
             </button>
             <p
@@ -1236,7 +1286,8 @@
          ============================================================ */
       const CFG = {
         "titulo": "Light Box",
-        "tituloPdf": "1PIXEL LIGHT BOX",
+        "tituloPdf": "ACUERDO DE SERVICIO",
+        "subtituloPdf": "1PIXEL LIGHT BOX",
         "zona": "Av. 5 de Julio",
         "unidad": "postes",
         "unidadesPorCircuito": 12,
@@ -1253,7 +1304,13 @@
           "Contratos de 6 o 12 meses.",
           "Precios en USD, sin IVA, pagaderos a tasa BCV del día de pago.",
           "El descuento por prepago aplica al pagar el contrato completo al inicio; el de divisas, al pagar en moneda extranjera. Se aplican en cascada sobre el monto ya rebajado.",
-          "Propuesta válida por 15 días; la disponibilidad de los circuitos se confirma al aceptar."
+          "Contenido. El Cliente es el único responsable del contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
+          "Derechos. El Cliente garantiza que posee los derechos y autorizaciones sobre imágenes, marcas, logotipos y textos del arte, y que este cumple con la legislación venezolana.",
+          "Entrega del arte. El arte debe entregarse al menos siete (7) días antes del inicio del servicio, según las especificaciones de 1Pixel. Antes de imprimir, el Cliente aprobará una prueba digital; los errores en el arte aprobado son responsabilidad del Cliente. La demora en la entrega no modifica la fecha de inicio ni la facturación.",
+          "Impresión, instalación y cambios. 1Pixel asume la primera impresión e instalación de los viniles. Los cambios de arte y la reposición de viniles por desgaste corren por cuenta del Cliente, según la tarifa vigente, y solo serán instalados por 1Pixel. El mantenimiento de la estructura y la iluminación corresponde a 1Pixel.",
+          "Terminación anticipada. La terminación anticipada por voluntad del Cliente genera una penalidad del 30 % del saldo pendiente, como compensación por la reserva de inventario y los costos de producción e instalación ya asumidos.",
+          "Pago. Ante un atraso mayor a treinta (30) días, 1Pixel podrá suspender la exhibición, sin que cese la obligación de pago.",
+          "Vigencia y jurisdicción. Esta propuesta es válida por diez (10) días, sujeta a disponibilidad. Las partes eligen como domicilio la ciudad de Maracaibo."
         ],
         "circuitos": [
           {
@@ -1340,6 +1397,14 @@
         return "$" + fmt.format(n);
       }
       const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+      function fechaServicio(valor) {
+        return new Date(valor + "T12:00:00").toLocaleDateString("es-VE", {
+          timeZone: "America/Caracas",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
 
       function mesesElegidos() {
         const el = document.querySelector('input[name="plazo"]:checked');
@@ -1377,6 +1442,13 @@
           total,
           mensual: total / meses,
           cliente: $("cliente").value.trim(),
+          rif: $("rif").value.trim(),
+          email: $("email").value.trim(),
+          direccion: $("direccion").value.trim(),
+          fechaInicio: $("fechaInicio").value,
+          firmante: $("firmante").value.trim(),
+          cedulaFirmante: $("cedulaFirmante").value.trim(),
+          cargoFirmante: $("cargoFirmante").value.trim(),
         };
       }
 
@@ -1445,7 +1517,10 @@
           'input[name="circuito"], input[name="plazo"], #prepago, #divisas',
         )
         .forEach((el) => el.addEventListener("change", recalcular));
-      $("cliente").addEventListener("input", recalcular);
+      ["cliente", "rif", "email", "direccion", "fechaInicio", "firmante", "cedulaFirmante", "cargoFirmante"].forEach((id) => {
+        $(id).addEventListener("input", recalcular);
+        $(id).addEventListener("change", recalcular);
+      });
 
       /* ============================================================
          COPIAR — texto para WhatsApp
@@ -1464,6 +1539,8 @@
         const l = [];
         l.push("*Propuesta 1PIXEL · " + CFG.titulo + "*");
         if (r.cliente) l.push("Para: " + r.cliente);
+        if (r.rif) l.push("RIF: " + r.rif);
+        if (r.fechaInicio) l.push("Inicio del servicio: " + fechaServicio(r.fechaInicio));
         l.push("");
         r.sel.forEach((n) => {
           const c = CFG.circuitos.find((x) => x.n === n);
@@ -1585,7 +1662,7 @@
           doc.setFillColor(139, 0, 255);
           doc.rect(0, 38, W, 1.6, "F");
         }
-        header("Maracaibo, " + fecha);
+        header(CFG.subtituloPdf + " · Maracaibo, " + fecha);
         let y = 54;
         function espacio(h) {
           if (y + h > 272) {
@@ -1608,6 +1685,20 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9.5);
         doc.setTextColor(110, 110, 110);
+        const datosCliente = [
+          r.rif && "RIF: " + r.rif,
+          r.direccion && "Dirección: " + r.direccion,
+          r.email && "Correo: " + r.email,
+          r.fechaInicio && "Inicio del servicio: " + fechaServicio(r.fechaInicio),
+          r.firmante && "Firmante: " + r.firmante,
+          r.cedulaFirmante && "C.I.: " + r.cedulaFirmante,
+          r.cargoFirmante && "Cargo: " + r.cargoFirmante,
+        ].filter(Boolean);
+        if (datosCliente.length) {
+          const detalles = doc.splitTextToSize(datosCliente.join("  ·  "), W - M * 2);
+          doc.text(detalles, M, y);
+          y += 5 * detalles.length + 2;
+        }
         doc.text(
           plural(r.n, "circuito exclusivo", "circuitos exclusivos") +
             "  ·  " +
@@ -1717,9 +1808,20 @@
       $("pdfBtn").addEventListener("click", async () => {
         const r = calcular();
         if (!r) return mostrarCopyFeedback("Marca al menos un circuito.", false);
-        if (!r.cliente) {
-          $("cliente").focus();
-          return mostrarCopyFeedback("Escribe el nombre de la empresa.", false);
+        const requeridos = [
+          ["cliente", "la razón social"],
+          ["rif", "el RIF"],
+          ["direccion", "la dirección fiscal"],
+          ["email", "el correo electrónico"],
+          ["fechaInicio", "la fecha de inicio"],
+          ["firmante", "el nombre del firmante"],
+          ["cedulaFirmante", "la cédula del firmante"],
+          ["cargoFirmante", "el cargo del firmante"],
+        ];
+        const faltante = requeridos.find(([id]) => !$(id).value.trim());
+        if (faltante) {
+          $(faltante[0]).focus();
+          return mostrarCopyFeedback("Completa " + faltante[1] + " para generar el acuerdo.", false);
         }
         try {
           const [JsPDF, logo] = await Promise.all([cargarJsPDF(), cargarLogo()]);
