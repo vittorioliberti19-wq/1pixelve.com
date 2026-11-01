@@ -272,6 +272,7 @@ PLANTILLA = """<!doctype html>
     <link rel="stylesheet" href="/fonts/inter.css" />
     <link rel="stylesheet" href="/icons.css" />
     <link rel="stylesheet" href="/assets/site.css" />
+    <link rel="stylesheet" href="/assets/1bite-credit.css" />
     <script type="application/ld+json">
 {jsonld}
     </script>
@@ -440,19 +441,7 @@ PLANTILLA = """<!doctype html>
         </div>
         <div class="footer-bottom">
           <span>&copy; 2026 1PIXEL. Todos los derechos reservados.</span>
-          <span class="developed-by"
-            >Web developed by
-            <a href="https://1bite.studio/" target="_blank" rel="noopener"
-              ><img
-                src="/1bite-logo.webp"
-                alt="1bite Studio"
-                style="
-                  height: 18px;
-                  width: auto;
-                  filter: invert(1);
-                  vertical-align: middle;
-                " /></a
-          ></span>
+          <a class="onebite-credit onebite-credit--dark" href="https://1bite.studio/" target="_blank" rel="noopener noreferrer" aria-label="Developed by 1bite Studio"><span>Developed by</span><span class="onebite-credit__brand"><img class="onebite-credit__logo" src="/assets/1bite-credit-logo.png" width="48" height="19" alt="1bite"><span class="onebite-credit__line" aria-hidden="true"></span></span></a>
           <span>Maracaibo, Venezuela</span>
           <span>Actualizado: agosto 2026</span>
         </div>
