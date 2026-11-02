@@ -1062,6 +1062,10 @@
           </div>
           <div class="radio-row" role="radiogroup" aria-label="Plazo">
             <label class="radio-pill">
+              <input type="radio" name="plazo" value="3" />
+              3 meses
+            </label>
+            <label class="radio-pill">
               <input type="radio" name="plazo" value="6" />
               6 meses
             </label>
@@ -1100,6 +1104,10 @@
                 >
               </span>
             </label>
+          </div>
+          <div class="form-group">
+            <label for="descExtra">Descuento comercial adicional (%)</label>
+            <input type="number" id="descExtra" min="0" max="100" step="0.5" value="0" inputmode="decimal" />
           </div>
         </div>
 
@@ -1190,6 +1198,10 @@
               <span class="lbl">Pago en divisas (20%)</span>
               <span class="val" id="rDivisas"></span>
             </div>
+            <div class="line discount" id="rowExtra">
+              <span class="lbl" id="rExtraLbl">Descuento comercial adicional</span>
+              <span class="val" id="rExtra"></span>
+            </div>
             <div class="line-feature">
               <span class="lbl">Total contrato <small>(sin IVA)</small></span>
               <span class="val" id="rTotal"></span>
@@ -1203,7 +1215,7 @@
               <span class="val" id="rUnidades"></span>
             </div>
 
-            <p class="result-note">Precio por circuito al mes: 6 meses $3.400 · 12 meses $3.160. Incluye instalación. USD sin IVA, a tasa BCV.</p>
+            <p class="result-note">Precio por circuito al mes: 3 meses $3.700 · 6 meses $3.400 · 12 meses $3.160. Incluye instalación. USD sin IVA, a tasa BCV.</p>
 
             <button type="button" class="shiny-cta copy-btn" id="copyBtn">
               <span
@@ -1285,7 +1297,7 @@
 
       /* ============================================================
          DATOS — PDF "LIGHTBOX 1PIXEL". Mismos precios y cascada que en 1PIXEL OS
-         (src/lib/mobiliario.ts): tarifa → prepago −20% → divisas −20%.
+         (src/lib/mobiliario.ts): tarifa → cantidad → prepago −20% → divisas −20% → extra.
          ============================================================ */
       const CFG = {
         "titulo": "Light Box",
@@ -1294,6 +1306,7 @@
         "unidad": "postes",
         "unidadesPorCircuito": 12,
         "plazos": [
+          3,
           6,
           12
         ],
@@ -1303,9 +1316,9 @@
           "Cada circuito son 12 postes con cajas de luz doble cara (0,50 × 2,00 m) en la Av. 5 de Julio, visibles en ambos sentidos.",
           "Publicidad estática: el espacio pertenece únicamente a su marca, sin loops ni tiempos de espera.",
           "Incluye la instalación.",
-          "Contratos de 6 o 12 meses.",
+          "Contratos de 3, 6 o 12 meses.",
           "Precios en USD, sin IVA, pagaderos a tasa BCV del día de pago.",
-          "El descuento por prepago aplica al pagar el contrato completo al inicio; el de divisas, al pagar en moneda extranjera. Se aplican en cascada sobre el monto ya rebajado.",
+          "El descuento por cantidad se aplica sobre la tarifa; luego prepago al pagar el contrato completo al inicio, después divisas al pagar en moneda extranjera y, por último, cualquier descuento comercial adicional. Todos se aplican en cascada sobre el neto restante.",
           "Contenido. El Cliente es el único responsable del contenido, diseño, veracidad y legalidad del material publicitario suministrado.",
           "Derechos. El Cliente garantiza que posee los derechos y autorizaciones sobre imágenes, marcas, logotipos y textos del arte, y que este cumple con la legislación venezolana.",
           "Entrega del arte. El arte debe entregarse al menos siete (7) días antes del inicio del servicio, según las especificaciones de 1Pixel. Antes de imprimir, el Cliente aprobará una prueba digital; los errores en el arte aprobado son responsabilidad del Cliente. La demora en la entrega no modifica la fecha de inicio ni la facturación.",
@@ -1384,11 +1397,18 @@
             ]
           }
         ],
-        "precioBase": (meses) => (meses >= 12 ? 3160 : 3400),
-        "precioCircuito": (n, meses) => (meses >= 12 ? 3160 : 3400)
+        "precioBase": (meses) => ({ 3: 3700, 6: 3400, 12: 3160 }[meses] || 3160),
+        "descuentoVolumen": (n) => ({ 1: 0, 2: 0.1, 3: 0.15, 4: 0.2 }[n] || 0),
+        "precioCircuito": (n, meses) => CFG.precioBase(meses) * (1 - CFG.descuentoVolumen(n))
       };
       const DESC_PREPAGO = 0.2;
       const DESC_DIVISAS = 0.2;
+
+      function porcentajeSeguro(valor) {
+        const n = Number(valor);
+        if (!Number.isFinite(n)) return 0;
+        return Math.min(100, Math.max(0, n)) / 100;
+      }
 
       const $ = (id) => document.getElementById(id);
       const fmt = new Intl.NumberFormat("es-VE", {
@@ -1397,6 +1417,9 @@
       });
       function money(n) {
         return "$" + fmt.format(n);
+      }
+      function porcentaje(n) {
+        return fmt.format(Math.round(n * 10000) / 100) + "%";
       }
       const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
       function fechaServicio(valor) {
@@ -1418,18 +1441,23 @@
           document.querySelectorAll('input[name="circuito"]:checked'),
         )
           .map((i) => Number(i.value))
+          .filter((n) => CFG.circuitos.some((c) => c.n === n))
           .sort((a, b) => a - b);
         if (sel.length === 0) return null;
         const meses = mesesElegidos();
         const n = sel.length;
         const precioBase = CFG.precioBase(meses);
         const precioCircuito = CFG.precioCircuito(n, meses);
+        const descVolumenPct = CFG.descuentoVolumen(n);
         const lista = precioBase * n * meses;
         const conVolumen = precioCircuito * n * meses;
         const descPrepago = $("prepago").checked ? conVolumen * DESC_PREPAGO : 0;
         const base3 = conVolumen - descPrepago;
         const descDivisas = $("divisas").checked ? base3 * DESC_DIVISAS : 0;
-        const total = base3 - descDivisas;
+        const baseExtra = base3 - descDivisas;
+        const descExtraPct = porcentajeSeguro($("descExtra").value);
+        const descExtra = baseExtra * descExtraPct;
+        const total = baseExtra - descExtra;
         return {
           sel,
           meses,
@@ -1438,9 +1466,12 @@
           precioBase,
           precioCircuito,
           lista,
+          descVolumenPct,
           descVolumen: lista - conVolumen,
           descPrepago,
           descDivisas,
+          descExtraPct,
+          descExtra,
           total,
           mensual: total / meses,
           cliente: $("cliente").value.trim(),
@@ -1483,12 +1514,15 @@
         $("rLista").textContent = money(r.lista);
         mostrar("rowVolumen", r.descVolumen > 0);
         $("rVolumenLbl").textContent =
-          "Precio por volumen (" + money(r.precioCircuito) + " por circuito)";
+          "Descuento por cantidad (" + porcentaje(r.descVolumenPct) + " · " + money(r.precioCircuito) + " por circuito)";
         $("rVolumen").textContent = "−" + money(r.descVolumen);
         mostrar("rowPrepago", r.descPrepago > 0);
         $("rPrepago").textContent = "−" + money(r.descPrepago);
         mostrar("rowDivisas", r.descDivisas > 0);
         $("rDivisas").textContent = "−" + money(r.descDivisas);
+        mostrar("rowExtra", r.descExtra > 0);
+        $("rExtraLbl").textContent = "Descuento comercial adicional (" + porcentaje(r.descExtraPct) + ")";
+        $("rExtra").textContent = "−" + money(r.descExtra);
         $("rTotal").textContent = money(r.total);
         $("rMensual").textContent = money(r.mensual);
         $("rUnidades").textContent = String(r.unidades);
@@ -1516,10 +1550,10 @@
       });
       document
         .querySelectorAll(
-          'input[name="circuito"], input[name="plazo"], #prepago, #divisas',
+          'input[name="circuito"], input[name="plazo"], #prepago, #divisas, #descExtra',
         )
         .forEach((el) => el.addEventListener("change", recalcular));
-      ["cliente", "rif", "email", "direccion", "fechaInicio", "firmante", "cedulaFirmante", "cargoFirmante"].forEach((id) => {
+      ["descExtra", "cliente", "rif", "email", "direccion", "fechaInicio", "firmante", "cedulaFirmante", "cargoFirmante"].forEach((id) => {
         $(id).addEventListener("input", recalcular);
         $(id).addEventListener("change", recalcular);
       });
@@ -1554,10 +1588,11 @@
         l.push("Tarifa: " + money(r.lista));
         if (r.descVolumen > 0)
           l.push(
-            "Precio por volumen (" + money(r.precioCircuito) + " por circuito): −" + money(r.descVolumen),
+            "Descuento por cantidad (" + porcentaje(r.descVolumenPct) + " · " + money(r.precioCircuito) + " por circuito): −" + money(r.descVolumen),
           );
         if (r.descPrepago > 0) l.push("Prepago (20%): −" + money(r.descPrepago));
         if (r.descDivisas > 0) l.push("Pago en divisas (20%): −" + money(r.descDivisas));
+        if (r.descExtra > 0) l.push("Descuento comercial adicional (" + porcentaje(r.descExtraPct) + "): −" + money(r.descExtra));
         l.push("*Total contrato: " + money(r.total) + "* (sin IVA)");
         l.push("Mensualidad: " + money(r.mensual));
         l.push("");
@@ -1764,7 +1799,7 @@
         );
         if (r.descVolumen > 0)
           fila(
-            "Precio por volumen (" + money(r.precioCircuito) + " por circuito/mes)",
+            "Descuento por cantidad (" + porcentaje(r.descVolumenPct) + ")",
             "- " + money(r.descVolumen),
             { color: verde },
           );
@@ -1772,6 +1807,10 @@
           fila("Descuento prepago (20%)", "- " + money(r.descPrepago), { color: verde });
         if (r.descDivisas > 0)
           fila("Descuento pago en divisas (20%)", "- " + money(r.descDivisas), {
+            color: verde,
+          });
+        if (r.descExtra > 0)
+          fila("Descuento comercial adicional (" + porcentaje(r.descExtraPct) + ")", "- " + money(r.descExtra), {
             color: verde,
           });
         fila("INVERSIÓN TOTAL NETA (sin IVA)", money(r.total), {
