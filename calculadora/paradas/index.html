@@ -1091,6 +1091,10 @@
               autocomplete="off"
             />
           </div>
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de inicio del acuerdo</label>
+            <input type="date" id="fechaInicio" autocomplete="off" />
+          </div>
         </div>
       </section>
 
@@ -1349,6 +1353,15 @@
         return "$" + fmt.format(n);
       }
       const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+      function fechaAcuerdo(valor) {
+        const [anio, mes, dia] = valor.split("-").map(Number);
+        return new Intl.DateTimeFormat("es-VE", {
+          timeZone: "America/Caracas",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date(Date.UTC(anio, mes - 1, dia, 12)));
+      }
 
       function mesesElegidos() {
         const el = document.querySelector('input[name="plazo"]:checked');
@@ -1386,6 +1399,7 @@
           total,
           mensual: total / meses,
           cliente: $("cliente").value.trim(),
+          fechaInicio: $("fechaInicio").value,
         };
       }
 
@@ -1454,7 +1468,10 @@
           'input[name="circuito"], input[name="plazo"], #prepago, #divisas',
         )
         .forEach((el) => el.addEventListener("change", recalcular));
-      $("cliente").addEventListener("input", recalcular);
+      ["cliente", "fechaInicio"].forEach((id) => {
+        $(id).addEventListener("input", recalcular);
+        $(id).addEventListener("change", recalcular);
+      });
 
       /* ============================================================
          COPIAR — texto para WhatsApp
@@ -1473,6 +1490,7 @@
         const l = [];
         l.push("*Propuesta 1PIXEL · " + CFG.titulo + "*");
         if (r.cliente) l.push("Para: " + r.cliente);
+        if (r.fechaInicio) l.push("Inicio del acuerdo: " + fechaAcuerdo(r.fechaInicio));
         l.push("");
         r.sel.forEach((n) => {
           const c = CFG.circuitos.find((x) => x.n === n);
@@ -1617,6 +1635,10 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9.5);
         doc.setTextColor(110, 110, 110);
+        if (r.fechaInicio) {
+          doc.text("Inicio del acuerdo: " + fechaAcuerdo(r.fechaInicio), M, y);
+          y += 5.5;
+        }
         doc.text(
           plural(r.n, "circuito exclusivo", "circuitos exclusivos") +
             "  ·  " +
@@ -1729,6 +1751,10 @@
         if (!r.cliente) {
           $("cliente").focus();
           return mostrarCopyFeedback("Escribe el nombre de la empresa.", false);
+        }
+        if (!r.fechaInicio) {
+          $("fechaInicio").focus();
+          return mostrarCopyFeedback("Indica la fecha de inicio del acuerdo.", false);
         }
         try {
           const [JsPDF, logo] = await Promise.all([cargarJsPDF(), cargarLogo()]);

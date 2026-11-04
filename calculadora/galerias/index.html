@@ -1210,6 +1210,10 @@
                 />
               </div>
               <div class="form-group">
+                <label for="fechaInicio">Fecha de inicio del acuerdo</label>
+                <input type="date" id="fechaInicio" autocomplete="off" />
+              </div>
+              <div class="form-group">
                 <label for="clienteFirmante"
                   >Firma por el cliente — Nombre</label
                 >
@@ -1499,6 +1503,10 @@
                     autocomplete="off"
                   />
                 </div>
+                <div class="form-group">
+                  <label for="multiFechaInicio">Fecha de inicio del acuerdo</label>
+                  <input type="date" id="multiFechaInicio" autocomplete="off" />
+                </div>
 
                 <!-- Firma por el cliente / grupo (representante único) -->
                 <div class="form-group">
@@ -1731,6 +1739,15 @@
       function money(n) {
         return "$" + fmt.format(n);
       }
+      function fechaAcuerdo(valor) {
+        const [anio, mes, dia] = valor.split("-").map(Number);
+        return new Intl.DateTimeFormat("es-VE", {
+          timeZone: "America/Caracas",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date(Date.UTC(anio, mes - 1, dia, 12)));
+      }
 
       /* ============================================================
          CÁLCULO
@@ -1855,6 +1872,17 @@
          ============================================================ */
       const $ = (id) => document.getElementById(id);
 
+      // Mono y multimarca representan el mismo acuerdo: conservar la fecha al cambiar de modo.
+      [["fechaInicio", "multiFechaInicio"], ["multiFechaInicio", "fechaInicio"]].forEach(
+        ([origen, destino]) => {
+          ["input", "change"].forEach((evento) => {
+            $(origen).addEventListener(evento, () => {
+              $(destino).value = $(origen).value;
+            });
+          });
+        },
+      );
+
       const resultEmpty = $("resultEmpty");
       const resultBody = $("resultBody");
       const resultPlan = $("resultPlan");
@@ -1965,8 +1993,10 @@
         lineas.push("Cliente: " + cliente);
         const rif = $("clienteRif").value.trim();
         const email = $("clienteEmail").value.trim();
+        const fechaInicio = $("fechaInicio").value;
         if (rif) lineas.push("RIF: " + rif);
         if (email) lineas.push("Correo: " + email);
+        if (fechaInicio) lineas.push("Inicio del acuerdo: " + fechaAcuerdo(fechaInicio));
         lineas.push("");
         lineas.push(
           "📍 " +
@@ -2153,10 +2183,12 @@
         const cRif = $("clienteRif").value.trim();
         const cDir = $("clienteDir").value.trim();
         const cEmail = $("clienteEmail").value.trim();
+        const cFechaInicio = $("fechaInicio").value;
         const detalles = [];
         if (cRif) detalles.push("RIF: " + cRif);
         if (cDir) detalles.push(cDir);
         if (cEmail) detalles.push(cEmail);
+        if (cFechaInicio) detalles.push("Inicio del acuerdo: " + fechaAcuerdo(cFechaInicio));
         if (detalles.length) {
           doc.setFont("helvetica", "normal");
           doc.setFontSize(9.5);
@@ -2483,6 +2515,11 @@
           $("cliente").focus();
           return;
         }
+        if (!$("fechaInicio").value) {
+          mostrarCopyFeedback("Indica la fecha de inicio del acuerdo para generar el PDF.", false);
+          $("fechaInicio").focus();
+          return;
+        }
         const btn = $("pdfBtn");
         btn.disabled = true;
         try {
@@ -2763,6 +2800,8 @@
         const lineas = [];
         lineas.push("*PROPUESTA CORPORATIVA MULTIMARCA — 1PIXEL*");
         if (cliente) lineas.push("Cliente: " + cliente);
+        const fechaInicio = $("multiFechaInicio").value;
+        if (fechaInicio) lineas.push("Inicio del acuerdo: " + fechaAcuerdo(fechaInicio));
         lineas.push(
           r.nMarcas +
             (r.nMarcas === 1 ? " marca" : " marcas") +
@@ -2933,6 +2972,11 @@
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9.5);
         doc.setTextColor(110, 110, 110);
+        const fechaInicio = $("multiFechaInicio").value;
+        if (fechaInicio) {
+          doc.text("Inicio del acuerdo: " + fechaAcuerdo(fechaInicio), M, y);
+          y += 5.5;
+        }
         doc.text(
           r.nMarcas +
             (r.nMarcas === 1 ? " marca" : " marcas") +
@@ -3158,6 +3202,11 @@
         const r = multiCalcular(marcasState, GALERIAS);
         if (r.nMarcas === 0) {
           mostrarMultiFeedback("Marca galerías en al menos una marca.", false);
+          return;
+        }
+        if (!$("multiFechaInicio").value) {
+          mostrarMultiFeedback("Indica la fecha de inicio del acuerdo para generar el PDF.", false);
+          $("multiFechaInicio").focus();
           return;
         }
         const btn = $("multiPdfBtn");

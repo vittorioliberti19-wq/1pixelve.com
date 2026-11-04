@@ -1142,7 +1142,7 @@
               <input type="text" id="direccion" placeholder="Dirección completa" autocomplete="off" maxlength="300" />
             </div>
             <div class="form-group">
-              <label for="fechaInicio">Inicio del servicio</label>
+              <label for="fechaInicio">Fecha de inicio del acuerdo</label>
               <input type="date" id="fechaInicio" autocomplete="off" />
             </div>
             <div class="form-group">
@@ -1422,13 +1422,14 @@
         return fmt.format(Math.round(n * 10000) / 100) + "%";
       }
       const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
-      function fechaServicio(valor) {
-        return new Date(valor + "T12:00:00").toLocaleDateString("es-VE", {
+      function fechaAcuerdo(valor) {
+        const [anio, mes, dia] = valor.split("-").map(Number);
+        return new Intl.DateTimeFormat("es-VE", {
           timeZone: "America/Caracas",
           day: "numeric",
           month: "long",
           year: "numeric",
-        });
+        }).format(new Date(Date.UTC(anio, mes - 1, dia, 12)));
       }
 
       function mesesElegidos() {
@@ -1576,7 +1577,7 @@
         l.push("*Propuesta 1PIXEL · " + CFG.titulo + "*");
         if (r.cliente) l.push("Para: " + r.cliente);
         if (r.rif) l.push("RIF: " + r.rif);
-        if (r.fechaInicio) l.push("Inicio del servicio: " + fechaServicio(r.fechaInicio));
+        if (r.fechaInicio) l.push("Inicio del acuerdo: " + fechaAcuerdo(r.fechaInicio));
         l.push("");
         r.sel.forEach((n) => {
           const c = CFG.circuitos.find((x) => x.n === n);
@@ -1726,7 +1727,7 @@
           r.rif && "RIF: " + r.rif,
           r.direccion && "Dirección: " + r.direccion,
           r.email && "Correo: " + r.email,
-          r.fechaInicio && "Inicio del servicio: " + fechaServicio(r.fechaInicio),
+          r.fechaInicio && "Inicio del acuerdo: " + fechaAcuerdo(r.fechaInicio),
           r.firmante && "Firmante: " + r.firmante,
           r.cedulaFirmante && "C.I.: " + r.cedulaFirmante,
           r.cargoFirmante && "Cargo: " + r.cargoFirmante,
@@ -1854,7 +1855,7 @@
           ["rif", "el RIF"],
           ["direccion", "la dirección fiscal"],
           ["email", "el correo electrónico"],
-          ["fechaInicio", "la fecha de inicio"],
+          ["fechaInicio", "la fecha de inicio del acuerdo"],
           ["firmante", "el nombre del firmante"],
           ["cedulaFirmante", "la cédula del firmante"],
           ["cargoFirmante", "el cargo del firmante"],
